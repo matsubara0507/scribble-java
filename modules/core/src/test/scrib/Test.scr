@@ -17,6 +17,48 @@ global protocol Proto1(role A, role B)
 {
 	rec X
 	{
+		() from A to B;
+		continue X;
+	}
+}
+//*/
+
+
+/*
+global protocol Proto1(role A, role B, role C, role D)
+{
+	choice at A
+	{
+		1() from A to B;
+		3() from B to C;
+		rec X
+		{
+			choice at C
+			{
+				4() from C to D;
+				continue X;
+			}
+			or
+			{
+				5() from C to D;
+			}
+		}
+	}
+	or
+	{
+		2() from A to B;
+		3() from B to C;
+		4() from C to D;
+	}
+}
+//*/
+
+
+/*
+global protocol Proto1(role A, role B)
+{
+	rec X
+	{
 		1() from A to B;
 		choice at A
 		{
@@ -2605,7 +2647,7 @@ global protocol Proto1(role A, role B, role C, role D)
 	choice at C
 	{
 		2() from C to D;
-		3() from D to C;  // Stuck messages also manifest as message liveness violations (CHECKME: subsumed? so unnecessary to check safety except for actual terminations? -- but morally, they are local safety errors for the roles, as opposed to global liveness errors for the system)
+		3() from D to C;  // Stuck messages also manifest as message liveness violations, because also checking safety on non-final states (CHECKME: subsumed? so unnecessary to check safety except for actual terminations? -- but morally, they are local safety errors for the roles, as opposed to global liveness errors for the system) -- cf. if checking safety errors as final states only, this should arise as liveness error
 	}
 	or
 	{

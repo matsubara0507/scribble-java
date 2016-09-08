@@ -109,7 +109,7 @@ public abstract class ModelState<A extends ModelAction<K>, S extends ModelState<
 		return as;
 	}
 
-	public List<A> getAllTakeable()
+	public List<A> getAllTakeable()  // Cf. WFState.getTakeable, which is dynamically based on available messages
 	{
 		//return Collections.unmodifiableSet(this.edges.keySet());
 		return Collections.unmodifiableList(this.actions);

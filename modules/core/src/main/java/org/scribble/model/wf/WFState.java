@@ -64,7 +64,7 @@ public class WFState
 	}
 
 	//public Set<GModelAction> getAcceptable()
-	public Map<Role, List<IOAction>> getTakeable()  // NB: config semantics, not graph edges (cf, ModelState) -- getActions for that
+	public Map<Role, List<IOAction>> getTakeable()  // NB: config semantics, not graph edges (cf, ModelState) -- getActions for that (cf. ModelState.get[All]Takeable, which is the static graph edges)
 	{
 		//return Collections.unmodifiableSet(this.edges.keySet());
 		return this.config.getTakeable();

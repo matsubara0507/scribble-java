@@ -283,7 +283,7 @@ public class GlobalModelChecker extends ModuleContextVisitor
 				{
 					for (IOAction a : acceptable_r)
 					{
-						if (currfsm.getAllTakeable().stream().anyMatch((x) ->
+						if (currfsm.getAllTakeable().stream().anyMatch((x) ->  // Graph edges based on static FSM (not fireable transitions based on dynamic global model, i.e. curr.getTakeable, as for outputs)
 								!a.equals(x) && a.peer.equals(x.peer) && a.mid.equals(x.mid) && !a.payload.equals(x.payload)))
 						{
 							throw new ScribbleException("Bad non-deterministic action payloads: " + currfsm.getAllTakeable());
@@ -470,7 +470,7 @@ public class GlobalModelChecker extends ModuleContextVisitor
 						{
 							if (a.containsRole(r))
 							{
-								ss.put(r, null);
+								ss.put(r, null);  // If r performs any action in this termset, then not a liveness violation candidate -- have to detect actions; is only detecting same state, can get false positive (e.g. continuous stream sender)
 								break;
 							}
 						}
@@ -493,7 +493,7 @@ public class GlobalModelChecker extends ModuleContextVisitor
 						//throw new ScribbleException(init.toDot() + "\nLiveness violation for " + r + " in terminal set: " + termset);
 						if (s.config.buffs.get(r).values().stream().allMatch((v) -> v == null))
 						{
-							liveness.add(r);
+							liveness.add(r);  // Only detecting those with empty buffers over whole termset; otherwise should be detected as reception error (if any state is an input) or a message liveness error (if any state is an output)
 						}
 						/*
 						// Should be redundant given explicit reception error etc checking
@@ -811,7 +811,7 @@ public class GlobalModelChecker extends ModuleContextVisitor
 		for (Integer s1id : all1.keySet())
 		{
 			//for (WFState s2 : s1.getSuccessors())
-			for (WFState s2 : all.get(s1id).getSuccessors())
+			for (WFState s2 : all.get(s1id).getSuccessors())  // Transitive, but not reflexive (standard) -- so single terminal state is not a singleton terminal set
 			{
 				//reach[all1.get(s1)][all1.get(s2)] = true;
 				reach[all1.get(s1id)][all1.get(s2.id)] = true;
