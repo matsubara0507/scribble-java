@@ -12,7 +12,27 @@
 module Test;
 
 
-/*
+/*/
+global protocol Proto1(role A, role B, role C)
+{
+	choice at A
+	{
+		1() from A to B;
+		5() from A to C;
+		3() from B to A;
+	}
+	or
+	{
+		2() from A to B;
+		5() from A to C;
+		4() from B to A;
+	}
+}
+//*/
+
+
+//--- correlation
+
 global protocol Proto1(role A, role B)
 {
 	rec X
@@ -62,13 +82,93 @@ global protocol Proto1(role A, role B)
 		1() from A to B;
 		choice at A
 		{
-			continue X;
+			1() from A to B;
 		}
 		or
 		{
 			2() from A to B;
 		}
+			continue X;
 	}
+}
+
+/*
+explicit global protocol Proto1(role A, role B)
+{
+//	1() connect A to B;  // OK
+//	disconnect A and B;
+//	1() connect A to B;
+//	disconnect A and B;
+
+//	1() connect A to B;  // Bad
+//	disconnect A and B;
+//	1() connect A to B;
+//	2() from A to B;
+//	disconnect A and B;
+
+	1() connect A to B;  // Bad
+	disconnect A and B;
+	2() connect A to B;  // FIXME: correlation  -- any way to do this via modelling? endpoint transformations? (B should actually be a branch 1 or 2) -- or global model based on two concurent instances of each endpoint? (two enough?) -- mergeability of all accepts
+	disconnect A and B;
+	
+//	1() connect A to B;  // OK: this is what it should be intuitively
+//	disconnect A and B;
+//	2() connect A to C;
+//	disconnect A and C;
+}
+//*/
+
+
+/*
+explicit global protocol Proto1(role A, role B, role C)
+{
+	1() connect A to B;  // FIXME: correlation
+	2() connect A to C;
+	3() connect B to C;
+}
+//*/
+
+
+/*/
+explicit global protocol Proto1(role A, role B, role C)
+{
+	// OK
+	choice at A
+	{
+		1() connect A to C;
+		choice at A
+		{
+			1() connect A to B;
+		}
+	} 
+	or
+	{
+		2() connect A to C;
+		choice at A
+		{
+			2() connect A to B;
+		}
+	}
+}
+//*/
+
+
+//---
+
+
+/*
+global protocol Proto1(role A, role B, role C)
+{
+	choice at A
+	{
+		1() from A to B;
+		1() from A to C;
+	}
+	or  // Not OK: projection treats C?A:1 as single-case choice 
+	{
+		2() from A to B;
+	}
+	3() from A to C;
 }
 //*/
 
