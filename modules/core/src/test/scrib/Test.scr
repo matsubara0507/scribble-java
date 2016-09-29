@@ -37,7 +37,14 @@ global protocol Proto1(role A, role B)
 {
 	rec X
 	{
-		() from A to B;
+		choice at A
+		{
+			1() from A to B;
+		}
+		or
+		{
+			2() from A to B;
+		}
 		continue X;
 	}
 }
