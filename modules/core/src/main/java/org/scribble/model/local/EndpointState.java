@@ -71,7 +71,7 @@ public class EndpointState extends ModelState<IOAction, EndpointState, Local>
 			}
 			seen.add(curr);
 			
-			if (curr.getStateKind() == Kind.OUTPUT && curr.getAllTakeable().size() > 1)
+			if (curr.getStateKind() == Kind.OUTPUT && curr.getAllTakeable().size() > 1)  // >1 is what makes this algorithm terminating
 			{
 				//if (curr.getAllTakeable().size() > 1)
 				{
@@ -92,7 +92,7 @@ public class EndpointState extends ModelState<IOAction, EndpointState, Local>
 						}
 						else
 						{
-							EndpointState clone = curr.unfairClone(term, a, s);
+							EndpointState clone = curr.unfairClone(term, a, s);  // s is a succ of curr
 							//try { s.removeEdge(a, tmps); } catch (ScribbleException e) { throw new RuntimeException(e); }
 							//clones.put(a, clone);
 							cloneas.add(a);
@@ -167,8 +167,10 @@ public class EndpointState extends ModelState<IOAction, EndpointState, Local>
 		return init;
 	}
 	
-	// Returns the clone of the subgraph rooted at succ, with all non-a pruned from the clone of this
-	// Pre: this -a-> succ (maybe non-det)
+	// Pre: succ is the root of the subgraph, and succ is a successor of "this" (which is inside the subgraph)
+	// i.e., this -a-> succ (maybe non-det)
+	// Returns the clone of the subgraph rooted at succ, with all non- "this-a->succ" actions pruned from the clone of "this" state
+	// i.e., we took "a" from "this" to get to succ (the subgraph root); if we enter "this" again (inside the subgraph), then always take "a" again
 	protected EndpointState unfairClone(EndpointState term, IOAction a, EndpointState succ) // Need succ param for non-det
 	{
 		//EndpointState succ = take(a);
@@ -199,7 +201,7 @@ public class EndpointState extends ModelState<IOAction, EndpointState, Local>
 				EndpointState tmps = ss.next();
 				if (s.id != this.id
 						|| (tmpa.equals(a) && tmps.equals(succ)))  // Non-det also pruned from clone of this -- but OK? non-det still preserved on original state, so any safety violations due to non-det will still come out?
-					                                             // ^ Currently this like non-fairness is extended to even defeat non-determinism
+					                                             // ^ Currently, this is like non-fairness is extended to even defeat non-determinism
 				{
 					clone.addEdge(tmpa, map.get(tmps.id));
 				}
