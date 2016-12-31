@@ -1,0 +1,387 @@
+//$ java -cp 'modules\cli\target\classes\;modules\core\target\classes;modules\parser\target\classes;C:\Users\Raymond\.m2\repository\org\antlr\antlr-runtime\3.2\antlr-runtime-3.2.jar;modules\f17\target\classes' org.scribble.f17.main.F17Main modules/f17/src/test/scrib/tmp/Test.scr Proto1
+
+module Test;
+
+
+// - f17 API generation (shared channel passing, connection-with-message)
+// - test WF/projection cases
+
+
+/*
+global protocol Proto1(role A, role B, role C)
+{
+}
+//*/
+
+
+/*
+global protocol Proto1(role A, role B)
+{
+	choice at A
+	{
+		1() from A to B;
+	}
+	or
+	{
+		disconnect A and B;  // Testing: role enabling (choice subjs)
+	}	
+}
+//*/
+
+
+/*
+global protocol Proto1(role A, role B, role C)
+{
+	rec X
+	{
+		1() from C to A;
+		choice at A  // Testing: f17 WF/projection ignores at-role -- may be fine
+		{
+			1() from A to B;
+			continue X;
+		}
+	}
+}
+//*/
+
+
+/*
+global protocol Proto1(role A, role B, role C)
+{
+	rec X
+	{
+		choice at A
+		{
+			1() from A to B;
+			1() from A to C;
+			rec Y  // Testing: projection onto B (protocol is unsafe, just checking projection-delta is OK)
+			{
+				2() from A to C;
+				continue Y;
+			}
+		}
+		or
+		{
+			3() from A to B;
+		}	
+	}
+}
+//*/
+
+
+/*
+global protocol Proto1(role A, role B, role C)
+{
+	1() from B to A;
+	rec X
+	{
+		choice at B
+		{
+			2() from B to C;
+			continue X;  
+					// Testing projection: original projection doesn't allowed mixed delta-X with end (cf., standard mergeablity)
+					// OK using extended projection
+		}
+		or
+		{
+			3() from B to C;
+		}	
+	}
+}
+//*/
+
+
+/*
+global protocol Proto1(role A, role B, role C)
+{
+	1() from B to A;
+	rec Y
+	{
+		rec X
+		{
+			choice at B
+			{
+				2() from B to C;
+				continue X;
+			}
+			or
+			{
+				3() from B to C;
+				//continue X;
+				continue Y;  // Testing: all-cases-X choice projection -- original projection doesn't allow mixed X and Y (although morally the same here)
+			}	
+		}
+	}
+}
+//*/
+
+
+/*
+global protocol Proto1(role A, role B)
+{
+	rec Y
+	{
+		rec X  // Testing: RecRemover (also implicit Proto1 rec)
+		{
+			1() from A to B;
+			continue Y;
+		}		
+	}
+}
+//*/
+
+
+/*
+explicit global protocol Proto1(role A, role B, role C, role D)
+{
+	connect A to B;
+	rec X
+	{
+		l() from A to B;
+		connect C to D;  // Testing: non-terminal safety error (inside terminal set)
+		continue X;
+	}
+}
+//*/
+
+
+/*
+global protocol Proto1(role A, role B, role C)
+{
+	choice at A
+	{
+		l() from A to B;
+		rec X
+		{
+			l() from A to B;  // Testing: progress violation, including under -fair
+			continue X;
+		}
+	}
+	or
+	{
+		l1() from A to B;
+		l1() from A to C;
+	}
+}
+//*/
+
+
+/*
+global protocol Proto1(role A, role B, role C)
+{
+	rec X
+	{
+		choice at A
+		{
+			1() from A to B;
+			1() from A to C;  // Comment to test: (un)fair progress
+			continue X;
+		}
+		or
+		{
+			2() from A to B;
+			2() from A to C;
+		}	
+	}
+}
+//*/
+
+
+/*
+explicit global protocol Proto1(role A, role B, role C)
+{
+	connect A to B;
+	rec X
+	{
+		choice at A
+		{
+			1() from A to B;
+			2() connect B to C;
+			disconnect B and C;
+			continue X;
+		}
+		or
+		{
+			3() from A to B;
+		}
+	}
+}
+//*/
+
+
+/*
+explicit global protocol Proto1(role A, role B, role C)
+{
+	connect A to B;
+	1() from A to B;
+	connect B to C;
+	2() from B to C;
+}
+//*/
+
+
+/*
+global protocol Proto1(role A, role B)
+{
+	choice at A  // Testing: f17 model building
+	{	
+		1() from A to B;
+		1() from A to B;
+	}
+	or
+	{
+		2() from A to B;
+	}	
+}
+//*/
+
+
+/*
+explicit global protocol Proto1(role C, role A, role S)
+{
+	connect C to A;  // Testing: TravelAgency
+	rec X
+	{
+		choice at C
+		{
+			query() from C to A;		
+			quote() from A to C;
+			continue X;
+		}
+		or
+		{
+			pay() connect C to S;
+			confirm() from S to C;
+			accpt() from C to A;		
+		}	
+		or
+		{
+			reject() from C to A;		
+		}
+	}
+}
+//*/
+
+
+/*
+explicit global protocol Proto1(role A, role B, role C)
+{
+	connect	A to B;
+	choice at A
+	{
+		1() from A to B;
+	}
+	or
+	{
+		2() from A to B;
+		connect B to C;  // Testing: basic explicit connections
+		2() from B to C;
+	}		
+}
+//*/
+
+
+/*
+global protocol Proto1(role A, role B, role C)
+{
+	choice at A
+	{
+		1() from A to B;
+		1() from A to C;
+	}
+	or
+	{
+		2() from A to B;
+		2() from B to C;  // Testing: inconsistent choice subject
+	}		
+}
+//*/
+
+
+/*
+global protocol Proto1(role A, role B)
+{
+	choice at A  // Testing: mixed-role choice -- subsumed by role enabling?
+	{
+		1() from A to B;
+	}
+	or
+	{
+		2() from B to A;
+	}
+}
+//*/
+
+
+/*
+global protocol Proto1(role A, role B, role C)
+{
+  // Previous (post-inlining): limitation of projection: non-prefix guarded case for A (projected straight to non-unary choice)
+  // Now testing: projection-delta, unguarded X for C
+	rec X
+	{
+		0() from B to C;
+		choice at A
+		{
+			1() from A to B;
+			//1() from B to C;  // OK if uncommented
+			continue X;
+		}
+		or
+		{
+			2() from A to B;
+			2() from B to C;
+		}	
+	}
+}
+//*/
+
+
+//* 
+global protocol Proto1(role A, role B, role C)
+{
+	rec X
+	{
+		choice at A
+		{
+			1() from A to B;	 // Testing: unbalanced choice role sets (without explicit connections) -- OK if -fair
+			continue X;
+		}
+		or
+		{
+			2() from A to B;
+			2() from B to C;
+		}	
+	}
+}
+//*/
+
+
+/* 
+global protocol Proto1(role A, role B)  // Testing: basic syntax structure (e.g., no seq)
+{
+	1() from A to B;
+	1() from A to B;
+	choice at A
+	{
+		1() from A to B;
+		choice at A
+		{
+			1() from A to B;
+		}
+	}
+	or
+	{
+		2() from A to B;
+		rec X
+		{
+			rec Y
+			{
+				2() from A to B;
+				continue X;
+			}
+		}
+	}
+}
+//*/
+
