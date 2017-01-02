@@ -1,6 +1,7 @@
 package demo.fase17.travel.orig;
 
 import static demo.fase17.travel.orig.Travel1.Travel.Travel.C;
+import static demo.fase17.travel.orig.Travel1.Travel.Travel.S;
 import static demo.fase17.travel.orig.Travel1.Travel.Travel.confirm;
 import static demo.fase17.travel.orig.Travel1.Travel.Travel.pay;
 
@@ -27,7 +28,7 @@ public class Travel1S
 			while (true)
 			{
 				Travel travel = new Travel();
-				try (ExplicitEndpoint<Travel, S> se = new ExplicitEndpoint<>(travel, Travel.S, new ObjectStreamFormatter()))
+				try (ExplicitEndpoint<Travel, S> se = new ExplicitEndpoint<>(travel, S, new ObjectStreamFormatter()))
 				{
 					Buf<String> b = new Buf<>();
 

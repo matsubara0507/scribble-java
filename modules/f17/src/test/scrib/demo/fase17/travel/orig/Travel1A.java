@@ -1,13 +1,10 @@
 package demo.fase17.travel.orig;
 
+import static demo.fase17.travel.orig.Travel1.Travel.Travel.A;
 import static demo.fase17.travel.orig.Travel1.Travel.Travel.C;
-import static demo.fase17.travel.orig.Travel1.Travel.Travel.accpt;
-import static demo.fase17.travel.orig.Travel1.Travel.Travel.query;
 import static demo.fase17.travel.orig.Travel1.Travel.Travel.quote;
-import static demo.fase17.travel.orig.Travel1.Travel.Travel.reject;
 
 import java.io.IOException;
-import java.util.concurrent.ExecutionException;
 
 import org.scribble.main.ScribbleRuntimeException;
 import org.scribble.net.Buf;
@@ -19,8 +16,6 @@ import org.scribble.net.session.ExplicitEndpoint;
 import demo.fase17.travel.orig.Travel1.Travel.Travel;
 import demo.fase17.travel.orig.Travel1.Travel.channels.A.EndSocket;
 import demo.fase17.travel.orig.Travel1.Travel.channels.A.Travel_A_1;
-import demo.fase17.travel.orig.Travel1.Travel.channels.A.Travel_A_2;
-import demo.fase17.travel.orig.Travel1.Travel.channels.A.Travel_A_2_Cases;
 import demo.fase17.travel.orig.Travel1.Travel.channels.A.Travel_A_2_Handler;
 import demo.fase17.travel.orig.Travel1.Travel.channels.A.Travel_A_3;
 import demo.fase17.travel.orig.Travel1.Travel.ops.accpt;
@@ -40,7 +35,7 @@ public class Travel1A
 			{
 				Travel booking = new Travel();
 				try (ExplicitEndpoint<Travel, A> se
-						= new ExplicitEndpoint<>(booking, Travel.A, new ObjectStreamFormatter()))
+						= new ExplicitEndpoint<>(booking, A, new ObjectStreamFormatter()))
 				{
 					//run(new Travel_A_1(se).accept(C, ss_b.C));
 					new Travel_A_1(se).accept(C, ss_C).branch(C, new Travel1AHandler(INITIAL));
@@ -94,7 +89,7 @@ class Travel1AHandler implements Travel_A_2_Handler
 	@Override
 	public void receive(Travel_A_3 s3, query op, Buf<String> b) throws ScribbleRuntimeException, IOException, ClassNotFoundException
 	{
-		//s3.send(C, quote, this.q -= 100).branch(C, this);
+		s3.send(C, quote, this.q -= 100).branch(C, this);
 	}
 
 	@Override

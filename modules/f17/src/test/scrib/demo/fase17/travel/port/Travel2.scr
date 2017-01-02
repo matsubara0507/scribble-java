@@ -1,4 +1,4 @@
-//$ bin/scribblec.sh modules/f17/src/test/scrib/demo/fase17/travel/orig/Travel2.scr -f17 Travel
+//$ bin/scribblec.sh modules/f17/src/test/scrib/demo/fase17/travel/port/Travel2.scr -f17 Travel
 
 
 module demo.fase17.travel.port.Travel2;
@@ -8,6 +8,7 @@ type <java> "java.lang.Integer" from "rt.jar" as Int;
 
 
 // "Manual" port forwarding as Int -- C not assumed to know S port a priori
+// C, A and S all mutually interact, using "fresh" port passing for correlation
 explicit global protocol Travel(role C, role A, role S)
 {
 	connect C to A;

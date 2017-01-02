@@ -29,7 +29,7 @@ public class Travel2S
 			while (true)
 			{
 				Travel travel = new Travel();
-				try (ExplicitEndpoint<Travel, S> se = new ExplicitEndpoint<>(travel, Travel.S, new ObjectStreamFormatter()))
+				try (ExplicitEndpoint<Travel, S> se = new ExplicitEndpoint<>(travel, S, new ObjectStreamFormatter()))
 				{
 					Buf<String> b = new Buf<>();
 					Travel_S_2 s2 = new Travel_S_1(se).accept(A, ss_A);
