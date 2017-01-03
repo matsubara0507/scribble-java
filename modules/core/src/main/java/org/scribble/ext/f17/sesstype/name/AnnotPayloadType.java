@@ -6,14 +6,14 @@ import org.scribble.sesstype.name.PayloadType;
 
 
 //public class AnnotDataType<K> extends DataType implements AnnotType
-public class AnnotDataType<K extends PayloadTypeKind> implements PayloadType<K>, AnnotType
+public class AnnotPayloadType<K extends PayloadTypeKind> implements PayloadType<K>, AnnotType
 {
 	//private static final long serialVersionUID = 1L;
 	
 	public final PayloadType<K> pay;
 	public final PayloadVar annot;  // Cf. AnnotUnaryPayloadElem
 
-	public AnnotDataType(PayloadType<K> pay, PayloadVar annot)
+	public AnnotPayloadType(PayloadType<K> pay, PayloadVar annot)
 	{
 		this.pay = pay;
 		this.annot = annot;
@@ -32,18 +32,18 @@ public class AnnotDataType<K extends PayloadTypeKind> implements PayloadType<K>,
 		{
 			return true;
 		}
-		if (!(o instanceof AnnotDataType))
+		if (!(o instanceof AnnotPayloadType))
 		{
 			return false;
 		}
 
-		AnnotDataType<?> them = (AnnotDataType<?>) o;
+		AnnotPayloadType<?> them = (AnnotPayloadType<?>) o;
 		return them.canEqual(this) && this.pay.equals(them.pay) && this.annot.equals(them.annot);
 	}
 	
 	public boolean canEqual(Object o)
 	{
-		return o instanceof AnnotDataType;
+		return o instanceof AnnotPayloadType;
 	}
 
 	@Override
