@@ -19,6 +19,7 @@ public class AnnotUnaryPayloadElem<K extends PayloadTypeKind> extends UnaryPaylo
 {
 	public final PayloadVarNode payvar;  // null for non-annotated  // FIXME: refactor properly
 			// Or just use NonRoleParamNode?
+			// Cf. AnnotGMessageTransfer (etc) using ScribAnnot
 	
 	public AnnotUnaryPayloadElem(CommonTree source, PayloadElemNameNode<K> name)
 	{
@@ -40,7 +41,7 @@ public class AnnotUnaryPayloadElem<K extends PayloadTypeKind> extends UnaryPaylo
 	@Override
 	public ScribAnnot getAnnotation()
 	{
-		return null;
+		throw new RuntimeException("Shouldn't get in here: " + this);  // FIXME: refactor properly
 	}
 	
 	@Override

@@ -56,12 +56,14 @@ public class AntlrPayloadElemList
 			return AstFactoryImpl.FACTORY.GDelegationElem(ct, gpnn, rn);
 			//throw new RuntimeException("Shouldn't get in here: " + ct);
 		}
-		else if (type == AntlrNodeType.ANNOT_PAYLOADELEMENT)
+
+		else if (type == AntlrNodeType.ANNOT_PAYLOADELEMENT)  // FIXME: refactor properly
 		{
 			PayloadVarNode pvn = AntlrSimpleName.toPayloadVarNode((CommonTree) ct.getChild(0));
 			PayloadElemNameNode<?> penn = parsePayloadElemenNameNode((CommonTree) ct.getChild(1));
 			return AstFactoryImpl.FACTORY.AnnotUnaryPayloadElem(ct, pvn, penn);
 		}
+
 		else if (type == AntlrNodeType.QUALIFIEDNAME)
 		{
 			return AstFactoryImpl.FACTORY.UnaryPayloadElem(ct, parsePayloadElemenNameNode(ct));

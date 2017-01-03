@@ -116,6 +116,7 @@ import org.scribble.sesstype.name.Role;
 public class AstFactoryImpl implements AstFactory
 {
 	//public static final AstFactory FACTORY = new AstFactoryImpl();
+
 	public static final AnnotAstFactory FACTORY = new AnnotAstFactoryImpl();  // FIXME: supply factory as param -- refactor Antlr classes to use param
 	
 	@Override

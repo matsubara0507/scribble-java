@@ -1,14 +1,19 @@
 package org.scribble.ext.f17.ast;
 
+import java.util.List;
+
 import org.antlr.runtime.tree.CommonTree;
 import org.scribble.ast.AstFactoryImpl;
+import org.scribble.ast.MessageNode;
 import org.scribble.ast.name.NameNode;
 import org.scribble.ast.name.PayloadElemNameNode;
 import org.scribble.ast.name.simple.OpNode;
 import org.scribble.ast.name.simple.RecVarNode;
 import org.scribble.ast.name.simple.RoleNode;
+import org.scribble.del.global.GMessageTransferDel;
 import org.scribble.del.name.RecVarNodeDel;
 import org.scribble.del.name.RoleNodeDel;
+import org.scribble.ext.f17.ast.global.AnnotGMessageTransfer;
 import org.scribble.ext.f17.ast.name.simple.PayloadVarNode;
 import org.scribble.ext.f17.del.AnnotUnaryPayloadElemDel;
 import org.scribble.sesstype.kind.DataTypeKind;
@@ -22,50 +27,11 @@ import org.scribble.sesstype.kind.RoleKind;
 public class AnnotAstFactoryImpl extends AstFactoryImpl implements AnnotAstFactory
 {
 	//public static final AnnotAstFactory FACTORY = new AnnotAstFactoryImpl();
-	
-	// Duplicated from AstFactoryImpl
-	@Override
-	public <K extends Kind> NameNode<K> SimpleNameNode(CommonTree source, K kind, String identifier)
-	{
-		NameNode<? extends Kind> snn = null;
-		
-		// Custom dels
-		if (kind.equals(RecVarKind.KIND))
-		{
-			snn = new RecVarNode(source, identifier);
-			snn = del(snn, new RecVarNodeDel());
-		}
-		else if (kind.equals(RoleKind.KIND))
-		{
-			snn = new RoleNode(source, identifier);
-			snn = del(snn, new RoleNodeDel());
-		}
-		if (snn != null)
-		{
-			return castNameNode(kind, snn);
-		}
-
-		// Default del
-		if (kind.equals(OpKind.KIND))
-		{
-			snn = new OpNode(source, identifier);
-		}
-		//else if (kind.equals(PayloadVarKind.KIND))
-		else if (kind.equals(DataTypeKind.KIND))  // No conflict with regular simple data type name nodes?
-		{
-			snn = new PayloadVarNode(source, identifier);
-		}
-		else
-		{
-			throw new RuntimeException("Shouldn't get in here: " + kind);
-		}
-		return castNameNode(kind, del(snn, createDefaultDelegate()));
-	}
 
 	@Override
 	public <K extends PayloadTypeKind> AnnotUnaryPayloadElem<K> UnaryPayloadElem(CommonTree source, PayloadElemNameNode<K> name)
 	{
-		AnnotUnaryPayloadElem<K> pe = new AnnotUnaryPayloadElem<>(source, name);
+		AnnotUnaryPayloadElem<K> pe = new AnnotUnaryPayloadElem<>(source, name);  // Maybe unnecessary, super is fine
 		pe = del(pe, createDefaultDelegate());
 		return pe;
 	}
@@ -79,15 +45,23 @@ public class AnnotAstFactoryImpl extends AstFactoryImpl implements AnnotAstFacto
 		return pe;
 	}
 
-	/*@Override
-	public GMessageTransfer GMessageTransfer(CommonTree source, RoleNode src, MessageNode msg, List<RoleNode> dests)
+	@Override
+	public AnnotGMessageTransfer GMessageTransfer(CommonTree source, RoleNode src, MessageNode msg, List<RoleNode> dests)
 	{
-		GMessageTransfer gmt = new GMessageTransfer(source, src, msg, dests);
+		AnnotGMessageTransfer gmt = new AnnotGMessageTransfer(source, src, msg, dests);  // Maybe unnecessary, super is fine
 		gmt = del(gmt, new GMessageTransferDel());
 		return gmt;
 	}
 
 	@Override
+	public AnnotGMessageTransfer GMessageTransfer(CommonTree source, RoleNode src, MessageNode msg, List<RoleNode> dests, ScribAnnot annot)
+	{
+		AnnotGMessageTransfer gmt = new AnnotGMessageTransfer(source, src, msg, dests, annot);
+		gmt = del(gmt, new GMessageTransferDel());
+		return gmt;
+	}
+
+	/*@Override
 	public GConnect GConnect(CommonTree source, RoleNode src, MessageNode msg, RoleNode dest)
 	//public GConnect GConnect(RoleNode src, RoleNode dest)
 	{
@@ -147,4 +121,43 @@ public class AnnotAstFactoryImpl extends AstFactoryImpl implements AnnotAstFacto
 		lc = del(lc, new LDisconnectDel());
 		return lc;
 	}*/
+	
+	// Duplicated from AstFactoryImpl
+	@Override
+	public <K extends Kind> NameNode<K> SimpleNameNode(CommonTree source, K kind, String identifier)
+	{
+		NameNode<? extends Kind> snn = null;
+		
+		// Custom dels
+		if (kind.equals(RecVarKind.KIND))
+		{
+			snn = new RecVarNode(source, identifier);
+			snn = del(snn, new RecVarNodeDel());
+		}
+		else if (kind.equals(RoleKind.KIND))
+		{
+			snn = new RoleNode(source, identifier);
+			snn = del(snn, new RoleNodeDel());
+		}
+		if (snn != null)
+		{
+			return castNameNode(kind, snn);
+		}
+
+		// Default del
+		if (kind.equals(OpKind.KIND))
+		{
+			snn = new OpNode(source, identifier);
+		}
+		//else if (kind.equals(PayloadVarKind.KIND))
+		else if (kind.equals(DataTypeKind.KIND))  // No conflict with regular simple data type name nodes?
+		{
+			snn = new PayloadVarNode(source, identifier);
+		}
+		else
+		{
+			throw new RuntimeException("Shouldn't get in here: " + kind);
+		}
+		return castNameNode(kind, del(snn, createDefaultDelegate()));
+	}
 }

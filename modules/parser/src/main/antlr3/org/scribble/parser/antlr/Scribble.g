@@ -65,6 +65,8 @@ tokens
 	NO_SCOPE = '__no_scope';
 	//EMPTY_PACKAGENAME = '__empty_packagebame';
 	EMPTY_OPERATOR = '__empty_operator';
+	
+	EMPTY_ANNOT = 'EMPTY_ANNOT';
 
 	//EMPTY_PARAMETERDECLLIST = '__empty_parameterdecllist';
 	//EMPTY_ARGUMENTINSTANTIATIONLIST = '__empty_argumentinstantiationlist';
@@ -73,8 +75,7 @@ tokens
 
 	KIND_MESSAGESIGNATURE = 'KIND_MESSAGESIGNATURE';
 	KIND_PAYLOADTYPE = 'KIND_PAYLOADTYPE';
-	
-	
+
 	/*
 	 * Parser output "node types" (corresponding to the various syntactic
 	 * categories) i.e. the labels used to distinguish resulting AST nodes.
@@ -293,7 +294,7 @@ IDENTIFIER:
 fragment SYMBOL:
 	'{' | '}' | '(' | ')' | '[' | ']' | ':' | '/' | '\\' | '.' | '\#'
 |
-	'&' | '?' | '!'	| UNDERSCORE
+	'&' | '?' | '!'	| '=' | UNDERSCORE
 ;
 
 // Comes after SYMBOL due to an ANTLR syntax highlighting issue involving
@@ -597,7 +598,8 @@ globalinteractionsequence:
 ;
 
 globalinteraction:
-	globalmessagetransfer
+	//globalmessagetransfer
+	annotglobalmessagetransfer
 |
 	globalchoice
 |
@@ -622,10 +624,21 @@ globalinteraction:
 /**
  * Section 3.7.4 Global Message Transfer
  */
+annotglobalmessagetransfer
+	globalmessagetransfer
+|
+	//globalmessagetransfer '@' EXTIDENTIFIER
+	message FROM_KW rolename TO_KW rolename (',' rolename )* ';' '@' EXTIDENTIFIER
+->
+	//globalmessagetransfer //annot
+	^(GLOBALMESSAGETRANSFER message rolename EXTIDENTIFIER rolename+)
+;
+
 globalmessagetransfer:
 	message FROM_KW rolename TO_KW rolename (',' rolename )* ';'
 	->
-	^(GLOBALMESSAGETRANSFER message rolename rolename+)
+	//^(GLOBALMESSAGETRANSFER message rolename rolename+)
+	^(GLOBALMESSAGETRANSFER message rolename EMPTY_ANNOT rolename+)
 ;
 
 message:
