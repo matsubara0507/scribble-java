@@ -112,6 +112,7 @@ tokens
 	PAYLOAD = 'payload';
 	//PAYLOADELEMENT = 'payloadelement';
 	DELEGATION = 'delegation';
+	ANNOTPAYLOADELEMENT = 'annot-payload-elem';  // FIXME: refactor properly
 	ROLEINSTANTIATIONLIST = 'role-instantiation-list';
 	ROLEINSTANTIATION = 'role-instantiation';  // FIXME: not consistent with arginstas/payloadeles
 
@@ -335,6 +336,7 @@ parametername:    simplename;
 recursionvarname: simplename;
 rolename:         simplename;
 scopename:        simplename;
+payloadvarname:        simplename;
 
 ambiguousname:
 	simplename
@@ -478,6 +480,10 @@ payloadelement:
 /*	ambiguousname  // Parser doesn't distinguish simple from qualified properly, even with backtrack
 |*/
 	qualifiedname  // This case subsumes simple names  // FIXME: ambiguousqualifiedname (or ambiguousname should just be qualified)
+|
+	payloadvarname ':' qualifiedname
+->
+	^(ANNOTPAYLOADELEMENT payloadvarname qualifiedname)
 |
 	protocolname '@' rolename
 ->

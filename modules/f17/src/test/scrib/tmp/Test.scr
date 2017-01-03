@@ -7,9 +7,16 @@ module Test;
 // - test WF/projection cases
 
 
-/*
-global protocol Proto1(role A, role B, role C)
+type <java> "java.lang.Integer" from "rt.jar" as Int;
+
+//*
+explicit global protocol Proto1(role A, role B, role C)
 {
+	connect A to B;
+	1(x: Int) from A to B;  //@open=C
+	connect B to C;
+	2(x) from B to C;
+	connect C to A;         //@port=p
 }
 //*/
 
@@ -337,7 +344,7 @@ global protocol Proto1(role A, role B, role C)
 //*/
 
 
-//* 
+/* 
 global protocol Proto1(role A, role B, role C)
 {
 	rec X
