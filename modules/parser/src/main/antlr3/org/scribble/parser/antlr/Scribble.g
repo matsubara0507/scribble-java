@@ -613,7 +613,8 @@ globalinteraction:
 |
 	globaldo
 |
-	globalconnect
+	//globalconnect
+	annotglobalconnect
 |
 	globaldisconnect
 |
@@ -651,15 +652,29 @@ message:
 	parametername*/
 ;	
 
+annotglobalconnect
+	globalconnect
+|
+	CONNECT_KW rolename TO_KW rolename ';' '@' EXTIDENTIFIER
+->
+	^(GLOBALCONNECT rolename rolename ^(MESSAGESIGNATURE EMPTY_OPERATOR ^(PAYLOAD)) EXTIDENTIFIER)
+|
+	message FROM_KW rolename TO_KW rolename ';' '@' EXTIDENTIFIER
+->
+	^(GLOBALCONNECT rolename rolename message EXTIDENTIFIER)
+;
+
 globalconnect:
 	//message CONNECT_KW rolename TO_KW rolename
 	CONNECT_KW rolename TO_KW rolename ';'
 	->
-	^(GLOBALCONNECT rolename rolename ^(MESSAGESIGNATURE EMPTY_OPERATOR ^(PAYLOAD)))  // Empty message sig duplicated from messagesignature
+	//^(GLOBALCONNECT rolename rolename ^(MESSAGESIGNATURE EMPTY_OPERATOR ^(PAYLOAD)))  // Empty message sig duplicated from messagesignature
+	^(GLOBALCONNECT rolename rolename ^(MESSAGESIGNATURE EMPTY_OPERATOR ^(PAYLOAD)) EMPTY_ANNOT)
 |
 	message CONNECT_KW rolename TO_KW rolename ';'
 	->
-	^(GLOBALCONNECT rolename rolename message)
+	//^(GLOBALCONNECT rolename rolename message)
+	^(GLOBALCONNECT rolename rolename message EMPTY_ANNOT)
 ;
 /*	'(' connectdecl (',' connectdecl)* ')'
 	->

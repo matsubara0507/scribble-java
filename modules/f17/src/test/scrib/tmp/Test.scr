@@ -17,7 +17,7 @@ explicit global protocol Proto1(role A, role B, role C)
 	1(x: Int) from A to B;  @"open=C"
 	connect B to C;
 	2(x) from B to C;
-	connect C to A;         //@"port=p"
+	connect C to A;         @"port=p"
 }
 //*/
 

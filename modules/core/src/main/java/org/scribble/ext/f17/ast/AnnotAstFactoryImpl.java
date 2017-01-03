@@ -10,9 +10,11 @@ import org.scribble.ast.name.PayloadElemNameNode;
 import org.scribble.ast.name.simple.OpNode;
 import org.scribble.ast.name.simple.RecVarNode;
 import org.scribble.ast.name.simple.RoleNode;
+import org.scribble.del.global.GConnectDel;
 import org.scribble.del.global.GMessageTransferDel;
 import org.scribble.del.name.RecVarNodeDel;
 import org.scribble.del.name.RoleNodeDel;
+import org.scribble.ext.f17.ast.global.AnnotGConnect;
 import org.scribble.ext.f17.ast.global.AnnotGMessageTransfer;
 import org.scribble.ext.f17.ast.name.simple.PayloadVarNode;
 import org.scribble.ext.f17.del.AnnotUnaryPayloadElemDel;
@@ -59,6 +61,22 @@ public class AnnotAstFactoryImpl extends AstFactoryImpl implements AnnotAstFacto
 		AnnotGMessageTransfer gmt = new AnnotGMessageTransfer(source, src, msg, dests, annot);
 		gmt = del(gmt, new GMessageTransferDel());
 		return gmt;
+	}
+
+	@Override
+	public AnnotGConnect GConnect(CommonTree source, RoleNode src, MessageNode msg, RoleNode dest)
+	{
+		AnnotGConnect gc = new AnnotGConnect(source, src, msg, dest);  // Maybe unnecessary, super is fine
+		gc = del(gc, new GConnectDel());
+		return gc;
+	}
+
+	@Override
+	public AnnotGConnect GConnect(CommonTree source, RoleNode src, MessageNode msg, RoleNode dest, ScribAnnot annot)
+	{
+		AnnotGConnect gc = new AnnotGConnect(source, src, msg, dest, annot);
+		gc = del(gc, new GConnectDel());
+		return gc;
 	}
 
 	/*@Override
