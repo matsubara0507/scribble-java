@@ -6,6 +6,7 @@ import org.scribble.ast.UnaryPayloadElem;
 import org.scribble.ast.name.PayloadElemNameNode;
 import org.scribble.del.ScribDel;
 import org.scribble.ext.f17.ast.name.simple.PayloadVarNode;
+import org.scribble.ext.f17.sesstype.name.AnnotDataType;
 import org.scribble.main.ScribbleException;
 import org.scribble.sesstype.kind.PayloadTypeKind;
 import org.scribble.sesstype.name.PayloadType;
@@ -90,6 +91,8 @@ public class AnnotUnaryPayloadElem<K extends PayloadTypeKind> extends UnaryPaylo
 	@Override
 	public PayloadType<K> toPayloadType()  // Currently can assume the only possible kind is DataTypeKind
 	{
-		return this.name.toPayloadType();
+		return isAnnotated()
+			? new AnnotDataType<>(this.name.toPayloadType(), this.payvar.toName())
+			: this.name.toPayloadType();
 	}
 }
