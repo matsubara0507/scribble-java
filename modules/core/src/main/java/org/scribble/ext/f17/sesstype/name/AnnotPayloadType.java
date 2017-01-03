@@ -1,5 +1,6 @@
 package org.scribble.ext.f17.sesstype.name;
 
+import org.scribble.ext.f17.ast.ScribAnnot;
 import org.scribble.sesstype.kind.NonRoleArgKind;
 import org.scribble.sesstype.kind.PayloadTypeKind;
 import org.scribble.sesstype.name.PayloadType;
@@ -11,18 +12,20 @@ public class AnnotPayloadType<K extends PayloadTypeKind> implements PayloadType<
 	//private static final long serialVersionUID = 1L;
 	
 	public final PayloadType<K> pay;
-	public final PayloadVar annot;  // Cf. AnnotUnaryPayloadElem
+	public final PayloadVar var;  // Cf. AnnotUnaryPayloadElem
+	public final ScribAnnot annot;
 
-	public AnnotPayloadType(PayloadType<K> pay, PayloadVar annot)
+	public AnnotPayloadType(PayloadType<K> pay, PayloadVar var, ScribAnnot annot)
 	{
 		this.pay = pay;
+		this.var = var;
 		this.annot = annot;
 	}
 	
 	@Override
 	public String toString()
 	{
-		return this.annot + ":" + this.pay;
+		return this.var + ":" + this.pay + ((this.annot != null) ? this.annot.toString() : "");
 	}
 
 	@Override
@@ -38,7 +41,8 @@ public class AnnotPayloadType<K extends PayloadTypeKind> implements PayloadType<
 		}
 
 		AnnotPayloadType<?> them = (AnnotPayloadType<?>) o;
-		return them.canEqual(this) && this.pay.equals(them.pay) && this.annot.equals(them.annot);
+		return them.canEqual(this) && this.pay.equals(them.pay) && this.var.equals(them.var);
+			// FIXME: annot considered part of "typing" -- e.g., in action equality/duality
 	}
 	
 	public boolean canEqual(Object o)
@@ -52,7 +56,7 @@ public class AnnotPayloadType<K extends PayloadTypeKind> implements PayloadType<
 		int hash = 3163;
 		hash = 31 * super.hashCode();
 		hash = 31 * this.pay.hashCode();
-		hash = 31 * this.annot.hashCode();
+		hash = 31 * this.var.hashCode();
 		return hash;
 	}
 

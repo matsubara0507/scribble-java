@@ -16,12 +16,16 @@ public class F17SafetyErrors
 	public final Set<F17SState> reception;
 	public final Set<F17SState> unfinishedRole;
 	public final Set<F17SState> orphan;
-	private enum ERR { Connection, Disconnect, Unconnected, Synchronisation, Reception, UnfinishedRole, Orphan }
+
+	public final Set<F17SState> portOpens;
+
+	private enum ERR { Connection, Disconnect, Unconnected, Synchronisation, Reception, UnfinishedRole, Orphan, PortOpens }
 	
 	private final Map<ERR, Set<F17SState>> errors = new LinkedHashMap<>();
 	
 	public F17SafetyErrors(Set<F17SState> connection, Set<F17SState> disconnect, Set<F17SState> unconnected,
-			Set<F17SState> synchronisation, Set<F17SState> reception, Set<F17SState> unfinishedRole, Set<F17SState> orphan)
+			Set<F17SState> synchronisation, Set<F17SState> reception, Set<F17SState> unfinishedRole, Set<F17SState> orphan,
+			Set<F17SState> portOpens)
 	{
 		this.connection = connection;
 		this.disconnect = disconnect;
@@ -30,6 +34,8 @@ public class F17SafetyErrors
 		this.reception = reception;
 		this.unfinishedRole = unfinishedRole;
 		this.orphan = orphan;
+
+		this.portOpens = portOpens;
 		
 		this.errors.put(ERR.Connection, connection);
 		this.errors.put(ERR.Disconnect, disconnect);
@@ -38,6 +44,8 @@ public class F17SafetyErrors
 		this.errors.put(ERR.Reception, reception);
 		this.errors.put(ERR.UnfinishedRole, unfinishedRole);
 		this.errors.put(ERR.Orphan, orphan);
+
+		this.errors.put(ERR.PortOpens, portOpens);
 	}
 	
 	public boolean isSafe()

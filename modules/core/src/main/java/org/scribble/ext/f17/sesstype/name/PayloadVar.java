@@ -6,7 +6,8 @@ import org.scribble.sesstype.name.PayloadType;
 
 // FIXME: refactor PayloadVarKind as simply DataTypeKind?
 //public class PayloadVar extends AbstractName<PayloadVarKind> //implements PathElement
-public class PayloadVar extends AbstractName<DataTypeKind> implements PayloadType<DataTypeKind> //implements PathElement
+public class PayloadVar extends AbstractName<DataTypeKind>
+		implements PayloadType<DataTypeKind>, AnnotType //implements PathElement
 {
 	private static final long serialVersionUID = 1L;
 

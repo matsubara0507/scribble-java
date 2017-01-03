@@ -20,6 +20,7 @@ import org.scribble.ext.f17.model.global.F17ProgressErrors;
 import org.scribble.ext.f17.model.global.F17SModel;
 import org.scribble.ext.f17.model.global.F17SModelBuilder;
 import org.scribble.ext.f17.model.global.F17SafetyErrors;
+import org.scribble.ext.f17.visit.context.AnnotSetter;
 import org.scribble.main.Job;
 import org.scribble.main.MainContext;
 import org.scribble.main.ScribbleException;
@@ -102,6 +103,7 @@ public class F17Main
 	{
 		job.runContextBuildingPasses();
 		job.runVisitorPassOnParsedModules(RecRemover.class);  // FIXME: Integrate into main passes?  Do before unfolding?
+		job.runVisitorPassOnParsedModules(AnnotSetter.class);  // Hacky -- run after inlining, because original dels discarded
 		
 		Module main = job.getContext().getMainModule();
 		if (!main.hasProtocolDecl(simpname))

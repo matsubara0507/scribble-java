@@ -37,6 +37,15 @@ public class AntlrGMessageTransfer
 		//return AstFactoryImpl.FACTORY.GMessageTransfer(ct, src, msg, dests);
 
 		ScribAnnot annot = isEmptyAnnot(ct) ? null : parseAnnot(getAnnotChild(ct));
+		/*if (annot != null)
+		{
+			MessageSigNode msn = (MessageSigNode) msg;  // FIXME: refactor properly
+			msn.payloads.getElements().stream()
+					.filter((p) -> p instanceof AnnotUnaryPayloadElem<?>)
+					.forEach((p) -> 
+							//((AnnotUnaryPayloadElemDel) p.del()).annot = annot );
+							((AnnotUnaryPayloadElemDel) p.del()).setAnnot(annot) );  // Doesn't work: inlining pass discards dels
+		}*/
 		return AstFactoryImpl.FACTORY.GMessageTransfer(ct, src, msg, dests, annot);
 	}
 

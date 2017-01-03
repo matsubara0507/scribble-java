@@ -9,6 +9,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.scribble.ext.f17.ast.AnnotString;
+import org.scribble.ext.f17.sesstype.name.AnnotPayloadType;
+import org.scribble.ext.f17.sesstype.name.PayloadVar;
 import org.scribble.model.MPrettyState;
 import org.scribble.model.MState;
 import org.scribble.model.endpoint.EState;
@@ -23,6 +26,7 @@ import org.scribble.model.global.actions.SAction;
 import org.scribble.sesstype.Payload;
 import org.scribble.sesstype.kind.Global;
 import org.scribble.sesstype.name.Op;
+import org.scribble.sesstype.name.PayloadType;
 import org.scribble.sesstype.name.Role;
 
 // Not extending SState -- not reusing SConfig, SBuffers, etc
@@ -35,11 +39,24 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 	private Map<Role, EState> P = new HashMap<>();  // Actually, F17EState
 	private Map<Role, Map<Role, ESend>> Q = new HashMap<>();  // null value means connected and empty
 	
+	private Map<Role, Map<Role, PayloadVar>> ports = new HashMap<>();
+	
 	private final Set<Role> subjs = new HashSet<>();  // Hacky: most because EState has no self
 
 	public F17SState(Map<Role, EState> P, boolean explicit)
 	{
-		this(P, makeQ(P.keySet(), explicit ? BOT : null));
+		//this(P, makeQ(P.keySet(), explicit ? BOT : null));
+		this(P, makeQ(P.keySet(), explicit ? BOT : null), makePorts(P.keySet()));
+	}
+
+	//protected F17SState(Map<Role, EState> P, Map<Role, Map<Role, ESend>> Q)
+	protected F17SState(Map<Role, EState> P, Map<Role, Map<Role, ESend>> Q, Map<Role, Map<Role, PayloadVar>> ports)
+	{
+		super(Collections.emptySet());
+		this.P = Collections.unmodifiableMap(P);
+		this.Q = Collections.unmodifiableMap(Q);
+		
+		this.ports = Collections.unmodifiableMap(ports);
 	}
 	
 	public void addSubject(Role subj)
@@ -62,19 +79,49 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 		return this.Q;
 	}
 
-	protected F17SState(Map<Role, EState> P, Map<Role, Map<Role, ESend>> Q)
-	{
-		super(Collections.emptySet());
-		this.P = Collections.unmodifiableMap(P);
-		this.Q = Collections.unmodifiableMap(Q);
-	}
-
 	public boolean isConnectionError()
 	{
 		return this.P.entrySet().stream().anyMatch((e) -> 
 			e.getValue().getActions().stream().anyMatch((a) ->
 				(a.isConnect() || a.isAccept()) && isConnected(e.getKey(), a.peer)
 		));
+	}
+
+	public boolean isPortOpenError()
+	{
+		for (Entry<Role, EState> e :this.P.entrySet())
+		{
+			for (EAction a : e.getValue().getActions())
+			{
+				if (a.isSend())
+				{
+					for (PayloadType<?> pt : a.payload.elems)
+					{
+						if (pt instanceof AnnotPayloadType<?>)
+						{
+							AnnotPayloadType<?> apt = (AnnotPayloadType<?>) pt;
+							String annot = ((AnnotString) apt.annot).val;
+							String key = annot.substring(0, annot.indexOf("="));
+							String val = annot.substring(annot.indexOf("=")+1,annot.length());
+							if (key.equals("open"))
+							{
+								Role portRole = new Role(val);
+								// FIXME: generalise
+								if (isConnected(e.getKey(), portRole) || isPendingConnected(e.getKey(), portRole))
+								{
+									return true;
+								}
+							}
+							else
+							{
+								throw new RuntimeException("[f17] TODO: " + a);
+							}
+						}
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	public boolean isDisconnectedError()
@@ -144,9 +191,39 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 				if (a.isSend())
 				{
 					ESend es = (ESend) a;
-					if (!(this.Q.get(self).get(es.peer) instanceof F17EBot) && this.Q.get(es.peer).get(self) == null)
+					if (isConnected(self, es.peer) && this.Q.get(es.peer).get(self) == null)
 					{
-						res.get(self).add(es);
+
+						boolean ok = true;
+						for (PayloadType<?> pt : a.payload.elems)
+						{
+							if (pt instanceof AnnotPayloadType<?>)
+							{
+								AnnotPayloadType<?> apt = (AnnotPayloadType<?>) pt;
+								String annot = ((AnnotString) apt.annot).val;
+								String key = annot.substring(0, annot.indexOf("="));
+								String val = annot.substring(annot.indexOf("=")+1,annot.length());
+								if (key.equals("open"))
+								{
+									Role portRole = new Role(val);
+									if (isConnected(self, portRole) || isPendingConnected(self, portRole))
+									{
+										ok = false;
+										break;
+									}
+								}
+								else
+								{
+									throw new RuntimeException("[f17] TODO: " + a);
+								}
+							}
+						}
+						// TODO: check linear ownership of port
+						if (ok)
+						{	
+							res.get(self).add(es);
+						}
+
 					}
 				}
 				else if (a.isReceive())
@@ -167,7 +244,42 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 						EState plt = this.P.get(lo.peer);
 						if (plt.getActions().contains(lo.toDual(self)))
 						{
-							res.get(self).add(lo);
+
+							boolean ok = true;
+							for (PayloadType<?> pt : a.payload.elems)
+							{
+								if (pt instanceof AnnotPayloadType<?>)
+								{
+									AnnotPayloadType<?> apt = (AnnotPayloadType<?>) pt;
+									String annot = ((AnnotString) apt.annot).val;
+									String key = annot.substring(0, annot.indexOf("="));
+									String val = annot.substring(annot.indexOf("=")+1,annot.length());
+									if (key.equals("port"))
+									{
+										Role portRole = new Role(val);
+										if (isConnected(self, portRole) || isPendingConnected(self, portRole))
+										{
+											ok = false;
+											break;
+										}
+										if (!val.equals(lo.peer.toString()))
+										{
+											ok = false;
+											break;
+										}
+									}
+									else  // TODO: connect-with-message could also be open-annot
+									{
+										throw new RuntimeException("[f17] TODO: " + a);
+									}
+								}
+							}
+							// TODO: track linear ownership of port
+							if (ok)
+							{	
+								res.get(self).add(lo);
+							}
+
 						}
 					}
 				}
@@ -206,6 +318,7 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 	{
 		Map<Role, EState> P = new HashMap<>(this.P);
 		Map<Role, Map<Role, ESend>> Q = copyQ(this.Q);
+		Map<Role, Map<Role, PayloadVar>> ports = copyPorts(this.ports);
 		EState succ = P.get(self).getSuccessor(a);
 
 		if (a.isSend())
@@ -213,6 +326,28 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 			ESend es = (ESend) a;
 			P.put(self, succ);
 			Q.get(es.peer).put(self, es);
+			
+			for (PayloadType<?> pt : a.payload.elems)
+			{
+				if (pt instanceof AnnotPayloadType<?>)
+				{
+					AnnotPayloadType<?> apt = (AnnotPayloadType<?>) pt;
+					String annot = ((AnnotString) apt.annot).val;
+					String key = annot.substring(0, annot.indexOf("="));
+					String val = annot.substring(annot.indexOf("=")+1,annot.length());
+					if (key.equals("open"))
+					{
+						Role portRole = new Role(val);
+						ports.get(self).put(portRole, apt.var);
+						// TODO: track linear propagation of port
+					}
+					else
+					{
+						throw new RuntimeException("[f17] TODO: " + a);
+					}
+				}
+			}
+
 		}
 		else if (a.isReceive())
 		{
@@ -230,7 +365,7 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 		{
 			throw new RuntimeException("[f17] Shouldn't get in here: " + a);
 		}
-		return new F17SState(P, Q);
+		return new F17SState(P, Q, ports);
 	}
 
 	// "Synchronous version" of fire
@@ -238,6 +373,7 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 	{
 		Map<Role, EState> P = new HashMap<>(this.P);
 		Map<Role, Map<Role, ESend>> Q = copyQ(this.Q);
+		Map<Role, Map<Role, PayloadVar>> ports = copyPorts(this.ports);
 		EState succ1 = P.get(r1).getSuccessor(a1);
 		EState succ2 = P.get(r2).getSuccessor(a2);
 
@@ -248,18 +384,41 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 			P.put(r2, succ2);
 			Q.get(r1).put(r2, null);
 			Q.get(r2).put(r1, null);
+
+			Role cself = a1.isConnect() ? r1 : r2;
+			Role cpeer = a1.isConnect() ? r2 : r1;
+			EConnect ec = (EConnect) (a1.isConnect() ? a1 : a2);
+			for (PayloadType<?> pt : ec.payload.elems)
+			{
+				if (pt instanceof AnnotPayloadType<?>)
+				{
+					AnnotPayloadType<?> apt = (AnnotPayloadType<?>) pt;
+					String annot = ((AnnotString) apt.annot).val;
+					String key = annot.substring(0, annot.indexOf("="));
+					//String val = annot.substring(annot.indexOf("=")+1,annot.length());
+					if (key.equals("port"))
+					{
+						ports.get(cself).put(cpeer, null);
+						// TODO: track linear propagation of port
+					}
+					else
+					{
+						throw new RuntimeException("[f17] TODO: " + ec);
+					}
+				}
+			}
 		}
 		else
 		{
 			throw new RuntimeException("[f17] Shouldn't get in here: " + a1 + ", " + a2);
 		}
-		return new F17SState(P, Q);
+		return new F17SState(P, Q, ports);
 	}
 	
 	@Override
 	protected String getNodeLabel()
 	{
-		String lab = "(" + this.P + ", " + this.Q + ")";
+		String lab = "(" + this.P + ", " + this.Q + ", " + this.ports + ")";
 		//return "label=\"" + this.id + ":" + lab.substring(1, lab.length() - 1) + "\"";
 		return "label=\"" + this.id + ":" + lab + "\"";
 	}
@@ -270,6 +429,7 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 		int hash = 79;
 		hash = 31 * hash + this.P.hashCode();
 		hash = 31 * hash + this.Q.hashCode();
+		hash = 31 * hash + this.ports.hashCode();
 		return hash;
 	}
 
@@ -286,7 +446,8 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 			return false;
 		}
 		F17SState them = (F17SState) o;
-		return them.canEquals(this) && this.P.equals(them.P) && this.Q.equals(them.Q);
+		return them.canEquals(this) && this.P.equals(them.P) && this.Q.equals(them.Q)
+				&& this.ports.equals(them.ports);
 	}
 
 	@Override
@@ -326,11 +487,44 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 		}
 		return copy;
 	}
+
+	private static Map<Role, Map<Role, PayloadVar>> makePorts(Set<Role> rs)
+	{
+		Map<Role, Map<Role, PayloadVar>> res = new HashMap<>();
+		for (Role r : rs)
+		{
+			HashMap<Role, PayloadVar> tmp = new HashMap<>();
+			for (Role rr : rs)
+			{
+				if (!rr.equals(r))
+				{
+					tmp.put(rr, null);
+				}
+			}
+			res.put(r, tmp);
+		}
+		return res;
+	}
+	
+	private static Map<Role, Map<Role, PayloadVar>> copyPorts(Map<Role, Map<Role, PayloadVar>> ports)
+	{
+		Map<Role, Map<Role, PayloadVar>> copy = new HashMap<>();
+		for (Role r : ports.keySet())
+		{
+			copy.put(r, new HashMap<>(ports.get(r)));
+		}
+		return copy;
+	}
 	
 	// Direction sensitive (not symmetric)
 	private boolean isConnected(Role r1, Role r2)
 	{
 		return !(this.Q.get(r1).get(r2) instanceof F17EBot);
+	}
+
+	private boolean isPendingConnected(Role r1, Role r2)
+	{
+		return (this.ports.get(r1).get(r2) != null) || (this.ports.get(r2).get(r1) != null);
 	}
 	
 	private boolean hasMessage(Role self, Role peer)
@@ -350,6 +544,7 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 		return s.isTerminal() || (s.id == init && s.getStateKind() == EStateKind.ACCEPT);
 	}
 }
+
 
 class F17EBot extends ESend
 {

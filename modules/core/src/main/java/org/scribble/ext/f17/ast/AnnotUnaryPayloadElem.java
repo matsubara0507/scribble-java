@@ -6,6 +6,7 @@ import org.scribble.ast.UnaryPayloadElem;
 import org.scribble.ast.name.PayloadElemNameNode;
 import org.scribble.del.ScribDel;
 import org.scribble.ext.f17.ast.name.simple.PayloadVarNode;
+import org.scribble.ext.f17.del.AnnotUnaryPayloadElemDel;
 import org.scribble.ext.f17.sesstype.name.AnnotPayloadType;
 import org.scribble.main.ScribbleException;
 import org.scribble.sesstype.kind.PayloadTypeKind;
@@ -60,7 +61,7 @@ public class AnnotUnaryPayloadElem<K extends PayloadTypeKind> extends UnaryPaylo
 	@Override
 	public AnnotUnaryPayloadElem<K> clone()
 	{
-		PayloadVarNode payvar = isAnnotated() ? this.payvar.clone() : null;
+		PayloadVarNode payvar = isAnnotated() ? this.payvar.clone() : null;  // Discards del (cf. ScribNode.clone)
 		PayloadElemNameNode<K> name = ScribUtil.checkNodeClassEquality(this.name, this.name.clone());  // Returns second arg
 		return AnnotAstFactoryImpl.FACTORY.AnnotUnaryPayloadElem(this.source, payvar, name);
 	}
@@ -92,7 +93,9 @@ public class AnnotUnaryPayloadElem<K extends PayloadTypeKind> extends UnaryPaylo
 	public PayloadType<K> toPayloadType()  // Currently can assume the only possible kind is DataTypeKind
 	{
 		return isAnnotated()
-			? new AnnotPayloadType<>(this.name.toPayloadType(), this.payvar.toName())
+			? new AnnotPayloadType<>(this.name.toPayloadType(), this.payvar.toName(), 
+					//((AnnotUnaryPayloadElemDel) del()).annot)
+					((AnnotUnaryPayloadElemDel) del()).getAnnot())
 			: this.name.toPayloadType();
 	}
 }

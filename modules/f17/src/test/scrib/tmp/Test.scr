@@ -10,14 +10,28 @@ module Test;
 type <java> "java.lang.Integer" from "rt.jar" as Int;
 
 
-//*
+// check payvar annot is matched by open annot, etc.
+// check roles/vars/etc in annots are bound
+// check ports are used linearly?  (or affine?)
+
+
+/*
+global protocol Proto1(role A, role B, role C)
+{
+	1(x:Int) from A to B;  @"open=C"
+	2() from B to C;
+}
+//*/
+
+
+/*
 explicit global protocol Proto1(role A, role B, role C)
 {
 	connect A to B;
 	1(x:Int) from A to B;  @"open=C"
 	connect B to C;
-	2(x) from B to C;
-	connect C to A;         @"port=p"
+	(x) from B to C;
+	connect C to A;         @"port=x"
 }
 //*/
 
