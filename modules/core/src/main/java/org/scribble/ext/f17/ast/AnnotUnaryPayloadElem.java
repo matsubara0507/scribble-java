@@ -18,7 +18,7 @@ import org.scribble.visit.AstVisitor;
 public class AnnotUnaryPayloadElem<K extends PayloadTypeKind> extends UnaryPayloadElem<K> implements AnnotPayloadElem<K>
 {
 	public final PayloadVarNode payvar;  // null for non-annotated  // FIXME: refactor properly
-			// Or just use NonRoleParamNode?
+			// Or just use NonRoleParamNode? -- ties into SubprotocolVisitor, name substitution
 			// Cf. AnnotGMessageTransfer (etc) using ScribAnnot
 	
 	public AnnotUnaryPayloadElem(CommonTree source, PayloadElemNameNode<K> name)

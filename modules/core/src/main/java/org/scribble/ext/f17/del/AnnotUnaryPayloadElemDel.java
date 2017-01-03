@@ -5,7 +5,6 @@ import org.scribble.del.ScribDelBase;
 import org.scribble.ext.f17.ast.AnnotUnaryPayloadElem;
 import org.scribble.ext.f17.sesstype.name.PayloadVar;
 import org.scribble.main.ScribbleException;
-import org.scribble.sesstype.kind.DataTypeKind;
 import org.scribble.visit.wf.NameDisambiguator;
 
 public class AnnotUnaryPayloadElemDel extends ScribDelBase
@@ -16,10 +15,12 @@ public class AnnotUnaryPayloadElemDel extends ScribDelBase
 		// N.B. payload params counted as protodecl params, so cannot shadow those
 		AnnotUnaryPayloadElem<?> pe = (AnnotUnaryPayloadElem<?>) child;
 		PayloadVar pv = pe.payvar.toName();
-		if (disamb.isBoundParameter(pv))
+		//if (disamb.isBoundParameter(pv))
+		if (disamb.isBoundPayloadVar(pv))
 		{
 			throw new ScribbleException("[f17] Duplicate payload var: " + pv);  // FIXME: probably doesn't check across protodecls
 		}
-		disamb.addParameter(pv, DataTypeKind.KIND);
+		//disamb.addParameter(pv, DataTypeKind.KIND);  // Doing this way also raises name subsitution (SubprotocolVisitor)
+		disamb.addPayloadVar(pv);
 	}
 }
