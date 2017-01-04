@@ -18,14 +18,15 @@ public class F17SafetyErrors
 	public final Set<F17SState> orphan;
 
 	public final Set<F17SState> portOpens;
+	public final Set<F17SState> portOwners;
 
-	private enum ERR { Connection, Disconnect, Unconnected, Synchronisation, Reception, UnfinishedRole, Orphan, PortOpens }
+	private enum ERR { Connection, Disconnect, Unconnected, Synchronisation, Reception, UnfinishedRole, Orphan, PortOpens, PortOwners }
 	
 	private final Map<ERR, Set<F17SState>> errors = new LinkedHashMap<>();
 	
 	public F17SafetyErrors(Set<F17SState> connection, Set<F17SState> disconnect, Set<F17SState> unconnected,
 			Set<F17SState> synchronisation, Set<F17SState> reception, Set<F17SState> unfinishedRole, Set<F17SState> orphan,
-			Set<F17SState> portOpens)
+			Set<F17SState> portOpens, Set<F17SState> portOwners)
 	{
 		this.connection = connection;
 		this.disconnect = disconnect;
@@ -36,6 +37,7 @@ public class F17SafetyErrors
 		this.orphan = orphan;
 
 		this.portOpens = portOpens;
+		this.portOwners = portOwners;
 		
 		this.errors.put(ERR.Connection, connection);
 		this.errors.put(ERR.Disconnect, disconnect);
@@ -46,6 +48,7 @@ public class F17SafetyErrors
 		this.errors.put(ERR.Orphan, orphan);
 
 		this.errors.put(ERR.PortOpens, portOpens);
+		this.errors.put(ERR.PortOwners, portOwners);
 	}
 	
 	public boolean isSafe()

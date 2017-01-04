@@ -8,9 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.scribble.ext.f17.ast.AnnotString;
 import org.scribble.ext.f17.sesstype.name.AnnotPayloadType;
+import org.scribble.ext.f17.sesstype.name.AnnotType;
 import org.scribble.ext.f17.sesstype.name.PayloadVar;
 import org.scribble.model.MPrettyState;
 import org.scribble.model.MState;
@@ -36,27 +38,31 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 {
 	private static final F17EBot BOT = new F17EBot();
 	
-	private Map<Role, EState> P = new HashMap<>();  // Actually, F17EState
-	private Map<Role, Map<Role, ESend>> Q = new HashMap<>();  // null value means connected and empty
+	private final Map<Role, EState> P;  // Actually, F17EState
+	private final Map<Role, Map<Role, ESend>> Q;  // null value means connected and empty
 	
-	private Map<Role, Map<Role, PayloadVar>> ports = new HashMap<>();
+	private final Map<Role, Map<Role, PayloadVar>> ports;  // Server -> Client -> port
+	private final Map<Role, Set<PayloadVar>> owned;
 	
 	private final Set<Role> subjs = new HashSet<>();  // Hacky: most because EState has no self
 
 	public F17SState(Map<Role, EState> P, boolean explicit)
 	{
 		//this(P, makeQ(P.keySet(), explicit ? BOT : null));
-		this(P, makeQ(P.keySet(), explicit ? BOT : null), makePorts(P.keySet()));
+		this(P, makeQ(P.keySet(), explicit ? BOT : null),
+				makePorts(P.keySet()), makeOwned(P.keySet()));
 	}
 
 	//protected F17SState(Map<Role, EState> P, Map<Role, Map<Role, ESend>> Q)
-	protected F17SState(Map<Role, EState> P, Map<Role, Map<Role, ESend>> Q, Map<Role, Map<Role, PayloadVar>> ports)
+	protected F17SState(Map<Role, EState> P, Map<Role, Map<Role, ESend>> Q,
+			Map<Role, Map<Role, PayloadVar>> ports, Map<Role, Set<PayloadVar>> owners)
 	{
 		super(Collections.emptySet());
 		this.P = Collections.unmodifiableMap(P);
 		this.Q = Collections.unmodifiableMap(Q);
 		
 		this.ports = Collections.unmodifiableMap(ports);
+		this.owned = Collections.unmodifiableMap(owners);
 	}
 	
 	public void addSubject(Role subj)
@@ -83,22 +89,25 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 	{
 		return this.P.entrySet().stream().anyMatch((e) -> 
 			e.getValue().getActions().stream().anyMatch((a) ->
-				(a.isConnect() || a.isAccept()) && isConnected(e.getKey(), a.peer)
+				(a.isConnect() || a.isAccept()) && isConnected(e.getKey(), a.peer) 
+						// FIXME: check for pending port, if so then port is used -- need to extend an AnnotEConnect type with ScribAnnot (cf. AnnotPayloadType)
 		));
 	}
 
 	public boolean isPortOpenError()
 	{
-		for (Entry<Role, EState> e :this.P.entrySet())
+		for (Entry<Role, EState> e : this.P.entrySet())
 		{
 			for (EAction a : e.getValue().getActions())
 			{
 				if (a.isSend())
 				{
-					for (PayloadType<?> pt : a.payload.elems)
+					for (PayloadType<?> pt : (Iterable<PayloadType<?>>) a.payload.elems.stream()
+							.filter((x) -> x instanceof AnnotType)::iterator)
 					{
 						if (pt instanceof AnnotPayloadType<?>)
 						{
+							// FIXME: factor out annot parsing
 							AnnotPayloadType<?> apt = (AnnotPayloadType<?>) pt;
 							String annot = ((AnnotString) apt.annot).val;
 							String key = annot.substring(0, annot.indexOf("="));
@@ -116,6 +125,41 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 							{
 								throw new RuntimeException("[f17] TODO: " + a);
 							}
+						}
+						else if (pt instanceof PayloadVar) { }
+						else
+						{
+							throw new RuntimeException("[f17] TODO: " + a);
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean isPortOwnershipError()
+	{
+		for (Entry<Role, EState> e : this.P.entrySet())
+		{
+			for (EAction a : e.getValue().getActions())
+			{
+				if (a.isSend())
+				{
+					for (PayloadType<?> pt : (Iterable<PayloadType<?>>) a.payload.elems.stream()
+							.filter((x) -> x instanceof AnnotType)::iterator)
+					{
+						if (pt instanceof AnnotPayloadType<?>) { }
+						else if (pt instanceof PayloadVar)
+						{
+							if (!this.owned.get(e.getKey()).contains((PayloadVar) pt))
+							{
+								return true;
+							}
+						}
+						else
+						{
+							throw new RuntimeException("[f17] TODO: " + a);
 						}
 					}
 				}
@@ -174,8 +218,12 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 
 	public boolean isOrphanError(Map<Role, EState> E0)
 	{
+		/*return this.P.entrySet().stream().anyMatch((e) -> isInactive(e.getValue(), E0.get(e.getKey()).id)
+				&& (this.P.keySet().stream().anyMatch((r) -> hasMessage(e.getKey(), r))));*/
 		return this.P.entrySet().stream().anyMatch((e) -> isInactive(e.getValue(), E0.get(e.getKey()).id)
-				&& this.P.keySet().stream().anyMatch((r) -> hasMessage(e.getKey(), r)));
+				&& (this.P.keySet().stream().anyMatch((r) -> hasMessage(e.getKey(), r))
+						//|| !this.owned.get(e.getKey()).isEmpty()  // FIXME: need AnnotEConnect to consume owned properly
+				));
 	}
 	
 	public Map<Role, List<EAction>> getFireable()
@@ -195,7 +243,8 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 					{
 
 						boolean ok = true;
-						for (PayloadType<?> pt : a.payload.elems)
+						for (PayloadType<?> pt : (Iterable<PayloadType<?>>) a.payload.elems.stream()
+								.filter((x) -> x instanceof AnnotType)::iterator)
 						{
 							if (pt instanceof AnnotPayloadType<?>)
 							{
@@ -217,8 +266,19 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 									throw new RuntimeException("[f17] TODO: " + a);
 								}
 							}
+							else if (pt instanceof PayloadVar)  // Check linear ownership of port
+							{
+								if (!this.owned.get(self).contains(pt))
+								{
+									ok = false;
+									break;
+								}
+							}
+							else
+							{
+								throw new RuntimeException("[f17] TODO: " + pt);
+							}
 						}
-						// TODO: check linear ownership of port
 						if (ok)
 						{	
 							res.get(self).add(es);
@@ -246,7 +306,8 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 						{
 
 							boolean ok = true;
-							for (PayloadType<?> pt : a.payload.elems)
+							for (PayloadType<?> pt : (Iterable<PayloadType<?>>) a.payload.elems.stream()
+									.filter((x) -> x instanceof AnnotType)::iterator)
 							{
 								if (pt instanceof AnnotPayloadType<?>)
 								{
@@ -273,8 +334,19 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 										throw new RuntimeException("[f17] TODO: " + a);
 									}
 								}
+								else if (pt instanceof PayloadVar)  // Check linear ownership of port
+								{
+									if (!this.owned.get(self).contains(pt) || !pt.equals(this.ports.get(lo.peer).get(self)))
+									{
+										ok = false;
+										break;
+									}
+								}
+								else
+								{
+									throw new RuntimeException("[f17] TODO: " + a);
+								}
 							}
-							// TODO: track linear ownership of port
 							if (ok)
 							{	
 								res.get(self).add(lo);
@@ -319,6 +391,7 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 		Map<Role, EState> P = new HashMap<>(this.P);
 		Map<Role, Map<Role, ESend>> Q = copyQ(this.Q);
 		Map<Role, Map<Role, PayloadVar>> ports = copyPorts(this.ports);
+		Map<Role, Set<PayloadVar>> owned = copyOwned(this.owned);
 		EState succ = P.get(self).getSuccessor(a);
 
 		if (a.isSend())
@@ -327,7 +400,8 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 			P.put(self, succ);
 			Q.get(es.peer).put(self, es);
 			
-			for (PayloadType<?> pt : a.payload.elems)
+			for (PayloadType<?> pt : (Iterable<PayloadType<?>>) a.payload.elems.stream()
+					.filter((x) -> x instanceof AnnotType)::iterator)
 			{
 				if (pt instanceof AnnotPayloadType<?>)
 				{
@@ -339,12 +413,22 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 					{
 						Role portRole = new Role(val);
 						ports.get(self).put(portRole, apt.var);
-						// TODO: track linear propagation of port
+						owned.get(es.peer).add(apt.var);
 					}
 					else
 					{
 						throw new RuntimeException("[f17] TODO: " + a);
 					}
+				}
+				else if (pt instanceof PayloadVar)
+				{
+					PayloadVar pv = (PayloadVar) pt;
+					owned.get(self).remove(pv);
+					owned.get(es.peer).add(pv);
+				}
+				else
+				{
+					throw new RuntimeException("[f17] TODO: " + a);
 				}
 			}
 
@@ -365,7 +449,7 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 		{
 			throw new RuntimeException("[f17] Shouldn't get in here: " + a);
 		}
-		return new F17SState(P, Q, ports);
+		return new F17SState(P, Q, ports, owned);
 	}
 
 	// "Synchronous version" of fire
@@ -374,6 +458,7 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 		Map<Role, EState> P = new HashMap<>(this.P);
 		Map<Role, Map<Role, ESend>> Q = copyQ(this.Q);
 		Map<Role, Map<Role, PayloadVar>> ports = copyPorts(this.ports);
+		Map<Role, Set<PayloadVar>> owned = copyOwned(this.owned);
 		EState succ1 = P.get(r1).getSuccessor(a1);
 		EState succ2 = P.get(r2).getSuccessor(a2);
 
@@ -388,23 +473,43 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 			Role cself = a1.isConnect() ? r1 : r2;
 			Role cpeer = a1.isConnect() ? r2 : r1;
 			EConnect ec = (EConnect) (a1.isConnect() ? a1 : a2);
-			for (PayloadType<?> pt : ec.payload.elems)
+			
+			//if (...)  // FIXME: check if port pending, if so then correct port used -- need AnnotEConnect type -- cf., isConnectionError
+			{
+				System.out.println("AAA: " + cself + ", " + cpeer + ", " + ports + ", " + owned);
+				ports.get(cpeer).put(cself, null); // HACK FIXME: incorrect without proper checks
+				//owned.get(cself).clear();  // Hack doesn't work: will clear others' pending ports
+			}
+			
+			for (PayloadType<?> pt : (Iterable<PayloadType<?>>) ec.payload.elems.stream()
+					.filter((x) -> x instanceof AnnotType)::iterator)
 			{
 				if (pt instanceof AnnotPayloadType<?>)
 				{
 					AnnotPayloadType<?> apt = (AnnotPayloadType<?>) pt;
 					String annot = ((AnnotString) apt.annot).val;
 					String key = annot.substring(0, annot.indexOf("="));
-					//String val = annot.substring(annot.indexOf("=")+1,annot.length());
-					if (key.equals("port"))
+					String val = annot.substring(annot.indexOf("=")+1,annot.length());
+					if (key.equals("open"))  // Duplicated from fire/isSend -- opening+passing a port as part of connect
 					{
-						ports.get(cself).put(cpeer, null);
-						// TODO: track linear propagation of port
+						Role portRole = new Role(val);
+						ports.get(cself).put(portRole, apt.var);
+						owned.get(cpeer).add(apt.var);
 					}
 					else
 					{
 						throw new RuntimeException("[f17] TODO: " + ec);
 					}
+				}
+				else if (pt instanceof PayloadVar)
+				{
+					PayloadVar pv = (PayloadVar) pt;
+					owned.get(cself).remove(pv);
+					owned.get(cpeer).add(pv);
+				}
+				else
+				{
+					throw new RuntimeException("[f17] TODO: " + ec);
 				}
 			}
 		}
@@ -412,7 +517,7 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 		{
 			throw new RuntimeException("[f17] Shouldn't get in here: " + a1 + ", " + a2);
 		}
-		return new F17SState(P, Q, ports);
+		return new F17SState(P, Q, ports, owned);
 	}
 	
 	@Override
@@ -488,6 +593,7 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 		return copy;
 	}
 
+	// FIXME: factor with makeQ
 	private static Map<Role, Map<Role, PayloadVar>> makePorts(Set<Role> rs)
 	{
 		Map<Role, Map<Role, PayloadVar>> res = new HashMap<>();
@@ -514,6 +620,16 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 			copy.put(r, new HashMap<>(ports.get(r)));
 		}
 		return copy;
+	}
+
+	private static Map<Role, Set<PayloadVar>> makeOwned(Set<Role> rs)
+	{
+		return rs.stream().collect(Collectors.toMap((r) -> r, (r) -> new HashSet<>()));
+	}
+	
+	private static Map<Role, Set<PayloadVar>> copyOwned(Map<Role, Set<PayloadVar>> owned)
+	{
+		return owned.entrySet().stream().collect(Collectors.toMap((e) -> e.getKey(), (e) -> new HashSet<>(e.getValue())));
 	}
 	
 	// Direction sensitive (not symmetric)

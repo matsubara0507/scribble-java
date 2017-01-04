@@ -10,16 +10,34 @@ module Test;
 type <java> "java.lang.Integer" from "rt.jar" as Int;
 
 
+// FIXME: payload var disamb scopes 
 // check payvar annot is matched by open annot, etc.
 // check roles/vars/etc in annots are bound
 // check ports are used linearly?  (or affine?)
 
 
-/*
-global protocol Proto1(role A, role B, role C)
+//*
+explicit global protocol Proto1(role A, role B, role C)
 {
-	1(x:Int) from A to B;  @"open=C"
-	2() from B to C;
+	connect A to B;
+	1(x:Int) from A to B; @"open=C"
+	connect B to C;
+	2(x) from B to C;
+	connect C to A; //@"port=x"
+}
+//*/
+
+
+/*
+explicit global protocol Proto1(role A, role B, role C, role D)
+{
+	connect A to B;
+	1(x:Int) from A to B; @"open=C"
+	connect B to C;
+	2(x) from B to C;
+	connect C to D;
+	3(x) from C to D;
+	connect D to A; @"port=x"  // FIXME: check correct port usage in connect (also for pending ports)
 }
 //*/
 

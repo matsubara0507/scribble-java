@@ -44,8 +44,9 @@ public class F17SModel
 		Set<F17SState> orphans = this.allStates.values().stream().filter((s) -> s.isOrphanError(this.E0)).collect(Collectors.toSet());
 		
 		Set<F17SState> portOpens = this.allStates.values().stream().filter((s) -> s.isPortOpenError()).collect(Collectors.toSet());
+		Set<F17SState> portOwners = this.allStates.values().stream().filter((s) -> s.isPortOwnershipError()).collect(Collectors.toSet());
 		
-		return new F17SafetyErrors(conns, disconns, unconns, syncs, recepts, unfins, orphans, portOpens);
+		return new F17SafetyErrors(conns, disconns, unconns, syncs, recepts, unfins, orphans, portOpens, portOwners);
 	}
 	
 	public boolean isActive(F17SState s, Role r)
