@@ -16,7 +16,12 @@ type <java> "java.lang.Integer" from "rt.jar" as Int;
 // check ports are used linearly?  (or affine?)
 
 
-//*
+explicit global protocol Proto1(role A, role B)
+{
+	connect A to B;
+}
+
+/*
 explicit global protocol Proto1(role A, role B, role C)
 {
 	connect A to B;

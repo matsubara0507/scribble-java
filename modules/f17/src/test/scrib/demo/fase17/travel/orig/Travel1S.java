@@ -5,10 +5,6 @@ import static demo.fase17.travel.orig.Travel1.Travel.Travel.S;
 import static demo.fase17.travel.orig.Travel1.Travel.Travel.confirm;
 import static demo.fase17.travel.orig.Travel1.Travel.Travel.pay;
 
-import java.io.IOException;
-import java.util.concurrent.ExecutionException;
-
-import org.scribble.main.ScribbleRuntimeException;
 import org.scribble.net.Buf;
 import org.scribble.net.ObjectStreamFormatter;
 import org.scribble.net.scribsock.ScribServerSocket;
@@ -21,7 +17,7 @@ import demo.fase17.travel.orig.Travel1.Travel.roles.S;
 
 public class Travel1S
 {
-	public static void main(String[] args) throws IOException, ScribbleRuntimeException, ExecutionException, InterruptedException
+	public static void main(String[] args) throws Exception
 	{
 		try (ScribServerSocket ss_C = new SocketChannelServer(9999))
 		{

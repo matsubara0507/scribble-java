@@ -1,13 +1,12 @@
 package demo.fase17.travel.port;
 
+import static demo.fase17.travel.port.Travel2.Travel.Travel.A;
 import static demo.fase17.travel.port.Travel2.Travel.Travel.C;
+import static demo.fase17.travel.port.Travel2.Travel.Travel.S;
 import static demo.fase17.travel.port.Travel2.Travel.Travel.confirm;
 import static demo.fase17.travel.port.Travel2.Travel.Travel.pay;
+import static demo.fase17.travel.port.Travel2.Travel.Travel.port;
 
-import java.io.IOException;
-import java.util.concurrent.ExecutionException;
-
-import org.scribble.main.ScribbleRuntimeException;
 import org.scribble.net.Buf;
 import org.scribble.net.ObjectStreamFormatter;
 import org.scribble.net.scribsock.ScribServerSocket;
@@ -18,11 +17,10 @@ import demo.fase17.travel.port.Travel2.Travel.Travel;
 import demo.fase17.travel.port.Travel2.Travel.channels.S.Travel_S_1;
 import demo.fase17.travel.port.Travel2.Travel.channels.S.Travel_S_2;
 import demo.fase17.travel.port.Travel2.Travel.roles.S;
-import static demo.fase17.travel.port.Travel2.Travel.Travel.*;
 
 public class Travel2S
 {
-	public static void main(String[] args) throws IOException, ScribbleRuntimeException, ExecutionException, InterruptedException
+	public static void main(String[] args) throws Exception
 	{
 		try (ScribServerSocket ss_A = new SocketChannelServer(9999))
 		{
