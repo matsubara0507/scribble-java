@@ -57,3 +57,7 @@ modules/core/src/test/scrib/test/test9/
 
 modules/f17/src/test/scrib/demo/fase17/travel/orig/Travel1
 modules/f17/src/test/scrib/demo/fase17/travel/port/Travel2
+modules/f17/src/test/scrib/demo/fase17/abcd1701/travel/exconn/Travel1/
+modules/f17/src/test/scrib/demo/fase17/abcd1701/travel/orig/Travel/
+modules/f17/src/test/scrib/demo/fase17/abcd1701/travel/port/Travel2/
+

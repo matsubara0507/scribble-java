@@ -625,7 +625,7 @@ globalinteraction:
 /**
  * Section 3.7.4 Global Message Transfer
  */
-annotglobalmessagetransfer
+annotglobalmessagetransfer:
 	globalmessagetransfer
 |
 	//globalmessagetransfer '@' EXTIDENTIFIER
@@ -652,7 +652,7 @@ message:
 	parametername*/
 ;	
 
-annotglobalconnect
+annotglobalconnect:
 	globalconnect
 |
 	CONNECT_KW rolename TO_KW rolename ';' '@' EXTIDENTIFIER
