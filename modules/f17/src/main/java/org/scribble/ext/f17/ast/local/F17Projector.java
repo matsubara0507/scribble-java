@@ -34,7 +34,6 @@ public class F17Projector
 
 	}
 
-	// merge is for projection of "delegation payload types"
 	public F17LType project(F17GType gt, Role r, Set<RecVar> delta) throws F17Exception
 	{
 		if (gt instanceof F17GChoice)
@@ -84,15 +83,16 @@ public class F17Projector
 						else
 						{
 
-							/*// Original
+							/*
+							// Original
 							if (!(lt instanceof F17LChoice) || ((F17LChoice) lt).cases.size() > 1)  // FIXME: generalise >1 cases
 							{
 								throw new F17Exception("[f17] Not projectable (non prefix-guarded case) onto " + r + ": " + lt);
 							}
 							Entry<F17LAction, F17LType> tmp = ((F17LChoice) lt).cases.entrySet().iterator().next();
-							aCases.put(tmp.getKey(), tmp.getValue());*/
-							
-							// Extended
+							aCases.put(tmp.getKey(), tmp.getValue());
+							/*/
+							// Extended -- needed for SupplierInfo
 							if (lt instanceof F17LRec)
 							{
 								lt = ((F17LRec) lt).unfold();
@@ -105,14 +105,15 @@ public class F17Projector
 							{
 								aCases.put(tmp.getKey(), tmp.getValue());
 							}
+							//*/
 
 						}
 					}
 				}
 
 				return
-							//orig(gc, r, delta, pCases, rvCases, eCases);
-							extended(gc, r, delta, aCases, rvCases, eCases);
+						//orig(gc, r, delta, aCases, rvCases, eCases);
+						extended(gc, r, delta, aCases, rvCases, eCases);  // Needed for SupplierInfo
 			}
 		}
 		else if (gt instanceof F17GRec)
@@ -145,7 +146,6 @@ public class F17Projector
 	private F17LType extended(F17GChoice gc, Role r, Set<RecVar> delta,
 			Map<F17LAction, F17LType> pCases, Map<F17GAction, RecVar> rvCases, Set<F17GAction> eCases) throws F17Exception
 	{
-		//return null;
 		rvCases = rvCases.entrySet().stream().filter((e) -> !delta.contains(e.getValue()))
 				.collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue()));
 
@@ -174,7 +174,7 @@ public class F17Projector
 			{
 				throw new F17Exception("[f17] Cannot project onto " + r + ": " + gc);  // FIXME: src blame
 			}
-			// Following same ax "orig"
+			// Following same as "orig"
 			F17LAction firsta = pCases.keySet().iterator().next();
 			if (firsta.isOutput())  // Non- mixed-role choice subsumed by role enabling?
 			{
@@ -201,7 +201,7 @@ public class F17Projector
 		}
 	}
 
-	/*
+	//*
 	private F17LType orig(F17GChoice gc, Role r, Set<RecVar> delta,
 			Map<F17LAction, F17LType> pCases, Map<F17GAction, RecVar> rvCases, Set<F17GAction> eCases) throws F17Exception
 	{

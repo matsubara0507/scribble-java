@@ -158,7 +158,7 @@ public class F17Main
 			validate(gpd.isExplicitModifier(), U0, true);
 		}
 		
-		/*// Needed for API gen (base projections and EFSMs) -- no: JobContext getters build on demand -- no: projection not done
+		/*// Needed for API gen (base projections and EFSMs) -- no: JobContext getters built on demand -- no: projection not done
 		job.runUnfoldingPass();
 		job.runWellFormednessPasses();*/
 		job.runF17ProjectionPasses();  // projections not built on demand; cf. models

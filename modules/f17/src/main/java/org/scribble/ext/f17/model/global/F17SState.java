@@ -476,7 +476,6 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 			
 			//if (...)  // FIXME: check if port pending, if so then correct port used -- need AnnotEConnect type -- cf., isConnectionError
 			{
-				System.out.println("AAA: " + cself + ", " + cpeer + ", " + ports + ", " + owned);
 				ports.get(cpeer).put(cself, null); // HACK FIXME: incorrect without proper checks
 				//owned.get(cself).clear();  // Hack doesn't work: will clear others' pending ports
 			}
