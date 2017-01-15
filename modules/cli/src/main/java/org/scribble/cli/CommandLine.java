@@ -100,6 +100,11 @@ public class CommandLine
 
 	public void run() throws ScribbleException, CommandLineException, ScribParserException
 	{
+		if (this.args.containsKey(ArgFlag.PROJECT))
+		{
+			// modules/f17/src/test/scrib/demo/fase17/AppD.scr in [default] mode bug --- projection/EFSM not properly formed when this if is commented ????
+		}
+		
 		try
 		{
 			Job job = newJob(newMainContext());

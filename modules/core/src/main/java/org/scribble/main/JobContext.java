@@ -191,7 +191,11 @@ public class JobContext
 			proj.accept(builder);
 			graph = builder.util.finalise();
 			addEGraph(fulllpn, graph);
+		
+			//System.out.println("AAA: " + fullname + ", " + role + "\n" + proj + "\n" + graph.toDot());
+
 		}
+		
 		return graph;
 	}
 	
