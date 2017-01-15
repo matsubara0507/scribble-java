@@ -12,7 +12,7 @@ type <xsd> "UserContext" from "Filter.xsd" as UserContext;
 type <xsd> "Filters" from "Filter.xsd" as Filters;
 
 
-// FIXME: incorrect wait-for errors detected in [default] mode -- an issue with the JobContext graph getter, somehow works when -fsmdot is used
+// FIXME: incorrect wait-for errors detected in [default] mode -- an issue with the JobContext graph getter, somehow works when -project/fsm is used -- no: see HACK in CommandLine -- no: see HACK in CommandLine.run
 explicit global protocol InfoAuth(
 		role LoginSvc, role Client, role AuthSvc, role Filtersvc, role SupplierSvc, role ContractSvc)
 {
