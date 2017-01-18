@@ -97,27 +97,56 @@ public class F17Main
 				: new MainContext(debug, locator, inline, useOldWF, noLiveness, minEfsm, fair,
 							noLocalChoiceSubjectCheck, noAcceptCorrelationCheck, noValidation, f17);
 	}
+	
+	private static void f17PreContextBuilding(Job job) throws ScribbleException
 
-	// Used from above and from cli.CommandLine
-	public static F17GType parseAndCheckWF(Job job, GProtocolName simpname) throws ScribbleException, ScribParserException
 	{
 		job.runContextBuildingPasses();
 		job.runVisitorPassOnParsedModules(RecRemover.class);  // FIXME: Integrate into main passes?  Do before unfolding?
 		job.runVisitorPassOnParsedModules(AnnotSetter.class);  // Hacky -- run after inlining, because original dels discarded
+	}
+
+	public static void parseAndCheckWF(Job job) throws ScribbleException, ScribParserException
+	{
+		f17PreContextBuilding(job);
+
+		Module main = job.getContext().getMainModule();
+		for (GProtocolDecl gpd : main.getGlobalProtocolDecls())
+		{
+			parseAndCheckWF(job, main, gpd);
+		}
+	}
+
+	// Used from above and from cli.CommandLine
+	public static void parseAndCheckWF(Job job, GProtocolName simpname) throws ScribbleException, ScribParserException
+	{
+		f17PreContextBuilding(job);
 		
 		Module main = job.getContext().getMainModule();
+		
+		/*if (simpname.toString().equals("[F17AllTest]")) // HACK: F17AllTest
+		{
+			simpname = main.getGlobalProtocolDecls().iterator().next().getHeader().getNameNode().toName();
+		}*/
+
 		if (!main.hasProtocolDecl(simpname))
 		{
 			throw new ScribbleException("Global protocol not found: " + simpname);
 		}
 		GProtocolDecl gpd = (GProtocolDecl) main.getProtocolDecl(simpname);
+		
+		parseAndCheckWF(job, main, gpd);
+	}
 
+	// Pre: f17PreContextBuilding
+	private static void parseAndCheckWF(Job job, Module main, GProtocolDecl gpd) throws ScribbleException, ScribParserException
+	{
 		F17GType gt = new F17GProtocolDeclTranslator().translate(job, ((ModuleDel) main.del()).getModuleContext(), gpd);
 		
 		gt.checkRoleEnabling(new HashSet<>(gpd.header.roledecls.getRoles()));
 
-		//job.debugPrintln
-		System.out.println
+		job.debugPrintln
+		//System.out.println
 			("[f17] Translated:\n  " + gt);
 
 		Map<Role, F17LType> P0 = new HashMap<>();
@@ -127,8 +156,8 @@ public class F17Main
 			F17LType lt = p.project(gt, r, Collections.emptySet());
 			P0.put(r, lt);
 
-			//job.debugPrintln
-			System.out.println
+			job.debugPrintln
+			//System.out.println
 				("[f17] Projected onto " + r + ":\n  " + lt);
 		}
 
@@ -139,7 +168,9 @@ public class F17Main
 			EGraph g = builder.build(P0.get(r));
 			E0.put(r, g.init);
 
-			System.out.println("[f17] Built endpoint graph for " + r + ":\n" + g.toDot());
+			job.debugPrintln
+			//System.out.println
+					("[f17] Built endpoint graph for " + r + ":\n" + g.toDot());
 		}
 		
 		validate(gpd.isExplicitModifier(), E0);
@@ -152,7 +183,9 @@ public class F17Main
 				EState u = E0.get(r).unfairTransform();
 				U0.put(r, u);
 
-				System.out.println("[f17] Unfair transform for " + r + ":\n" + u.toDot());
+				job.debugPrintln
+				//System.out.println
+						("[f17] Unfair transform for " + r + ":\n" + u.toDot());
 			}
 			
 			validate(gpd.isExplicitModifier(), U0, true);
@@ -163,21 +196,25 @@ public class F17Main
 		job.runWellFormednessPasses();*/
 		job.runF17ProjectionPasses();  // projections not built on demand; cf. models
 		
-		return gt;
+		//return gt;
 	}
 
 	private static void validate(boolean isExplicit, Map<Role, EState> E0, boolean... unfair) throws F17Exception
 	{
 		F17SModel m = new F17SModelBuilder().build(E0, isExplicit);
 
-		System.out.println("[f17] Built model:\n" + m.toDot());
+		/*job.debugPrintln
+		//System.out.println
+				("[f17] Built model:\n" + m.toDot());*/
 		
 		if (unfair.length == 0)
 		{
 			F17SafetyErrors serrs = m.getSafetyErrors();
 			if (serrs.isSafe())
 			{
-				System.out.println("[f17] Protocol safe.");
+				/*job.debugPrintln
+				//System.out.println
+						("[f17] Protocol safe.");*/
 			}
 			else
 			{
@@ -188,7 +225,9 @@ public class F17Main
 		F17ProgressErrors perrs = m.getProgressErrors();
 		if (perrs.satisfiesProgress())
 		{
-			System.out.println("[f17] " + ((unfair.length == 0) ? "Fair protocol" : "Protocol") + " satisfies progress.");
+			/*job.debugPrintln
+			//System.out.println
+					("[f17] " + ((unfair.length == 0) ? "Fair protocol" : "Protocol") + " satisfies progress.");*/
 		}
 		else
 		{

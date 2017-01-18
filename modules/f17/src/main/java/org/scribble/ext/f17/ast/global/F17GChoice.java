@@ -62,7 +62,8 @@ public class F17GChoice extends F17Choice<F17GAction, F17GType> implements F17GT
 					if (!subj.equals(r))
 					{
 						throw new F17Exception("[f17] Inconsistent global choice subjects: " + this.cases.keySet());
-								// FIXME: subsumed by projection choice subject check?
+								// Note: does not subsume projection choice subject check -- role enabling checks only "top-most" subj of global-choice (i.e., at-role) -- projection subj check needed for "merged" roles for local-choice subj; e.g., to exclude A->B;A->C + A->B;B->C (wrt. projecting C)
+								// CHECKME: but subsumed *by* projection choice subject check?
 								// FIXME: Scribble at-annotation lost (not checked) -- make "at" optional (for f17)?
 					}
 				}

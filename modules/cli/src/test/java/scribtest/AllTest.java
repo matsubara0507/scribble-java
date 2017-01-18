@@ -32,9 +32,9 @@ public class AllTest
 	protected final boolean isBadTest;
 
 	// relative to cli/src/test/resources (or target/test-classes/)
-	protected static final String ALL_ROOT = ".";
-	protected static final String GOOD_ROOT = "good";
-	protected static final String BAD_ROOT = "bad";
+	public static final String ALL_ROOT = ".";
+	public static final String GOOD_ROOT = "good";
+	public static final String BAD_ROOT = "bad";
 
 	public AllTest(String example, boolean isBadTest)
 	{

@@ -116,7 +116,14 @@ public class CommandLine
 				if (this.args.containsKey(ArgFlag.F17))
 				{
 					GProtocolName simpname = new GProtocolName(this.args.get(ArgFlag.F17)[0]);
-					F17Main.parseAndCheckWF(job, simpname);  // Includes base passes
+					if (simpname.toString().equals("[F17AllTest]"))  // HACK: F17AllTest
+					{
+						F17Main.parseAndCheckWF(job);  // Includes base passes
+					}
+					else
+					{
+						F17Main.parseAndCheckWF(job, simpname);  // Includes base passes
+					}
 				}
 
 				// Base Scribble

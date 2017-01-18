@@ -21,10 +21,12 @@ import org.scribble.ext.f17.ast.global.action.F17GMessageTransfer;
 import org.scribble.ext.f17.ast.local.action.F17LAction;
 import org.scribble.ext.f17.ast.local.action.F17LInput;
 import org.scribble.ext.f17.main.F17Exception;
+import org.scribble.ext.f17.main.F17SyntaxException;
 import org.scribble.sesstype.name.RecVar;
 import org.scribble.sesstype.name.Role;
 
 
+// FIXME: factor out "original"/"extended" modes to CL interface
 public class F17Projector
 {
 	private final F17AstFactory factory = F17AstFactory.FACTORY;
@@ -83,16 +85,16 @@ public class F17Projector
 						else
 						{
 
-							/*
+							//*
 							// Original
-							if (!(lt instanceof F17LChoice) || ((F17LChoice) lt).cases.size() > 1)  // FIXME: generalise >1 cases
+							if (!(lt instanceof F17LChoice) || ((F17LChoice) lt).cases.size() > 1)
 							{
-								throw new F17Exception("[f17] Not projectable (non prefix-guarded case) onto " + r + ": " + lt);
+								throw new F17SyntaxException("[f17] Not projectable (non prefix-guarded case) onto " + r + ": " + lt);
 							}
 							Entry<F17LAction, F17LType> tmp = ((F17LChoice) lt).cases.entrySet().iterator().next();
 							aCases.put(tmp.getKey(), tmp.getValue());
 							/*/
-							// Extended -- needed for SupplierInfo
+							// Extended -- needed for AppD
 							if (lt instanceof F17LRec)
 							{
 								lt = ((F17LRec) lt).unfold();
@@ -112,8 +114,11 @@ public class F17Projector
 				}
 
 				return
-						//orig(gc, r, delta, aCases, rvCases, eCases);
-						extended(gc, r, delta, aCases, rvCases, eCases);  // Needed for SupplierInfo
+						//*
+						orig(gc, r, delta, aCases, rvCases, eCases);
+						/*/
+						extended(gc, r, delta, aCases, rvCases, eCases);  // Doesn't seem needed for AppD though
+						//*/
 			}
 		}
 		else if (gt instanceof F17GRec)
@@ -122,7 +127,7 @@ public class F17Projector
 			Set<RecVar> delta1 = new HashSet<>(delta);
 			delta1.add(gr.recvar);
 			F17LType lt = project(gr.body, r, delta1);
-			if (lt instanceof F17LRecVar || lt instanceof F17LEnd)  //** end case
+			if (lt instanceof F17LRecVar || lt instanceof F17LEnd)  //** end case (cf. orig)
 			{
 				return this.factory.LEnd();
 			}
@@ -219,7 +224,7 @@ public class F17Projector
 			{
 				if (!delta.contains(rv))
 				{
-					throw new F17Exception("[f17] Not projectable (unguarded rec case) onto " + r + ": " + rv);
+					throw new F17SyntaxException("[f17] Not projectable (unguarded rec case) onto " + r + ": " + rv);
 				}
 			}
 			F17LAction firsta = pCases.keySet().iterator().next();

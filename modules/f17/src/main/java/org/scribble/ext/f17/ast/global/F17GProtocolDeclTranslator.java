@@ -25,6 +25,7 @@ import org.scribble.ext.f17.ast.global.action.F17GConnect;
 import org.scribble.ext.f17.ast.global.action.F17GDisconnect;
 import org.scribble.ext.f17.ast.global.action.F17GMessageTransfer;
 import org.scribble.ext.f17.main.F17Exception;
+import org.scribble.ext.f17.main.F17SyntaxException;
 import org.scribble.main.Job;
 import org.scribble.main.JobContext;
 import org.scribble.main.ScribbleException;
@@ -100,11 +101,11 @@ public class F17GProtocolDeclTranslator
 		{
 			if (checkChoiceGuard)
 			{
-				throw new F17Exception(first.getSource(), "[f17] Unguarded in choice case: " + first);
+				throw new F17SyntaxException(first.getSource(), "[f17] Unguarded in choice case: " + first);
 			}
 			if (is.size() > 1)
 			{
-				throw new F17Exception(is.get(1).getSource(), "[f17] Bad sequential composition after: " + first);
+				throw new F17SyntaxException(is.get(1).getSource(), "[f17] Bad sequential composition after: " + first);
 			}
 
 			if (first instanceof GChoice)
@@ -143,7 +144,7 @@ public class F17GProtocolDeclTranslator
 			{
 				if (checkRecGuard)
 				{
-					throw new F17Exception(first.getSource(), "[f17] Unguarded in recursion: " + first);  // FIXME: conservative, e.g., rec X . A -> B . rec Y . X
+					throw new F17SyntaxException(first.getSource(), "[f17] Unguarded in recursion: " + first);  // FIXME: conservative, e.g., rec X . A -> B . rec Y . X
 				}
 
 				return this.factory.GRecVar(((GContinue) first).recvar.toName());
@@ -165,7 +166,7 @@ public class F17GProtocolDeclTranslator
 		Role dest = gmt.getDestinations().get(0).toName();
 		if (!gmt.msg.isMessageSigNode())
 		{
-			throw new F17Exception(gmt.msg.getSource(), " [f17] Not supported: " + gmt.msg);  // TODO: MessageSigName
+			throw new F17SyntaxException(gmt.msg.getSource(), " [f17] Not supported: " + gmt.msg);  // TODO: MessageSigName
 		}
 		MessageSigNode msn = ((MessageSigNode) gmt.msg);
 		Op op = msn.op.toName();
@@ -197,7 +198,7 @@ public class F17GProtocolDeclTranslator
 		Role dest = gc.dest.toName();
 		if (!gc.msg.isMessageSigNode())
 		{
-			throw new F17Exception(gc.msg.getSource(), " [f17] Message kind not supported: " + gc.msg);
+			throw new F17SyntaxException(gc.msg.getSource(), " [f17] Message kind not supported: " + gc.msg);
 		}
 		MessageSigNode msn = ((MessageSigNode) gc.msg);
 		Op op = msn.op.toName();
