@@ -30,6 +30,9 @@ import org.scribble.sesstype.name.Role;
 // FIXME: factor out "original"/"extended" modes to CL interface
 public class F17Projector
 {
+	private static final boolean EXTENDED = false;
+	//private static final boolean EXTENDED = true;
+	
 	private final F17AstFactory factory = F17AstFactory.FACTORY;
 
 	public F17Projector()
@@ -95,49 +98,49 @@ public class F17Projector
 						else
 						{
 
-							//*
-							// Original
-							if (!(lt instanceof F17LChoice) || ((F17LChoice) lt).cases.size() > 1)
+							if (!EXTENDED)
 							{
-								throw new F17SyntaxException("[f17] Not projectable (non prefix-guarded case) onto " + r + ": " + lt);
-							}
-							Entry<F17LAction, F17LType> tmp = ((F17LChoice) lt).cases.entrySet().iterator().next();
-							//if (gCases.containsKey(tmp.getKey()))
-							if (tmp.getKey().isMessageAction())  // FIXME: factor out with above
-							{
-								if (gCases.keySet().stream().anyMatch((x) ->
-										x.isMessageAction() && ((F17MessageAction) tmp.getKey()).getOp().equals(((F17MessageAction) x).getOp())))
+								// Original
+								if (!(lt instanceof F17LChoice) || ((F17LChoice) lt).cases.size() > 1)
 								{
-									throw new F17SyntaxException("[f17] Non-determinism (" + r + ") not supported: " + gt);
+									throw new F17SyntaxException("[f17] Not projectable (non prefix-guarded case) onto " + r + ": " + lt);
+								}
+								Entry<F17LAction, F17LType> tmp = ((F17LChoice) lt).cases.entrySet().iterator().next();
+								//if (gCases.containsKey(tmp.getKey()))
+								if (tmp.getKey().isMessageAction())  // FIXME: factor out with above
+								{
+									if (gCases.keySet().stream().anyMatch((x) ->
+											x.isMessageAction() && ((F17MessageAction) tmp.getKey()).getOp().equals(((F17MessageAction) x).getOp())))
+									{
+										throw new F17SyntaxException("[f17] Non-determinism (" + r + ") not supported: " + gt);
+									}
+								}
+								gCases.put(tmp.getKey(), tmp.getValue());
+							}
+							else
+							{
+								// Extended -- needed for AppD
+								if (lt instanceof F17LRec)
+								{
+									lt = ((F17LRec) lt).unfold();
+								}
+								if (!(lt instanceof F17LChoice))
+								{
+									throw new F17Exception("[f17] Not projectable (non prefix-guarded case) onto " + r + ": " + lt);  // Shouldn't get in here?
+								}
+								for (Entry<F17LAction, F17LType> tmp : ((F17LChoice) lt).cases.entrySet())  // Nested choice flattening
+								{
+									gCases.put(tmp.getKey(), tmp.getValue());
 								}
 							}
-							gCases.put(tmp.getKey(), tmp.getValue());
-							/*/
-							// Extended -- needed for AppD
-							if (lt instanceof F17LRec)
-							{
-								lt = ((F17LRec) lt).unfold();
-							}
-							if (!(lt instanceof F17LChoice))
-							{
-								throw new F17Exception("[f17] Not projectable (non prefix-guarded case) onto " + r + ": " + lt);  // Shouldn't get in here?
-							}
-							for (Entry<F17LAction, F17LType> tmp : ((F17LChoice) lt).cases.entrySet())  // Nested choice flattening
-							{
-								aCases.put(tmp.getKey(), tmp.getValue());
-							}
-							//*/
 
 						}
 					}
 				}
 
-				return
-						//*
-						orig(gc, r, delta, gCases, rvCases, eCases);
-						/*/
-						extended(gc, r, delta, aCases, rvCases, eCases);  // Doesn't seem needed for AppD though
-						//*/
+				return (!EXTENDED)
+						? orig(gc, r, delta, gCases, rvCases, eCases)
+						: extended(gc, r, delta, gCases, rvCases, eCases);  // Doesn't seem needed for AppD though
 			}
 		}
 		else if (gt instanceof F17GRec)
