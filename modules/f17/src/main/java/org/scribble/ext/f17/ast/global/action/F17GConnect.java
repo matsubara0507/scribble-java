@@ -4,12 +4,13 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.scribble.ext.f17.ast.F17MessageAction;
 import org.scribble.sesstype.Payload;
 import org.scribble.sesstype.name.Op;
 import org.scribble.sesstype.name.Role;
 
 
-public class F17GConnect extends F17GAction
+public class F17GConnect extends F17GAction implements F17MessageAction
 {
 	public final Role dest;
 	public final Op op;
@@ -25,6 +26,12 @@ public class F17GConnect extends F17GAction
 		this.pay = pay;
 		this.roles.add(src);
 		this.roles.add(dest);
+	}
+
+	@Override
+	public boolean isMessageAction()
+	{
+		return true;
 	}
 	
 	@Override
@@ -70,5 +77,17 @@ public class F17GConnect extends F17GAction
 	protected boolean canEquals(Object o)
 	{
 		return o instanceof F17GConnect;
+	}
+
+	@Override
+	public Op getOp()
+	{
+		return this.op;
+	}
+
+	@Override
+	public Payload getPayload()
+	{
+		return this.pay;
 	}
 }

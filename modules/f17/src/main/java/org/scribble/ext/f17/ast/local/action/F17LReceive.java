@@ -1,11 +1,12 @@
 package org.scribble.ext.f17.ast.local.action;
 
 import org.scribble.ext.f17.ast.F17AstFactory;
+import org.scribble.ext.f17.ast.F17MessageAction;
 import org.scribble.sesstype.Payload;
 import org.scribble.sesstype.name.Op;
 import org.scribble.sesstype.name.Role;
 
-public class F17LReceive extends F17LInput
+public class F17LReceive extends F17LInput implements F17MessageAction
 {
 	public final Op op;
 	public final Payload pay;
@@ -15,6 +16,12 @@ public class F17LReceive extends F17LInput
 		super(self, peer);
 		this.op = op;
 		this.pay = pay;
+	}
+	
+	@Override
+	public boolean isMessageAction()
+	{
+		return true;
 	}
 	
 	@Override
@@ -59,5 +66,17 @@ public class F17LReceive extends F17LInput
 	protected boolean canEquals(Object o)
 	{
 		return o instanceof F17LReceive;
+	}
+
+	@Override
+	public Op getOp()
+	{
+		return this.op;
+	}
+
+	@Override
+	public Payload getPayload()
+	{
+		return this.pay;
 	}
 }

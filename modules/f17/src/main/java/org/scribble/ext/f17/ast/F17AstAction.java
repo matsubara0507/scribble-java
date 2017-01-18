@@ -19,6 +19,11 @@ public abstract class F17AstAction
 		this.objs = Collections.unmodifiableSet(new HashSet<>(objs));
 	}
 	
+	public boolean isMessageAction()
+	{
+		return false;
+	}
+	
 	/*public Set<Role> getSubjects()
 	{
 		return this.subjs;

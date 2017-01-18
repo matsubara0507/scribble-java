@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.scribble.ast.MessageSigNode;
 import org.scribble.ast.context.ModuleContext;
@@ -20,6 +21,7 @@ import org.scribble.ast.global.GRecursion;
 import org.scribble.ast.global.GSimpleInteractionNode;
 import org.scribble.del.global.GProtocolDefDel;
 import org.scribble.ext.f17.ast.F17AstFactory;
+import org.scribble.ext.f17.ast.F17MessageAction;
 import org.scribble.ext.f17.ast.global.action.F17GAction;
 import org.scribble.ext.f17.ast.global.action.F17GConnect;
 import org.scribble.ext.f17.ast.global.action.F17GDisconnect;
@@ -129,7 +131,20 @@ public class F17GProtocolDeclTranslator
 						throw new RuntimeException("[f17] Shouldn't get in here: " + p);
 					}
 					F17GChoice tmp = (F17GChoice) p;
-					tmp.cases.entrySet().forEach((e) -> cases.put(e.getKey(), e.getValue()));
+					//tmp.cases.entrySet().forEach((e) -> cases.put(e.getKey(), e.getValue()));
+					for (Entry<F17GAction, F17GType> e : tmp.cases.entrySet())
+					{
+						F17GAction k = e.getKey();
+						if (k.isMessageAction())
+						{
+							if (cases.keySet().stream().anyMatch((x) ->
+									x.isMessageAction() && ((F17MessageAction) k).getOp().equals(((F17MessageAction) x).getOp())))
+							{
+								throw new F17SyntaxException("[f17] Non-determinism (" + e.getKey() + ") not supported: " + gc);
+							}
+						}
+						cases.put(k, e.getValue());
+					}
 				}
 				return this.factory.GChoice(cases);
 			}

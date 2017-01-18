@@ -173,7 +173,7 @@ public class F17Main
 					("[f17] Built endpoint graph for " + r + ":\n" + g.toDot());
 		}
 		
-		validate(gpd.isExplicitModifier(), E0);
+		validate(job, gpd.isExplicitModifier(), E0);
 
 		if (!job.fair)
 		{
@@ -188,7 +188,7 @@ public class F17Main
 						("[f17] Unfair transform for " + r + ":\n" + u.toDot());
 			}
 			
-			validate(gpd.isExplicitModifier(), U0, true);
+			validate(job, gpd.isExplicitModifier(), U0, true);
 		}
 		
 		/*// Needed for API gen (base projections and EFSMs) -- no: JobContext getters built on demand -- no: projection not done
@@ -199,22 +199,22 @@ public class F17Main
 		//return gt;
 	}
 
-	private static void validate(boolean isExplicit, Map<Role, EState> E0, boolean... unfair) throws F17Exception
+	private static void validate(Job job, boolean isExplicit, Map<Role, EState> E0, boolean... unfair) throws F17Exception
 	{
 		F17SModel m = new F17SModelBuilder().build(E0, isExplicit);
 
-		/*job.debugPrintln
+		job.debugPrintln
 		//System.out.println
-				("[f17] Built model:\n" + m.toDot());*/
+				("[f17] Built model:\n" + m.toDot());
 		
 		if (unfair.length == 0)
 		{
 			F17SafetyErrors serrs = m.getSafetyErrors();
 			if (serrs.isSafe())
 			{
-				/*job.debugPrintln
+				job.debugPrintln
 				//System.out.println
-						("[f17] Protocol safe.");*/
+						("[f17] Protocol safe.");
 			}
 			else
 			{
@@ -225,9 +225,9 @@ public class F17Main
 		F17ProgressErrors perrs = m.getProgressErrors();
 		if (perrs.satisfiesProgress())
 		{
-			/*job.debugPrintln
+			job.debugPrintln
 			//System.out.println
-					("[f17] " + ((unfair.length == 0) ? "Fair protocol" : "Protocol") + " satisfies progress.");*/
+					("[f17] " + ((unfair.length == 0) ? "Fair protocol" : "Protocol") + " satisfies progress.");
 		}
 		else
 		{
