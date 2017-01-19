@@ -58,7 +58,7 @@ explicit global protocol Discon(role A, role B, role C)
 		{
 			1() from A to B;
 			2() connect B to C;
-			disconnect B and C;
+			disconnect B and C;  // Necessary
 			continue X;
 		}
 		or

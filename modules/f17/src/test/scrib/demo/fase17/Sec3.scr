@@ -1,6 +1,37 @@
 module demo.fase17.Sec3;
 
-global protocol NonDet(role A, role B, role C)
+
+explicit global protocol Travel(role C, role A, role S)
+{
+	connect C to A;
+	rec TravelAgency
+	{
+		choice at C
+		{
+			query() from C to A;
+			quote() from A to C;
+			continue TravelAgency;
+		}
+		or
+		{
+			pay() connect C to S;
+			confirm() from S to C;
+			accpt() from C to A;
+		}
+		or
+		{
+			reject() from C to A;
+		}
+	}
+}
+
+
+
+
+
+
+
+/*global protocol NonDet(role A, role B, role C)
 {
 	choice at A
 	{
@@ -50,4 +81,4 @@ explicit global protocol Explicit(role A, role B, role C)
 		l1() connect A to B;
 		l1() connect A to C;
 	}
-}
+}*/
