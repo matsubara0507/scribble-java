@@ -44,7 +44,7 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 	private final Map<Role, Map<Role, PayloadVar>> ports;  // Server -> Client -> port
 	private final Map<Role, Set<PayloadVar>> owned;
 	
-	private final Set<Role> subjs = new HashSet<>();  // Hacky: most because EState has no self
+	private final Set<Role> subjs = new HashSet<>();  // Hacky: mostly because EState has no self
 
 	public F17SState(Map<Role, EState> P, boolean explicit)
 	{
@@ -206,7 +206,7 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 						return hasMessage(e1.getKey(), e2.getKey())
 								&& ((s = this.P.get(e1.getKey())).getStateKind() == EStateKind.UNARY_INPUT
 										|| s.getStateKind() == EStateKind.POLY_INPUT)
-								&& (s.getActions().iterator().next().peer.equals(e2.getKey()))  // E.g. A->>B.B->>C.A->>C
+								&& (s.getActions().iterator().next().peer.equals(e2.getKey()))  // E.g. A->B.B->C.A->C
 								&& !s.getActions().contains(e2.getValue().toDual(e2.getKey()));
 					}
 				));

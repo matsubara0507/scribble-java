@@ -91,7 +91,7 @@ public class F17SModel
 						F17SState s1 = this.allStates.get(ts.iterator().next());
 						ESend es = s1.getQ().get(r1).get(r2);
 
-						if (es != null && !(es instanceof F17EBot)
+						if (es != null && !(es instanceof F17EBot)  // FIXME: hasMessage?
 								&& ts.stream().allMatch((i) -> es.equals(this.allStates.get(i).getQ().get(r1).get(r2))))
 						{
 							Set<Set<F17SState>> set = eventualReception.get(es);
