@@ -191,6 +191,7 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 				{
 					EState peer;
 					return a.isConnect() && (peer = this.P.get(a.peer)).getStateKind() == EStateKind.ACCEPT
+							&& (peer.getActions().iterator().next().peer.equals(e.getKey()))  // E.g. A->>B.B->>C.A->>C
 							&& !(peer.getActions().contains(a.toDual(e.getKey())));
 				}
 		));
@@ -198,13 +199,14 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 
 	public boolean isReceptionError()
 	{
-		return this.Q.entrySet().stream().anyMatch((e1)
-				-> e1.getValue().entrySet().stream().anyMatch((e2) ->
+		return this.Q.entrySet().stream().anyMatch((e1) ->
+				e1.getValue().entrySet().stream().anyMatch((e2) ->
 					{
 						EState s;
 						return hasMessage(e1.getKey(), e2.getKey())
 								&& ((s = this.P.get(e1.getKey())).getStateKind() == EStateKind.UNARY_INPUT
 										|| s.getStateKind() == EStateKind.POLY_INPUT)
+								&& (s.getActions().iterator().next().peer.equals(e2.getKey()))  // E.g. A->>B.B->>C.A->>C
 								&& !s.getActions().contains(e2.getValue().toDual(e2.getKey()));
 					}
 				));
@@ -298,7 +300,7 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 				else if (a.isConnect())
 				{
 					EConnect lo = (EConnect) a;
-					if (this.Q.get(self).get(lo.peer) instanceof F17EBot
+					if (this.Q.get(self).get(lo.peer) instanceof F17EBot      // FIXME: !isConnected
 							&& this.Q.get(lo.peer).get(self) instanceof F17EBot)
 					{
 						EState plt = this.P.get(lo.peer);
@@ -358,7 +360,7 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 				else if (a.isAccept())
 				{
 					EAccept la = (EAccept) a;
-					if (this.Q.get(self).get(la.peer) instanceof F17EBot
+					if (this.Q.get(self).get(la.peer) instanceof F17EBot      // FIXME: !isConnected
 							&& this.Q.get(la.peer).get(self) instanceof F17EBot)
 					{
 						EState plt = this.P.get(la.peer);
@@ -371,7 +373,7 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 				else if (a.isDisconnect())
 				{
 					EDisconnect ld = (EDisconnect) a;
-					if (!(this.Q.get(self).get(ld.peer) instanceof F17EBot)
+					if (!(this.Q.get(self).get(ld.peer) instanceof F17EBot)  // FIXME: isConnected
 							&& this.Q.get(self).get(ld.peer) == null)
 					{
 						res.get(self).add(ld);
@@ -632,7 +634,7 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 	}
 	
 	// Direction sensitive (not symmetric)
-	private boolean isConnected(Role r1, Role r2)
+	private boolean isConnected(Role r1, Role r2)  // N.B. is more like the "input buffer" at r1 for r2 -- not the actual "connection from r1 to r2"
 	{
 		return !(this.Q.get(r1).get(r2) instanceof F17EBot);
 	}

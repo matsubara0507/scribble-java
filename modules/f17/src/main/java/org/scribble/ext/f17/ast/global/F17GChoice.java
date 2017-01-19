@@ -68,7 +68,7 @@ public class F17GChoice extends F17Choice<F17GAction, F17GType> implements F17GT
 					}
 				}
 				Set<Role> tmp = new HashSet<>();
-				tmp.add(subj);  // FIXME: remove sub(pi) from orig def
+				tmp.add(subj);  // FIXME: remove subj(pi) from orig def -- because projection subject check subsumes this check?
 				tmp.addAll(e.getKey().objs);
 				e.getValue().checkRoleEnabling(tmp);
 			}

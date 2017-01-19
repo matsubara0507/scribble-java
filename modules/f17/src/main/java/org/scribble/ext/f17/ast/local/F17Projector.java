@@ -51,9 +51,9 @@ public class F17Projector
 				F17GAction ga = e.getKey();
 				if (ga.getRoles().contains(r))
 				{
-					Map<F17LAction, F17LType> pcases = new HashMap<>();
-					pcases.put(project(ga, r), project(e.getValue(), r, Collections.emptySet()));
-					return this.factory.LChoice(pcases);
+					Map<F17LAction, F17LType> gcases = new HashMap<>();
+					gcases.put(project(ga, r), project(e.getValue(), r, Collections.emptySet()));
+					return this.factory.LChoice(gcases);
 				}
 				else
 				{
@@ -62,7 +62,7 @@ public class F17Projector
 			}
 			else // gc.cases.size() > 1
 			{
-				Map<F17LAction, F17LType> gCases = new HashMap<>();  // Guarded cases
+				Map<F17LAction, F17LType> gCases = new HashMap<>();  // Guarded cases (J)
 				Map<F17GAction, RecVar> rvCases = new HashMap<>();   // Unguarded rec vars
 				Set<F17GAction> eCases = new HashSet<>();            // Unguraded end cases
 				for (Entry<F17GAction, F17GType> e : gc.cases.entrySet())

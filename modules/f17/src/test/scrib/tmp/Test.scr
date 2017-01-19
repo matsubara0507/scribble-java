@@ -16,11 +16,30 @@ type <java> "java.lang.Integer" from "rt.jar" as Int;
 // check ports are used linearly?  (or affine?)
 
 
+global protocol Proto1(role A, role B, role C)
+{
+	1() from A to B;
+	2() from B to C;  // Testing: reception errors (C in receive-state for B, while A is sending to C) -- FIXME: add this pattern to unit tests
+	3() from A to C;
+}
+
+
+/*
+explicit global protocol Proto1(role A, role B, role C)
+{
+	connect A to B;
+	connect B to C;
+	connect A to C;  // Testing: synchronisation error (C in accept-state for B, while A is connecting to C)
+}
+//*/
+
+
+/*
 global protocol Proto1(role A, role B, role C, role D)
 {
 	rec X
 	{
-		1() from C to D;  // Enabled violation once unfolded
+		1() from C to D;  // Enabled violation once unfolded -- global choice subjs not checked by f17
 		choice at A
 		{
 			1() from A to B;
@@ -28,6 +47,8 @@ global protocol Proto1(role A, role B, role C, role D)
 		}
 	}
 }
+*/
+
 
 /*
 explicit global protocol Proto1(role A, role B, role C)
