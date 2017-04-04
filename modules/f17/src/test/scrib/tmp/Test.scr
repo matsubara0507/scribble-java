@@ -16,12 +16,83 @@ type <java> "java.lang.Integer" from "rt.jar" as Int;
 // check ports are used linearly?  (or affine?)
 
 
+/*
+explicit global protocol Proto1(role A, role B, role C)
+{
+	connect A to B;
+	connect A to C;
+	choice at A
+	{
+		1() from A to B;
+		1() from A to C;
+	}
+	or
+	{
+		2() from A to B;
+		connect A to C;
+		2() from B to A;
+		2() from B to A;
+		2() from A to C;
+	}
+}
+//*/
+
+
+//*
+explicit global protocol Proto1(role A, role B, role C)
+{
+	connect A to B;
+	choice at A
+	{
+		1() from A to B;
+		3() connect A to C;
+		1() from A to C;
+	}
+	or
+	{
+		2() from A to B;
+		4() connect A to C;
+		4() connect A to C;
+		2() from B to A;
+		2() from B to A;
+		2() from A to C;
+	}
+}
+//*/
+
+
+/*
+explicit global protocol Proto1(role A, role B, role C)
+{
+	connect A to B;
+	rec X
+	{
+		connect B to C;
+		choice at B
+		{
+			1() from B to C;
+			disconnect B and C;
+			continue X;
+		}
+		or
+		{
+			2() from B to C;
+		}
+	}
+	3() from C to B;  // Testing unconnected errors -- error by syntactic check; but should *not* by -f17 if seq comp supported
+	4() from B to A;
+}
+//*/
+
+
+/*
 global protocol Proto1(role A, role B, role C)
 {
 	1() from A to B;
 	2() from B to C;  // Testing: reception errors (C in receive-state for B, while A is sending to C) -- FIXME: add this pattern to unit tests
 	3() from A to C;
 }
+//*/
 
 
 /*

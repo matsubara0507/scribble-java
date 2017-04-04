@@ -26,7 +26,9 @@ aux global protocol Nego(role C, role A, role S)
 		accpt() from C to A;
 		connect A to S;
 
-		port(p:Int) from S to A; @"open=C"  // p is a port opened by S for C
+		port(p:Int) from S to A; @"open=C"  // p is a port opened by S for C -- FIXME: open=p:C
+		//port(p) from A to S;
+		///port(p) from S to A;
 		port(p) from A to C;                // A passes p to C
 		connect C to S; @"port=p"	          // C connects to port p at S
 		pay(Str) from C to S;
