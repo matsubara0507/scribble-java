@@ -111,12 +111,13 @@ public class F17SModel
 	}
 	
 	// Revised "eventual reception" -- 1-bounded stable property with subject role side condition
+	// FIXME: refactor as actual eventual reception -- though original one may be better for error feedback
 	public Set<F17SState> getStableErrors()
 	{
 		Set<F17SState> res = new HashSet<>();
 		for (F17SState s : this.allStates.values())
 		{
-			if (!isStable(s))
+			if (!F17SModel.isStable(s))
 			{
 				Set<F17SState> seen = new HashSet<>();
 				if (!canReachStable(seen, s))  // FIXME: subj role side condition for compatibility
@@ -135,9 +136,9 @@ public class F17SModel
 	}
 	
 	//private boolean canReachStable(Set<F17SState> seen, F17SState s, Role r)
-	private boolean canReachStable(Set<F17SState> seen, F17SState s)  // FIXME: subj role side condition for compatibility
+	private boolean canReachStable(Set<F17SState> seen, F17SState s)  // FIXME: subj role side condition for compatibility -- maybe integrate with this.reach -- currently no point to search this way, should just check stable on all reachable
 	{
-		if (isStable(s))
+		if (F17SModel.isStable(s))
 		{
 			return true;
 		}

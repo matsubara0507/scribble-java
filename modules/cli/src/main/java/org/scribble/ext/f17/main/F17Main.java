@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.scribble.ast.Module;
 import org.scribble.ast.global.GProtocolDecl;
@@ -19,6 +20,7 @@ import org.scribble.ext.f17.model.endpoint.F17EGraphBuilder;
 import org.scribble.ext.f17.model.global.F17ProgressErrors;
 import org.scribble.ext.f17.model.global.F17SModel;
 import org.scribble.ext.f17.model.global.F17SModelBuilder;
+import org.scribble.ext.f17.model.global.F17SState;
 import org.scribble.ext.f17.model.global.F17SafetyErrors;
 import org.scribble.ext.f17.visit.context.AnnotSetter;
 import org.scribble.main.Job;
@@ -222,8 +224,6 @@ public class F17Main
 			}
 		}
 		
-		//.. HERE: stable
-		
 		F17ProgressErrors perrs = m.getProgressErrors();
 		if (perrs.satisfiesProgress())
 		{
@@ -233,6 +233,24 @@ public class F17Main
 		}
 		else
 		{
+
+			// FIXME: refactor eventual reception as 1-bounded stable check
+			Set<F17SState> staberrs = m.getStableErrors();
+			if (perrs.eventualReception.isEmpty())
+			{
+				if (!staberrs.isEmpty())
+				{
+					throw new RuntimeException("[f17] 1-stable check failure: " + staberrs);
+				}
+			}
+			else
+			{
+				if (staberrs.isEmpty())
+				{
+					throw new RuntimeException("[f17] 1-stable check failure: " + perrs);
+				}
+			}
+			
 			throw new F17Exception("[f17] " + ((unfair.length == 0) ? "Fair protocol" : "Protocol") + " violates progress.\n" + perrs);
 		}
 	}

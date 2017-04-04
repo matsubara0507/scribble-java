@@ -24,6 +24,8 @@ import scribtest.AllTest;
 @RunWith(Parameterized.class)
 public class F17AllTest extends AllTest
 {
+	private static int NUM_SKIPPED = 0;  // HACK
+	
 	public F17AllTest(String example, boolean isBadTest)
 	{
 		super(example, isBadTest);
@@ -45,14 +47,16 @@ public class F17AllTest extends AllTest
 			String[] SKIP =  // HACK
 				{
 					"modules/cli/target/test-classes/bad/wfchoice/enabling/twoparty/Test01b.scr",  // f17 doesn't check choice subjects
-					"modules/cli/target/test-classes/bad/wfchoice/gchoice/Choice02.scr"
+					"modules/cli/target/test-classes/bad/wfchoice/gchoice/Choice02.scr",
+					//"modules/cli/target/test-classes/bad/wfchoice/enabling/fourparty/Test01.scr"  // The original choice subject problem is gone, but we get a role-progress error instead (without fairness)
 				};
 			String foo = this.example.replace("\\", "/");
 			for (String skip : SKIP)
 			{
 				if (foo.endsWith(skip))
 				{
-					System.out.println("[f17] Manually skipping: " + this.example);
+					F17AllTest.NUM_SKIPPED++;
+					System.out.println("[f17] Manually skipping: " + this.example + " (" + F17AllTest.NUM_SKIPPED + " skipped.)");
 					return;
 				}
 			}
@@ -65,7 +69,8 @@ public class F17AllTest extends AllTest
 		}
 		catch (F17SyntaxException e)  // HACK
 		{
-			System.out.println("[f17] Skipping: " + this.example);
+			F17AllTest.NUM_SKIPPED++;
+			System.out.println("[f17] Skipping: " + this.example + "  (" + F17AllTest.NUM_SKIPPED + " skipped)");
 		}
 		catch (ScribbleException e)
 		{

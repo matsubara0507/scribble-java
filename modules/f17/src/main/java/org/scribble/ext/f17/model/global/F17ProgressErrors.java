@@ -19,7 +19,7 @@ public class F17ProgressErrors
 	
 	public boolean satisfiesProgress()
 	{
-		return this.roleProgress.isEmpty() && this.eventualReception.isEmpty();
+		return this.roleProgress.isEmpty() && this.eventualReception.isEmpty();  // FIXME: refactor eventual reception as 1-bounded stable property
 	}
 	
 	@Override
