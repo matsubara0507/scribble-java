@@ -222,6 +222,8 @@ public class F17Main
 			}
 		}
 		
+		//.. HERE: stable
+		
 		F17ProgressErrors perrs = m.getProgressErrors();
 		if (perrs.satisfiesProgress())
 		{

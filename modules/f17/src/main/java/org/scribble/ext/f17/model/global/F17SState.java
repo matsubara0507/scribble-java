@@ -39,7 +39,7 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 	private static final F17EBot BOT = new F17EBot();
 	
 	private final Map<Role, EState> P;  // Actually, F17EState
-	private final Map<Role, Map<Role, ESend>> Q;  // null value means connected and empty
+	private final Map<Role, Map<Role, ESend>> Q;  // null value means connected and empty -- dest -> src -> msg
 	
 	private final Map<Role, Map<Role, PayloadVar>> ports;  // Server -> Client -> port
 	private final Map<Role, Set<PayloadVar>> owned;

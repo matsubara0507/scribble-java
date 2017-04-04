@@ -110,6 +110,60 @@ public class F17SModel
 		return new F17ProgressErrors(roleProgress, eventualReception);
 	}
 	
+	// Revised "eventual reception" -- 1-bounded stable property with subject role side condition
+	public Set<F17SState> getStableErrors()
+	{
+		Set<F17SState> res = new HashSet<>();
+		for (F17SState s : this.allStates.values())
+		{
+			if (!isStable(s))
+			{
+				Set<F17SState> seen = new HashSet<>();
+				if (!canReachStable(seen, s))  // FIXME: subj role side condition for compatibility
+				{
+					res.add(s);
+				}
+			}
+		}
+		return res;
+	}
+	
+	private static boolean isStable(F17SState s)  // FIXME: refactor to F17SState
+	{
+		return s.getQ().values().stream().flatMap(m -> m.values().stream())
+					.filter((v) -> v != null && !(v instanceof F17EBot)).count() == 0;
+	}
+	
+	//private boolean canReachStable(Set<F17SState> seen, F17SState s, Role r)
+	private boolean canReachStable(Set<F17SState> seen, F17SState s)  // FIXME: subj role side condition for compatibility
+	{
+		if (isStable(s))
+		{
+			return true;
+		}
+		else if (seen.contains(s))
+		{
+			return false;
+		}
+		/*for (F17SState succ : s.getAllSuccessors())
+		{
+			if (isStable(succ))
+			{
+				return true;
+			}
+		}*/
+		for (F17SState succ : s.getAllSuccessors())
+		{
+			Set<F17SState> tmp = new HashSet<>(seen);
+			tmp.add(s);
+			if (canReachStable(tmp, succ))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	@Override
 	public String toString()
 	{
