@@ -20,8 +20,8 @@ global protocol Travel(role C, role A, role S)
 		confirm(Int) from S to C;
 		accpt(Int) from C to A;    // Int should same val as the prev
 	}
-	or
+	/*or  // Unfinished role *safety* error -- if this case commented, then role progress *liveness* error (safety checked first, then liveness)
 	{
 		reject() from C to A;
-	}
+	}*/
 }
