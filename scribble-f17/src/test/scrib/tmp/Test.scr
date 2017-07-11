@@ -1,0 +1,21 @@
+//Raymond@HZHL3 ~/code/eclipse/scribble/github.com/rhu1-f17/scribble-java
+//$ bin/scribblec-f17.sh -ip scribble-f17/src/test/scrib/ -d scribble-f17/src/test/scrib/ scribble-f17/src/test/scrib/tmp/Test.scr 
+
+
+//http://sandbox.kidstrythisathome.com/erdos/
+
+
+module Test;
+
+
+type <java> "java.lang.Integer" from "rt.jar" as Int;
+type <java> "java.lang.String" from "rt.jar" as Str;
+
+
+
+//*
+global protocol Proto1(role A, role B)
+{
+	1() from A to B;
+}
+//*/

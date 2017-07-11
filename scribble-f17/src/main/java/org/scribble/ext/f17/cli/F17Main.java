@@ -19,6 +19,7 @@ import org.scribble.ext.f17.ast.local.F17LType;
 import org.scribble.ext.f17.ast.local.F17Projector;
 import org.scribble.ext.f17.main.F17Exception;
 import org.scribble.ext.f17.main.F17Job;
+import org.scribble.ext.f17.main.F17MainContext;
 import org.scribble.ext.f17.model.endpoint.F17EGraphBuilder;
 import org.scribble.ext.f17.model.global.F17ProgressErrors;
 import org.scribble.ext.f17.model.global.F17SModel;
@@ -88,18 +89,16 @@ public class F17Main
 		boolean noAcceptCorrelationCheck = false;
 		boolean noValidation = false;
 
-		boolean f17 = true;
-
 		/*List<Path> impaths = this.args.containsKey(ArgFlag.PATH)
 				? CommandLine.parseImportPaths(this.args.get(ArgFlag.PATH)[0])
 				: Collections.emptyList();*/
 		List<Path> impaths = Collections.emptyList();  // FIXME: get from Main args
 		ResourceLocator locator = new DirectoryResourceLocator(impaths);
 		return (inline == null)
-				? new MainContext(debug, locator, mainpath, useOldWF, noLiveness, minEfsm, fair,
-							noLocalChoiceSubjectCheck, noAcceptCorrelationCheck, noValidation, f17)
-				: new MainContext(debug, locator, inline, useOldWF, noLiveness, minEfsm, fair,
-							noLocalChoiceSubjectCheck, noAcceptCorrelationCheck, noValidation, f17);
+				? new F17MainContext(debug, locator, mainpath, useOldWF, noLiveness, minEfsm, fair,
+							noLocalChoiceSubjectCheck, noAcceptCorrelationCheck, noValidation)
+				: new F17MainContext(debug, locator, inline, useOldWF, noLiveness, minEfsm, fair,
+							noLocalChoiceSubjectCheck, noAcceptCorrelationCheck, noValidation);
 	}
 	
 	private static void f17PreContextBuilding(Job job) throws ScribbleException

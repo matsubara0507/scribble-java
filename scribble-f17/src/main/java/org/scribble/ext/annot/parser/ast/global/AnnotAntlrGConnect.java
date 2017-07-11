@@ -39,7 +39,7 @@ public class AnnotAntlrGConnect
 					//.forEach((p) -> ((AnnotUnaryPayloadElemDel) p.del()).annot = annot);
 					.forEach((p) -> ((AnnotUnaryPayloadElemDel) p.del()).setAnnot(annot));  // Doesn't work: inlining pass discards dels
 		}*/
-		return af.GConnect(ct, src, msg, dest, annot);
+		return af.AnnotGConnect(ct, src, msg, dest, annot);
 	}
 
 	public static CommonTree getMessageChild(CommonTree ct)

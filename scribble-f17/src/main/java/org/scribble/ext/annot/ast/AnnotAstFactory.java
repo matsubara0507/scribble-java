@@ -19,10 +19,10 @@ public interface AnnotAstFactory extends AstFactory
 	<K extends PayloadTypeKind> AnnotUnaryPayloadElem<K> AnnotUnaryPayloadElem(CommonTree source, PayloadVarNode payvar, PayloadElemNameNode<K> name);
 
 	//GMessageTransfer GMessageTransfer(CommonTree source, RoleNode src, MessageNode msg, List<RoleNode> dests);
-	AnnotGMessageTransfer GMessageTransfer(CommonTree source, RoleNode src, MessageNode msg, List<RoleNode> dests, ScribAnnot annot);
+	AnnotGMessageTransfer AnnotGMessageTransfer(CommonTree source, RoleNode src, MessageNode msg, List<RoleNode> dests, ScribAnnot annot);
 
 	//GConnect GConnect(CommonTree source, RoleNode src, MessageNode msg, RoleNode dest);
-	AnnotGConnect GConnect(CommonTree source, RoleNode src, MessageNode msg, RoleNode dest, ScribAnnot annot);
+	AnnotGConnect AnnotGConnect(CommonTree source, RoleNode src, MessageNode msg, RoleNode dest, ScribAnnot annot);
 
 	/*GDisconnect GDisconnect(CommonTree source, RoleNode src, RoleNode dest);
 	

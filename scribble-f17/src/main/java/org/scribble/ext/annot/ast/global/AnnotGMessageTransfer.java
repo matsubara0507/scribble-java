@@ -87,7 +87,7 @@ public class AnnotGMessageTransfer extends GMessageTransfer implements AnnotNode
 		RoleNode src = this.src.clone(af);
 		MessageNode msg = this.msg.clone(af);
 		List<RoleNode> dests = ScribUtil.cloneList(af, getDestinations());
-		return ((AnnotAstFactory) af).GMessageTransfer(this.source, src, msg, dests, this.annot);  // Not cloning String annot
+		return ((AnnotAstFactory) af).AnnotGMessageTransfer(this.source, src, msg, dests, this.annot);  // Not cloning String annot
 	}
 
 	@Override

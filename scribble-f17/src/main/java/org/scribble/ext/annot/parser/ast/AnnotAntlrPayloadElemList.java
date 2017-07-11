@@ -35,7 +35,7 @@ public class AnnotAntlrPayloadElemList
 
 	protected static PayloadElem<?> parsePayloadElem(CommonTree ct, AnnotAstFactory af)
 	{
-		String type = ct.getToken().getText();  // Duplicated from ScribParserUtil.getAntlrNodeType  // FIXME: factor out with AssrtScribParser.parse
+		String type = ct.getToken().getText();  // Duplicated from ScribParserUtil.getAntlrNodeType  // FIXME: factor out with AnnotScribParser.parse
 		switch (type)
 		{
 			case AnnotScribParser.ANNOT_ANNOTPAYLOADELEM_NODE_TYPE:

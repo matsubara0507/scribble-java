@@ -43,7 +43,7 @@ public class AnnotAntlrGMessageTransfer
 							//((AnnotUnaryPayloadElemDel) p.del()).annot = annot );
 							((AnnotUnaryPayloadElemDel) p.del()).setAnnot(annot) );  // Doesn't work: inlining pass discards dels
 		}*/
-		return af.GMessageTransfer(ct, src, msg, dests, annot);
+		return af.AnnotGMessageTransfer(ct, src, msg, dests, annot);
 	}
 
 	public static CommonTree getMessageChild(CommonTree ct)

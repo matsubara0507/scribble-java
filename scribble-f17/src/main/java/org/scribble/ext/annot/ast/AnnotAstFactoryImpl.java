@@ -1,17 +1,18 @@
 package org.scribble.ext.annot.ast;
+		
+//gmt = del(gmt, new GMessageTransferDel());
 
 import java.util.List;
 
 import org.antlr.runtime.tree.CommonTree;
 import org.scribble.ast.AstFactoryImpl;
 import org.scribble.ast.MessageNode;
+import org.scribble.ast.global.GMessageTransfer;
 import org.scribble.ast.name.NameNode;
 import org.scribble.ast.name.PayloadElemNameNode;
 import org.scribble.ast.name.simple.OpNode;
 import org.scribble.ast.name.simple.RecVarNode;
 import org.scribble.ast.name.simple.RoleNode;
-import org.scribble.del.global.GConnectDel;
-import org.scribble.del.global.GMessageTransferDel;
 import org.scribble.del.name.RecVarNodeDel;
 import org.scribble.del.name.RoleNodeDel;
 import org.scribble.ext.annot.ast.global.AnnotGConnect;
@@ -50,18 +51,18 @@ public class AnnotAstFactoryImpl extends AstFactoryImpl implements AnnotAstFacto
 	}
 
 	@Override
-	public AnnotGMessageTransfer GMessageTransfer(CommonTree source, RoleNode src, MessageNode msg, List<RoleNode> dests)
+	public GMessageTransfer GMessageTransfer(CommonTree source, RoleNode src, MessageNode msg, List<RoleNode> dests)
 	{
-		AnnotGMessageTransfer gmt = new AnnotGMessageTransfer(source, src, msg, dests);  // Maybe unnecessary, super is fine
+		/*AnnotGMessageTransfer gmt = new AnnotGMessageTransfer(source, src, msg, dests);  // Maybe unnecessary, super is fine
 		gmt = del(gmt, new GMessageTransferDel());
-		return gmt;
+		return gmt;*/
+		throw new RuntimeException("[f17] Shouldn't get in here: " + source);
 	}
 
 	@Override
-	public AnnotGMessageTransfer GMessageTransfer(CommonTree source, RoleNode src, MessageNode msg, List<RoleNode> dests, ScribAnnot annot)
+	public AnnotGMessageTransfer AnnotGMessageTransfer(CommonTree source, RoleNode src, MessageNode msg, List<RoleNode> dests, ScribAnnot annot)
 	{
 		AnnotGMessageTransfer gmt = new AnnotGMessageTransfer(source, src, msg, dests, annot);
-		//gmt = del(gmt, new GMessageTransferDel());
 		gmt = del(gmt, new AnnotGMessageTransferDel());
 		return gmt;
 	}
@@ -69,13 +70,14 @@ public class AnnotAstFactoryImpl extends AstFactoryImpl implements AnnotAstFacto
 	@Override
 	public AnnotGConnect GConnect(CommonTree source, RoleNode src, MessageNode msg, RoleNode dest)
 	{
-		AnnotGConnect gc = new AnnotGConnect(source, src, msg, dest);  // Maybe unnecessary, super is fine
+		/*AnnotGConnect gc = new AnnotGConnect(source, src, msg, dest);  // Maybe unnecessary, super is fine
 		gc = del(gc, new GConnectDel());
-		return gc;
+		return gc;*/
+		throw new RuntimeException("[f17] Shouldn't get in here: " + source);
 	}
 
 	@Override
-	public AnnotGConnect GConnect(CommonTree source, RoleNode src, MessageNode msg, RoleNode dest, ScribAnnot annot)
+	public AnnotGConnect AnnotGConnect(CommonTree source, RoleNode src, MessageNode msg, RoleNode dest, ScribAnnot annot)
 	{
 		AnnotGConnect gc = new AnnotGConnect(source, src, msg, dest, annot);
 		//gc = del(gc, new GConnectDel());

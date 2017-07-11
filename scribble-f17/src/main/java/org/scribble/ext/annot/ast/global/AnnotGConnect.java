@@ -50,7 +50,7 @@ public class AnnotGConnect extends GConnect implements AnnotNode
 		RoleNode src = this.src.clone(af);
 		MessageNode msg = this.msg.clone(af);
 		RoleNode dest = this.dest.clone(af);
-		return ((AnnotAstFactory) af).GConnect(this.source, src, msg, dest, this.annot);  // Not cloning String annot
+		return ((AnnotAstFactory) af).AnnotGConnect(this.source, src, msg, dest, this.annot);  // Not cloning String annot
 	}
 
 	@Override

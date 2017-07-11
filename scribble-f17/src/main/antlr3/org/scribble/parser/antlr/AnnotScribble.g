@@ -60,6 +60,14 @@ tokens
 	DO_KW = 'do';
 	//SPAWN_KW = 'spawn';
 
+
+	/*
+	 * Parser output "node types" (corresponding to the various syntactic
+	 * categories) i.e. the labels used to distinguish resulting AST nodes.
+	 * The value of these token variables doesn't matter, only the token
+	 * (i.e. variable) names themselves are used (for AST node root text
+	 * field)
+	 */
 	EMPTY_ALIAS = '__empty_alias';
 	EMPTY_SCOPENAME = '__empty_scopename';
 	NO_SCOPE = '__no_scope';
@@ -76,13 +84,6 @@ tokens
 	KIND_MESSAGESIGNATURE = 'KIND_MESSAGESIGNATURE';
 	KIND_PAYLOADTYPE = 'KIND_PAYLOADTYPE';
 
-	/*
-	 * Parser output "node types" (corresponding to the various syntactic
-	 * categories) i.e. the labels used to distinguish resulting AST nodes.
-	 * The value of these token variables doesn't matter, only the token
-	 * (i.e. variable) names themselves are used (for AST node root text
-	 * field)
-	 */
 	//NAME = 'name';
 	AMBIGUOUSNAME = 'ambiguous-name';
 	QUALIFIEDNAME = 'qualified-name';
