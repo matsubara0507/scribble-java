@@ -28,8 +28,8 @@ public class AnnotGConnectDel extends GConnectDel implements AnnotScribDel
 		{
 			MessageSigNode msn = (MessageSigNode) gc.msg;  // FIXME: refactor properly
 			msn.payloads.getElements().stream()
-					.filter((p) -> p instanceof AnnotUnaryPayloadElem<?>)
-					.forEach((p) -> 
+					.filter(p -> p instanceof AnnotUnaryPayloadElem<?>)
+					.forEach(p -> 
 							//((AnnotUnaryPayloadElemDel) p.del()).annot = annot );
 							((AnnotUnaryPayloadElemDel) p.del()).setAnnot(annot) );
 		}

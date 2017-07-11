@@ -39,8 +39,8 @@ public class AnnotGMessageTransferDel extends GMessageTransferDel implements Ann
 		{
 			MessageSigNode msn = (MessageSigNode) gmt.msg;  // FIXME: refactor properly
 			msn.payloads.getElements().stream()
-					.filter((p) -> p instanceof AnnotUnaryPayloadElem<?>)
-					.forEach((p) -> 
+					.filter(p -> p instanceof AnnotUnaryPayloadElem<?>)
+					.forEach(p -> 
 							//((AnnotUnaryPayloadElemDel) p.del()).annot = annot );
 							((AnnotUnaryPayloadElemDel) p.del()).setAnnot(annot) );
 		}

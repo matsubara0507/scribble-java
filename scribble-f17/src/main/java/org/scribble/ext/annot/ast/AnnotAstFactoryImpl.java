@@ -33,13 +33,13 @@ public class AnnotAstFactoryImpl extends AstFactoryImpl implements AnnotAstFacto
 {
 	//public static final AnnotAstFactory FACTORY = new AnnotAstFactoryImpl();
 
-	@Override
+	/*@Override
 	public <K extends PayloadTypeKind> AnnotUnaryPayloadElem<K> UnaryPayloadElem(CommonTree source, PayloadElemNameNode<K> name)
 	{
 		AnnotUnaryPayloadElem<K> pe = new AnnotUnaryPayloadElem<>(source, name);  // Maybe unnecessary, super is fine
 		pe = del(pe, createDefaultDelegate());
 		return pe;
-	}
+	}*/
 
 	@Override
 	public <K extends PayloadTypeKind> AnnotUnaryPayloadElem<K> AnnotUnaryPayloadElem(CommonTree source, PayloadVarNode payvar, PayloadElemNameNode<K> name)
