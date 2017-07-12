@@ -16,16 +16,16 @@ package demo.fase17.travel;
 import static demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent.A;
 import static demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent.C;
 import static demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent.S;
+import static demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent.accpt;
 import static demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent.confirm;
 import static demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent.payment;
 import static demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent.query;
 import static demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent.quote;
-import static demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent.accpt;
 
-import org.scribble.net.Buf;
-import org.scribble.net.ObjectStreamFormatter;
-import org.scribble.net.session.ExplicitEndpoint;
-import org.scribble.net.session.SocketChannelEndpoint;
+import org.scribble.runtime.net.Buf;
+import org.scribble.runtime.net.ObjectStreamFormatter;
+import org.scribble.runtime.net.session.ExplicitEndpoint;
+import org.scribble.runtime.net.session.SocketChannelEndpoint;
 
 import demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent;
 import demo.fase17.travel.TravelAgent.TravelAgent.channels.C.TravelAgent_C_1;

@@ -32,6 +32,10 @@
 			<groupId>org.scribble</groupId>
 			<artifactId>scribble-test</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.scribble</groupId>
+			<artifactId>scribble-runtime</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>

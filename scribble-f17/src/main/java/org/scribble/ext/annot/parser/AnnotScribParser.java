@@ -18,6 +18,7 @@ import org.scribble.ast.AstFactory;
 import org.scribble.ast.ScribNode;
 import org.scribble.ext.annot.ast.AnnotAstFactory;
 import org.scribble.ext.annot.parser.ast.AnnotAntlrPayloadElemList;
+import org.scribble.ext.annot.parser.ast.global.AnnotAntlrGConnect;
 import org.scribble.ext.annot.parser.ast.global.AnnotAntlrGMessageTransfer;
 import org.scribble.parser.scribble.AntlrConstants;
 import org.scribble.parser.scribble.ScribParser;
@@ -51,6 +52,7 @@ public class AnnotScribParser extends ScribParser
 			
 			// AnnotScribble.g modifies original GLOBALMESSAGETRANSFER category with extra annot EXTIDENTIFIER
 			case AntlrConstants.GLOBALMESSAGETRANSFER_NODE_TYPE: return AnnotAntlrGMessageTransfer.parseAnnotGMessageTransfer(this, ct, aaf);
+			case AntlrConstants.GLOBALCONNECT_NODE_TYPE:         return AnnotAntlrGConnect.parseAnnotGConnect(this, ct, aaf);
 
 			default: return super.parse(ct, af);
 		}

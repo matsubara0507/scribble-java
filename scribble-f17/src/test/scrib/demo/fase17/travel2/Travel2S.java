@@ -13,20 +13,20 @@
  */
 package demo.fase17.travel2;
 
+import static demo.fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.A;
 import static demo.fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.C;
 import static demo.fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.S;
-import static demo.fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.A;
 import static demo.fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.confirm;
 import static demo.fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.port;
 
 import java.io.IOException;
 
 import org.scribble.main.ScribbleRuntimeException;
-import org.scribble.net.Buf;
-import org.scribble.net.ObjectStreamFormatter;
-import org.scribble.net.scribsock.ScribServerSocket;
-import org.scribble.net.scribsock.SocketChannelServer;
-import org.scribble.net.session.ExplicitEndpoint;
+import org.scribble.runtime.net.Buf;
+import org.scribble.runtime.net.ObjectStreamFormatter;
+import org.scribble.runtime.net.scribsock.ScribServerSocket;
+import org.scribble.runtime.net.scribsock.SocketChannelServer;
+import org.scribble.runtime.net.session.ExplicitEndpoint;
 
 import demo.fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2;
 import demo.fase17.travel2.TravelAgent2.TravelAgent2.channels.S.TravelAgent2_S_1;

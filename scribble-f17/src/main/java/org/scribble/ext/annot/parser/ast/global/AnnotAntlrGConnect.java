@@ -21,7 +21,7 @@ public class AnnotAntlrGConnect
 
 	public static final int ANNOT_INDEX = 3;
 
-	public static GConnect parseGConnect(ScribParser parser, CommonTree ct, AnnotAstFactory af) throws ScribParserException
+	public static GConnect parseAnnotGConnect(ScribParser parser, CommonTree ct, AnnotAstFactory af) throws ScribParserException
 	{
 		RoleNode src = AntlrSimpleName.toRoleNode(getSourceChild(ct), af);
 		MessageNode msg = AntlrGConnect.parseMessage(parser, getMessageChild(ct), af);
