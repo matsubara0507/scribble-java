@@ -58,9 +58,9 @@ scribble-core/src/test/scrib/test/test9/
 bin/scribblec.sh
 permissions-fix.sh
 
-modules/f17/src/test/scrib/demo/fase17/travel/orig/Travel1
-modules/f17/src/test/scrib/demo/fase17/travel/port/Travel2
-modules/f17/src/test/scrib/demo/fase17/abcd1701/travel/exconn/Travel1/
-modules/f17/src/test/scrib/demo/fase17/abcd1701/travel/orig/Travel/
-modules/f17/src/test/scrib/demo/fase17/abcd1701/travel/port/Travel2/
+scribble-f17/src/test/scrib/demo/fase17/travel/orig/Travel1
+scribble-f17/src/test/scrib/demo/fase17/travel/port/Travel2
+scribble-f17/src/test/scrib/demo/fase17/abcd1701/travel/exconn/Travel1/
+scribble-f17/src/test/scrib/demo/fase17/abcd1701/travel/orig/Travel/
+scribble-f17/src/test/scrib/demo/fase17/abcd1701/travel/port/Travel2/
 

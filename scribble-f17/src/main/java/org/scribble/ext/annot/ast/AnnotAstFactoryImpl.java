@@ -10,11 +10,7 @@ import org.scribble.ast.MessageNode;
 import org.scribble.ast.global.GMessageTransfer;
 import org.scribble.ast.name.NameNode;
 import org.scribble.ast.name.PayloadElemNameNode;
-import org.scribble.ast.name.simple.OpNode;
-import org.scribble.ast.name.simple.RecVarNode;
 import org.scribble.ast.name.simple.RoleNode;
-import org.scribble.del.name.RecVarNodeDel;
-import org.scribble.del.name.RoleNodeDel;
 import org.scribble.ext.annot.ast.global.AnnotGConnect;
 import org.scribble.ext.annot.ast.global.AnnotGMessageTransfer;
 import org.scribble.ext.annot.ast.name.simple.PayloadVarNode;
@@ -23,32 +19,21 @@ import org.scribble.ext.annot.del.global.AnnotGConnectDel;
 import org.scribble.ext.annot.del.global.AnnotGMessageTransferDel;
 import org.scribble.sesstype.kind.DataTypeKind;
 import org.scribble.sesstype.kind.Kind;
-import org.scribble.sesstype.kind.OpKind;
 import org.scribble.sesstype.kind.PayloadTypeKind;
-import org.scribble.sesstype.kind.RecVarKind;
-import org.scribble.sesstype.kind.RoleKind;
 
 
 public class AnnotAstFactoryImpl extends AstFactoryImpl implements AnnotAstFactory
 {
-	//public static final AnnotAstFactory FACTORY = new AnnotAstFactoryImpl();
+	
+	// "Overriding" existing node creation
 
-	/*@Override
+	/*@Override  // No, still used as previously for non annotated payloads (AnnotAntlrPayloadElemList.parsePayloadElem default)
 	public <K extends PayloadTypeKind> AnnotUnaryPayloadElem<K> UnaryPayloadElem(CommonTree source, PayloadElemNameNode<K> name)
 	{
 		AnnotUnaryPayloadElem<K> pe = new AnnotUnaryPayloadElem<>(source, name);  // Maybe unnecessary, super is fine
 		pe = del(pe, createDefaultDelegate());
 		return pe;
 	}*/
-
-	@Override
-	public <K extends PayloadTypeKind> AnnotUnaryPayloadElem<K> AnnotUnaryPayloadElem(CommonTree source, PayloadVarNode payvar, PayloadElemNameNode<K> name)
-	{
-		AnnotUnaryPayloadElem<K> pe = new AnnotUnaryPayloadElem<>(source, payvar, name);
-		//pe = del(pe, createDefaultDelegate());
-		pe = del(pe, new AnnotUnaryPayloadElemDel());
-		return pe;
-	}
 
 	@Override
 	public GMessageTransfer GMessageTransfer(CommonTree source, RoleNode src, MessageNode msg, List<RoleNode> dests)
@@ -60,20 +45,23 @@ public class AnnotAstFactoryImpl extends AstFactoryImpl implements AnnotAstFacto
 	}
 
 	@Override
-	public AnnotGMessageTransfer AnnotGMessageTransfer(CommonTree source, RoleNode src, MessageNode msg, List<RoleNode> dests, ScribAnnot annot)
-	{
-		AnnotGMessageTransfer gmt = new AnnotGMessageTransfer(source, src, msg, dests, annot);
-		gmt = del(gmt, new AnnotGMessageTransferDel());
-		return gmt;
-	}
-
-	@Override
 	public AnnotGConnect GConnect(CommonTree source, RoleNode src, MessageNode msg, RoleNode dest)
 	{
 		/*AnnotGConnect gc = new AnnotGConnect(source, src, msg, dest);  // Maybe unnecessary, super is fine
 		gc = del(gc, new GConnectDel());
 		return gc;*/
 		throw new RuntimeException("[f17] Shouldn't get in here: " + source);
+	}
+	
+	
+	// New node creation
+
+	@Override
+	public AnnotGMessageTransfer AnnotGMessageTransfer(CommonTree source, RoleNode src, MessageNode msg, List<RoleNode> dests, ScribAnnot annot)
+	{
+		AnnotGMessageTransfer gmt = new AnnotGMessageTransfer(source, src, msg, dests, annot);
+		gmt = del(gmt, new AnnotGMessageTransferDel());
+		return gmt;
 	}
 
 	@Override
@@ -84,6 +72,36 @@ public class AnnotAstFactoryImpl extends AstFactoryImpl implements AnnotAstFacto
 		gc = del(gc, new AnnotGConnectDel());
 		return gc;
 	}
+
+	@Override
+	public <K extends PayloadTypeKind> AnnotUnaryPayloadElem<K> AnnotUnaryPayloadElem(CommonTree source, PayloadVarNode payvar, PayloadElemNameNode<K> name)
+	{
+		AnnotUnaryPayloadElem<K> pe = new AnnotUnaryPayloadElem<>(source, payvar, name);
+		//pe = del(pe, createDefaultDelegate());
+		pe = del(pe, new AnnotUnaryPayloadElemDel());
+		return pe;
+	}
+	
+	// Duplicated from AstFactoryImpl
+	@Override
+	public <K extends Kind> NameNode<K> SimpleNameNode(CommonTree source, K kind, String identifier)
+	{
+		NameNode<? extends Kind> snn = null;
+		
+		// Default del
+		if (kind.equals(DataTypeKind.KIND))  // No conflict with super? (regular simple data type name nodes?)
+		{
+			snn = new PayloadVarNode(source, identifier);
+			return castNameNode(kind, del(snn, createDefaultDelegate()));
+		}
+		else
+		{
+			return super.SimpleNameNode(source, kind, identifier);
+		}
+	}
+	
+	
+	
 
 	/*@Override
 	public GConnect GConnect(CommonTree source, RoleNode src, MessageNode msg, RoleNode dest)
@@ -145,43 +163,4 @@ public class AnnotAstFactoryImpl extends AstFactoryImpl implements AnnotAstFacto
 		lc = del(lc, new LDisconnectDel());
 		return lc;
 	}*/
-	
-	// Duplicated from AstFactoryImpl
-	@Override
-	public <K extends Kind> NameNode<K> SimpleNameNode(CommonTree source, K kind, String identifier)
-	{
-		NameNode<? extends Kind> snn = null;
-		
-		// Custom dels
-		if (kind.equals(RecVarKind.KIND))
-		{
-			snn = new RecVarNode(source, identifier);
-			snn = del(snn, new RecVarNodeDel());
-		}
-		else if (kind.equals(RoleKind.KIND))
-		{
-			snn = new RoleNode(source, identifier);
-			snn = del(snn, new RoleNodeDel());
-		}
-		if (snn != null)
-		{
-			return castNameNode(kind, snn);
-		}
-
-		// Default del
-		if (kind.equals(OpKind.KIND))
-		{
-			snn = new OpNode(source, identifier);
-		}
-		//else if (kind.equals(PayloadVarKind.KIND))
-		else if (kind.equals(DataTypeKind.KIND))  // No conflict with regular simple data type name nodes?
-		{
-			snn = new PayloadVarNode(source, identifier);
-		}
-		else
-		{
-			throw new RuntimeException("Shouldn't get in here: " + kind);
-		}
-		return castNameNode(kind, del(snn, createDefaultDelegate()));
-	}
 }
