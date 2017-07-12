@@ -27,13 +27,14 @@ public class AnnotAstFactoryImpl extends AstFactoryImpl implements AnnotAstFacto
 	
 	// "Overriding" existing node creation
 
-	/*@Override  // No, still used as previously for non annotated payloads (AnnotAntlrPayloadElemList.parsePayloadElem default)
+	@Override  // No, still used as previously for non annotated payloads (AnnotAntlrPayloadElemList.parsePayloadElem default)
 	public <K extends PayloadTypeKind> AnnotUnaryPayloadElem<K> UnaryPayloadElem(CommonTree source, PayloadElemNameNode<K> name)
 	{
 		AnnotUnaryPayloadElem<K> pe = new AnnotUnaryPayloadElem<>(source, name);  // Maybe unnecessary, super is fine
 		pe = del(pe, createDefaultDelegate());
+		//pe = del(pe, new AnnotUnaryPayloadElemDel());
 		return pe;
-	}*/
+	}
 
 	@Override
 	public GMessageTransfer GMessageTransfer(CommonTree source, RoleNode src, MessageNode msg, List<RoleNode> dests)

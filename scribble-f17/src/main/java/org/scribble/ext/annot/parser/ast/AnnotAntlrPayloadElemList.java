@@ -40,9 +40,9 @@ public class AnnotAntlrPayloadElemList
 		{
 			case AnnotScribParser.ANNOT_ANNOTPAYLOADELEM_NODE_TYPE:
 			{
-			PayloadVarNode pvn = AnnotAntlrSimpleName.toPayloadVarNode((CommonTree) ct.getChild(0), af);
-			PayloadElemNameNode<?> penn = parsePayloadElemenNameNode((CommonTree) ct.getChild(1), af);
-			return af.AnnotUnaryPayloadElem(ct, pvn, penn);
+				PayloadVarNode pvn = AnnotAntlrSimpleName.toPayloadVarNode((CommonTree) ct.getChild(0), af);
+				PayloadElemNameNode<?> penn = parsePayloadElemenNameNode((CommonTree) ct.getChild(1), af);
+				return af.AnnotUnaryPayloadElem(ct, pvn, penn);
 			}
 			default: return AntlrPayloadElemList.parsePayloadElem(ct, af);
 		}
