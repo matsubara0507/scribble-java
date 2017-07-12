@@ -38,9 +38,6 @@ scribble-demos/scrib/tutorial/src/tutorial/adder/Adder/
 scribble-core/src/test/scrib/exercise/calculator/EProtocol/
 scribble-core/src/test/scrib/exercise/voting/EProtocol/
 
-scribble-core/src/test/scrib/demo/fase17/travel/TravelAgent/
-scribble-core/src/test/scrib/demo/fase17/travel2/TravelAgent2/
-
 scribble-core/src/test/scrib/scratch/scratch1/
 scribble-core/src/test/scrib/scratch/scratch2/
 scribble-core/src/test/scrib/test/foo/Foo/
@@ -57,6 +54,9 @@ scribble-core/src/test/scrib/test/test9/
 
 bin/scribblec.sh
 permissions-fix.sh
+
+scribble-f17/src/test/scrib/demo/fase17/travel/TravelAgent/
+scribble-f17/src/test/scrib/demo/fase17/travel2/TravelAgent2/
 
 scribble-f17/src/test/scrib/demo/fase17/travel/orig/Travel1
 scribble-f17/src/test/scrib/demo/fase17/travel/port/Travel2
