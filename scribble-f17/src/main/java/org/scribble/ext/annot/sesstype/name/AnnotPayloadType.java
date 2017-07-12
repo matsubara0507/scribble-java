@@ -6,6 +6,7 @@ import org.scribble.sesstype.kind.PayloadTypeKind;
 import org.scribble.sesstype.name.PayloadType;
 
 
+// A payload type with "annotation" info -- i.e., a PayloadVar *declaration*
 //public class AnnotDataType<K> extends DataType implements AnnotType
 public class AnnotPayloadType<K extends PayloadTypeKind> implements PayloadType<K>, AnnotType
 {

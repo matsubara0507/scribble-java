@@ -4,6 +4,7 @@ import org.scribble.sesstype.kind.DataTypeKind;
 import org.scribble.sesstype.name.AbstractName;
 import org.scribble.sesstype.name.PayloadType;
 
+// For an occurrence of a payload var -- i.e., should be bound by an AnnotPayloadType declaration
 // FIXME: refactor PayloadVarKind as simply DataTypeKind?
 //public class PayloadVar extends AbstractName<PayloadVarKind> //implements PathElement
 public class PayloadVar extends AbstractName<DataTypeKind>
