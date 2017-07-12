@@ -22,7 +22,7 @@ aux global protocol Nego(role C, role A, role S)
 		quote(Int) from A to C;
 		do Nego(C, A, S);
 	}
-	or
+	or  // f17 "core" syntax needs this choice to be flatted (cf. f17.travel.orig.Travel1)
 	{
 		do Pay(C, A, S);
 	}

@@ -13,7 +13,7 @@ global protocol P1(role A, role B, role C)
 		{
 			2() from A to C;
 		}
-		continue X;
+		continue X;  // Refactor inside choice for f17 "core" syntax
 	}
 }
 

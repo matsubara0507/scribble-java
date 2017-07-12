@@ -15,7 +15,7 @@ explicit global protocol P2(role A, role B, role C)
 			2() connect A to C;
 			disconnect A and C;
 		}
-		continue X;
+		continue X;  // Refactor inside choice for f17 "core" syntax
 	}
 }
 
