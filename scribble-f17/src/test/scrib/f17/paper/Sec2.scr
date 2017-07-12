@@ -1,7 +1,7 @@
 //$ bin/scribblec-f17.sh scribble-f17/src/test/scrib/f17/paper/Sec2.scr -f17 TravelAgency
 
 
-module fase17.paper.Sec2;
+module f17.paper.Sec2;
 
 type <java> "java.lang.String" from "rt.jar" as Str;
 type <java> "java.lang.Integer" from "rt.jar" as Int;

@@ -1,6 +1,6 @@
-//$ bin/scribblec.sh scribble-f17/src/test/scrib/f17/travel/orig/Travel1.scr -f17 Travel
+//$ bin/scribblec-f17.sh scribble-f17/src/test/scrib/f17/paper/travel/orig/Travel1.scr -d scribble-f17/src/test/scrib -f17 Travel
 
-module f17.travel.orig.Travel1;
+module f17.paper.travel.orig.Travel1;
 
 type <java> "java.lang.String" from "rt.jar" as Str;
 type <java> "java.lang.Integer" from "rt.jar" as Int;

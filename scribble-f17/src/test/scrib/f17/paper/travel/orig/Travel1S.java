@@ -1,19 +1,19 @@
 package f17.paper.travel.orig;
 
-import static demo.fase17.travel.orig.Travel1.Travel.Travel.C;
-import static demo.fase17.travel.orig.Travel1.Travel.Travel.S;
-import static demo.fase17.travel.orig.Travel1.Travel.Travel.confirm;
-import static demo.fase17.travel.orig.Travel1.Travel.Travel.pay;
+import static f17.paper.travel.orig.Travel1.Travel.Travel.C;
+import static f17.paper.travel.orig.Travel1.Travel.Travel.S;
+import static f17.paper.travel.orig.Travel1.Travel.Travel.confirm;
+import static f17.paper.travel.orig.Travel1.Travel.Travel.pay;
 
-import org.scribble.net.Buf;
-import org.scribble.net.ObjectStreamFormatter;
-import org.scribble.net.scribsock.ScribServerSocket;
-import org.scribble.net.scribsock.SocketChannelServer;
-import org.scribble.net.session.ExplicitEndpoint;
+import org.scribble.runtime.net.Buf;
+import org.scribble.runtime.net.ObjectStreamFormatter;
+import org.scribble.runtime.net.scribsock.ScribServerSocket;
+import org.scribble.runtime.net.scribsock.SocketChannelServer;
+import org.scribble.runtime.net.session.ExplicitEndpoint;
 
-import demo.fase17.travel.orig.Travel1.Travel.Travel;
-import demo.fase17.travel.orig.Travel1.Travel.channels.S.Travel_S_1;
-import demo.fase17.travel.orig.Travel1.Travel.roles.S;
+import f17.paper.travel.orig.Travel1.Travel.Travel;
+import f17.paper.travel.orig.Travel1.Travel.channels.S.Travel_S_1;
+import f17.paper.travel.orig.Travel1.Travel.roles.S;
 
 public class Travel1S
 {

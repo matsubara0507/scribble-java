@@ -1,27 +1,27 @@
 package f17.paper.travel.orig;
 
-import static demo.fase17.travel.orig.Travel1.Travel.Travel.A;
-import static demo.fase17.travel.orig.Travel1.Travel.Travel.C;
-import static demo.fase17.travel.orig.Travel1.Travel.Travel.quote;
+import static f17.paper.travel.orig.Travel1.Travel.Travel.A;
+import static f17.paper.travel.orig.Travel1.Travel.Travel.C;
+import static f17.paper.travel.orig.Travel1.Travel.Travel.quote;
 
 import java.io.IOException;
 
 import org.scribble.main.ScribbleRuntimeException;
-import org.scribble.net.Buf;
-import org.scribble.net.ObjectStreamFormatter;
-import org.scribble.net.scribsock.ScribServerSocket;
-import org.scribble.net.scribsock.SocketChannelServer;
-import org.scribble.net.session.ExplicitEndpoint;
+import org.scribble.runtime.net.Buf;
+import org.scribble.runtime.net.ObjectStreamFormatter;
+import org.scribble.runtime.net.scribsock.ScribServerSocket;
+import org.scribble.runtime.net.scribsock.SocketChannelServer;
+import org.scribble.runtime.net.session.ExplicitEndpoint;
 
-import demo.fase17.travel.orig.Travel1.Travel.Travel;
-import demo.fase17.travel.orig.Travel1.Travel.channels.A.EndSocket;
-import demo.fase17.travel.orig.Travel1.Travel.channels.A.Travel_A_1;
-import demo.fase17.travel.orig.Travel1.Travel.channels.A.Travel_A_2_Handler;
-import demo.fase17.travel.orig.Travel1.Travel.channels.A.Travel_A_3;
-import demo.fase17.travel.orig.Travel1.Travel.ops.accpt;
-import demo.fase17.travel.orig.Travel1.Travel.ops.query;
-import demo.fase17.travel.orig.Travel1.Travel.ops.reject;
-import demo.fase17.travel.orig.Travel1.Travel.roles.A;
+import f17.paper.travel.orig.Travel1.Travel.Travel;
+import f17.paper.travel.orig.Travel1.Travel.channels.A.EndSocket;
+import f17.paper.travel.orig.Travel1.Travel.channels.A.Travel_A_1;
+import f17.paper.travel.orig.Travel1.Travel.channels.A.Travel_A_2_Handler;
+import f17.paper.travel.orig.Travel1.Travel.channels.A.Travel_A_3;
+import f17.paper.travel.orig.Travel1.Travel.ops.accpt;
+import f17.paper.travel.orig.Travel1.Travel.ops.query;
+import f17.paper.travel.orig.Travel1.Travel.ops.reject;
+import f17.paper.travel.orig.Travel1.Travel.roles.A;
 
 public class Travel1A
 {

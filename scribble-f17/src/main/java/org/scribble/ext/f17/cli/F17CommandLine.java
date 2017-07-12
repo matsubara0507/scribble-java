@@ -121,6 +121,8 @@ public class F17CommandLine extends CommandLine
 			{
 				parseAndCheckWF(job, simpname);  // Includes base passes
 			}
+			
+			// FIXME? f17 FSM building only used for f17 validation -- output tasks, e.g., -api, will still use default Scribble FSMs
 		}
 		else
 		{

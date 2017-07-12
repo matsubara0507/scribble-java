@@ -1,7 +1,7 @@
 //$ bin/scribblec-f17.sh scribble-f17/src/test/scrib/f17/paper/Sec1.scr -f17 P1 -fair
 
 
-module demo.fase17.Sec1;
+module f17.paper.Sec1;
 
 explicit global protocol OptionalDynamicThirdParty(role A, role B, role C)
 {

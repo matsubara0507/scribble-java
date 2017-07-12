@@ -1,8 +1,8 @@
-// N.B. Needs full Scribble (does not fir f17 "core" syntax)
+// N.B. Needs "full" Scribble (does not fit f17 "core" syntax) -- i.e., do not use -f17 flag
 //$ bin/scribblec-f17.sh scribble-f17/src/test/scrib/f17/paper/AppD.scr -project InfoAuth Client
 
 
-module demo.fase17.AppD;
+module f17.paper.AppD;
 
 type <xsd> "UserName" from "AUTH.xsd" as UserName;
 type <xsd> "Password" from "AUTH.xsd" as password;

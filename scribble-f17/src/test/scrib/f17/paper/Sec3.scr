@@ -1,7 +1,7 @@
 //$ bin/scribblec-f17.sh scribble-f17/src/test/scrib/f17/paper/Sec3.scr -f17 Travel
 
 
-module fase17.paper.Sec3;
+module f17.paper.Sec3;
 
 
 explicit global protocol Travel(role C, role A, role S)
