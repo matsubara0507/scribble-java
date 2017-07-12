@@ -16,6 +16,7 @@ type <java> "java.lang.String" from "rt.jar" as Str;
 //*
 global protocol Proto1(role A, role B)
 {
-	1() from A to B;
+	1(p:Int) from A to B; @"open=C"
+	2(p) from B to A;
 }
 //*/

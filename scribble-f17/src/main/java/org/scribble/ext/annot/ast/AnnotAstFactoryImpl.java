@@ -10,6 +10,7 @@ import org.scribble.ast.MessageNode;
 import org.scribble.ast.global.GMessageTransfer;
 import org.scribble.ast.name.NameNode;
 import org.scribble.ast.name.PayloadElemNameNode;
+import org.scribble.ast.name.simple.AmbigNameNode;
 import org.scribble.ast.name.simple.RoleNode;
 import org.scribble.ext.annot.ast.global.AnnotGConnect;
 import org.scribble.ext.annot.ast.global.AnnotGMessageTransfer;
@@ -17,6 +18,7 @@ import org.scribble.ext.annot.ast.name.simple.PayloadVarNode;
 import org.scribble.ext.annot.del.AnnotUnaryPayloadElemDel;
 import org.scribble.ext.annot.del.global.AnnotGConnectDel;
 import org.scribble.ext.annot.del.global.AnnotGMessageTransferDel;
+import org.scribble.ext.annot.del.name.AnnotAmbigNameNodeDel;
 import org.scribble.sesstype.kind.DataTypeKind;
 import org.scribble.sesstype.kind.Kind;
 import org.scribble.sesstype.kind.PayloadTypeKind;
@@ -27,13 +29,21 @@ public class AnnotAstFactoryImpl extends AstFactoryImpl implements AnnotAstFacto
 	
 	// "Overriding" existing node creation
 
-	@Override  // No, still used as previously for non annotated payloads (AnnotAntlrPayloadElemList.parsePayloadElem default)
+	/*@Override  // No, still used as previously for non annotated payloads (AnnotAntlrPayloadElemList.parsePayloadElem default)
 	public <K extends PayloadTypeKind> AnnotUnaryPayloadElem<K> UnaryPayloadElem(CommonTree source, PayloadElemNameNode<K> name)
 	{
 		AnnotUnaryPayloadElem<K> pe = new AnnotUnaryPayloadElem<>(source, name);  // Maybe unnecessary, super is fine
 		pe = del(pe, createDefaultDelegate());
 		//pe = del(pe, new AnnotUnaryPayloadElemDel());
 		return pe;
+	}*/
+
+	@Override
+	public AmbigNameNode AmbiguousNameNode(CommonTree source, String identifier)
+	{
+		AmbigNameNode ann = new AmbigNameNode(source, identifier); 
+		ann = (AmbigNameNode) ann.del(new AnnotAmbigNameNodeDel());
+		return ann;
 	}
 
 	@Override
