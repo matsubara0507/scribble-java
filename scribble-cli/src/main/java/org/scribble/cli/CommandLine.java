@@ -177,11 +177,11 @@ public class CommandLine
 			throw fail;
 		}
 
-		// "Non-attemptable" output tasks
+		// "Non-attemptable" output tasks (a failure stops the whole tool -- cannot "attempt" and carry on)
 		doNonAttemptableOutputTasks(job);
 	}
 
-	protected void tryOutputTasks(Job job) throws CommandLineException, ScribbleException
+	protected void tryOutputTasks(Job job) throws CommandLineException, ScribbleException, ScribParserException  // Latter in case needed by subclasses
 	{
 		// Following must be ordered appropriately -- ?
 		if (this.args.containsKey(CLArgFlag.PROJECT))

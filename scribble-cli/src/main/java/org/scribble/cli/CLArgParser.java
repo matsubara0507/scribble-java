@@ -71,7 +71,6 @@ public class CLArgParser
 		CLArgParser.UNIQUE_FLAGS.put(CLArgParser.AUT_FLAG, CLArgFlag.AUT);
 		CLArgParser.UNIQUE_FLAGS.put(CLArgParser.NO_VALIDATION_FLAG, CLArgFlag.NO_VALIDATION);
 		CLArgParser.UNIQUE_FLAGS.put(CLArgParser.INLINE_MAIN_MOD_FLAG, CLArgFlag.INLINE_MAIN_MOD);
-		CLArgParser.UNIQUE_FLAGS.put(CLArgParser.F17_FLAG, CLArgFlag.F17);
 	}
 
 	private static final Map<String, CLArgFlag> NON_UNIQUE_FLAGS = new HashMap<>();
