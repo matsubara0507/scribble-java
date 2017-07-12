@@ -91,10 +91,13 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 		return this.P.entrySet().stream().anyMatch((e) -> 
 			e.getValue().getActions().stream().anyMatch((a) ->
 				(a.isConnect() || a.isAccept()) && isConnected(e.getKey(), a.peer) 
+
 						// FIXME: check for pending port, if so then port is used -- need to extend an AnnotEConnect type with ScribAnnot (cf. AnnotPayloadType)
+
 		));
 	}
 
+	// Error of opening a port when already connected or another port is still open
 	public boolean isPortOpenError()
 	{
 		for (Entry<Role, EState> e : this.P.entrySet())
@@ -104,7 +107,7 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 				if (a.isSend())
 				{
 					for (PayloadType<?> pt : (Iterable<PayloadType<?>>) a.payload.elems.stream()
-							.filter((x) -> x instanceof AnnotType)::iterator)
+							.filter(x -> x instanceof AnnotType)::iterator)
 					{
 						if (pt instanceof AnnotPayloadType<?>)
 						{
@@ -127,7 +130,10 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 								throw new RuntimeException("[f17] TODO: " + a);
 							}
 						}
-						else if (pt instanceof PayloadVar) { }
+						else if (pt instanceof PayloadVar)
+						{
+							
+						}
 						else
 						{
 							throw new RuntimeException("[f17] TODO: " + a);
@@ -139,6 +145,7 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 		return false;
 	}
 
+	// Error of trying to send a PayloadVar that is not "owned" by the sender
 	public boolean isPortOwnershipError()
 	{
 		for (Entry<Role, EState> e : this.P.entrySet())
@@ -148,9 +155,12 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 				if (a.isSend())
 				{
 					for (PayloadType<?> pt : (Iterable<PayloadType<?>>) a.payload.elems.stream()
-							.filter((x) -> x instanceof AnnotType)::iterator)
+							.filter(x -> x instanceof AnnotType)::iterator)
 					{
-						if (pt instanceof AnnotPayloadType<?>) { }
+						if (pt instanceof AnnotPayloadType<?>)
+						{
+							
+						}
 						else if (pt instanceof PayloadVar)
 						{
 							if (!this.owned.get(e.getKey()).contains((PayloadVar) pt))
@@ -225,7 +235,10 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 				&& (this.P.keySet().stream().anyMatch((r) -> hasMessage(e.getKey(), r))));*/
 		return this.P.entrySet().stream().anyMatch((e) -> isInactive(e.getValue(), E0.get(e.getKey()).id)
 				&& (this.P.keySet().stream().anyMatch((r) -> hasMessage(e.getKey(), r))
-						//|| !this.owned.get(e.getKey()).isEmpty()  // FIXME: need AnnotEConnect to consume owned properly
+						//|| !this.owned.get(e.getKey()).isEmpty()  
+						
+								// FIXME: need AnnotEConnect to consume owned properly
+
 				));
 	}
 	

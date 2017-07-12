@@ -35,16 +35,16 @@ public class F17SModel
 	
 	public F17SafetyErrors getSafetyErrors()
 	{
-		Set<F17SState> conns = this.allStates.values().stream().filter((s) -> s.isConnectionError()).collect(Collectors.toSet());
-		Set<F17SState> disconns = this.allStates.values().stream().filter((s) -> s.isDisconnectedError()).collect(Collectors.toSet());
-		Set<F17SState> unconns = this.allStates.values().stream().filter((s) -> s.isUnconnectedError()).collect(Collectors.toSet());
-		Set<F17SState> syncs = this.allStates.values().stream().filter((s) -> s.isSynchronisationError()).collect(Collectors.toSet());
-		Set<F17SState> recepts = this.allStates.values().stream().filter((s) -> s.isReceptionError()).collect(Collectors.toSet());
-		Set<F17SState> unfins = this.allStates.values().stream().filter((s) -> s.isUnfinishedRoleError(this.E0)).collect(Collectors.toSet());
-		Set<F17SState> orphans = this.allStates.values().stream().filter((s) -> s.isOrphanError(this.E0)).collect(Collectors.toSet());
+		Set<F17SState> conns = this.allStates.values().stream().filter(F17SState::isConnectionError).collect(Collectors.toSet());
+		Set<F17SState> disconns = this.allStates.values().stream().filter(F17SState::isDisconnectedError).collect(Collectors.toSet());
+		Set<F17SState> unconns = this.allStates.values().stream().filter(F17SState::isUnconnectedError).collect(Collectors.toSet());
+		Set<F17SState> syncs = this.allStates.values().stream().filter(F17SState::isSynchronisationError).collect(Collectors.toSet());
+		Set<F17SState> recepts = this.allStates.values().stream().filter(F17SState::isReceptionError).collect(Collectors.toSet());
+		Set<F17SState> unfins = this.allStates.values().stream().filter(s -> s.isUnfinishedRoleError(this.E0)).collect(Collectors.toSet());
+		Set<F17SState> orphans = this.allStates.values().stream().filter(s -> s.isOrphanError(this.E0)).collect(Collectors.toSet());
 		
-		Set<F17SState> portOpens = this.allStates.values().stream().filter((s) -> s.isPortOpenError()).collect(Collectors.toSet());
-		Set<F17SState> portOwners = this.allStates.values().stream().filter((s) -> s.isPortOwnershipError()).collect(Collectors.toSet());
+		Set<F17SState> portOpens = this.allStates.values().stream().filter(F17SState::isPortOpenError).collect(Collectors.toSet());
+		Set<F17SState> portOwners = this.allStates.values().stream().filter(F17SState::isPortOwnershipError).collect(Collectors.toSet());
 		
 		return new F17SafetyErrors(conns, disconns, unconns, syncs, recepts, unfins, orphans, portOpens, portOwners);
 	}

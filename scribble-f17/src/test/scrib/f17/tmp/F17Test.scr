@@ -14,10 +14,15 @@ type <java> "java.lang.String" from "rt.jar" as Str;
 
 
 //*
-global protocol Proto1(role A, role B, role C)
+explicit global protocol Proto1(role A, role B, role C)
 {
+	connect A to B;
+	connect B to C;
 	1(p:Int) from A to B; @"open=C"
-	3(p) from B to C;  // FIXME
-	//connect B to C;  @"port=q"  // FIXME
+	//3(p) from B to C;
+	connect C to A;  @"port=p"  // FIXME: check port owned and correct port peer
 }
 //*/
+
+
+// DbC has no value dependent message types?  e.g., forwarding? -- or encodable by assertions?
