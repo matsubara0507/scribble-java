@@ -11,12 +11,13 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package demo.fase17.travel;
+package fase17.travel2;
 
-import static demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent.C;
-import static demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent.S;
-import static demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent.confirm;
-import static demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent.payment;
+import static fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.A;
+import static fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.C;
+import static fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.S;
+import static fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.confirm;
+import static fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.port;
 
 import java.io.IOException;
 
@@ -27,31 +28,33 @@ import org.scribble.runtime.net.scribsock.ScribServerSocket;
 import org.scribble.runtime.net.scribsock.SocketChannelServer;
 import org.scribble.runtime.net.session.ExplicitEndpoint;
 
-import demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent;
-import demo.fase17.travel.TravelAgent.TravelAgent.channels.S.TravelAgent_S_1;
-import demo.fase17.travel.TravelAgent.TravelAgent.roles.S;
+import fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2;
+import fase17.travel2.TravelAgent2.TravelAgent2.channels.S.TravelAgent2_S_1;
+import fase17.travel2.TravelAgent2.TravelAgent2.roles.S;
 
-public class TravelS
+public class Travel2S
 {
 	public void run() throws Exception
 	{
-		try (ScribServerSocket ss = new SocketChannelServer(9999))
+		try (ScribServerSocket ss = new SocketChannelServer(9999);
+				 ScribServerSocket ss2 = new SocketChannelServer(7777))
 		{
 			Buf<Object> b = new Buf<>();
 
 			while (true)
 			{
-				TravelAgent sess = new TravelAgent();
-				try (ExplicitEndpoint<TravelAgent, S> se = new ExplicitEndpoint<>(sess, S, new ObjectStreamFormatter()))
+				TravelAgent2 sess = new TravelAgent2();
+				try (ExplicitEndpoint<TravelAgent2, S> se = new ExplicitEndpoint<>(sess, S, new ObjectStreamFormatter()))
 				{
-					new TravelAgent_S_1(se)
-						.accept(C, ss)
-						.receive(C, payment, b)
+					new TravelAgent2_S_1(se)
+						.accept(A, ss)
+						.send(A, port, 7777)
+						.accept(C, ss2)  // FIXME: accept message
 						.send(C, confirm, 4567);
 					
 					System.out.println("(S) payment: " + b.val);
 				}
-				catch (ScribbleRuntimeException | IOException | ClassNotFoundException e)
+				catch (ScribbleRuntimeException | IOException e)
 				{
 					e.printStackTrace();
 				}
@@ -61,6 +64,6 @@ public class TravelS
 	
 	public static void main(String[] args) throws Exception
 	{
-		new TravelS().run();
+		new Travel2S().run();
 	}
 }

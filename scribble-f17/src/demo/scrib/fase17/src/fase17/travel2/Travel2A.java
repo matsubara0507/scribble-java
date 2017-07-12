@@ -11,16 +11,16 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package demo.fase17.travel2;
+package fase17.travel2;
 
-import static demo.fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.A;
-import static demo.fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.C;
-import static demo.fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.S;
-import static demo.fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.accpt;
-import static demo.fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.port;
-import static demo.fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.query;
-import static demo.fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.quote;
-import static demo.fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.reject;
+import static fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.A;
+import static fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.C;
+import static fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.S;
+import static fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.accpt;
+import static fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.port;
+import static fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.query;
+import static fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.quote;
+import static fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.reject;
 
 import java.io.IOException;
 
@@ -32,11 +32,11 @@ import org.scribble.runtime.net.scribsock.SocketChannelServer;
 import org.scribble.runtime.net.session.ExplicitEndpoint;
 import org.scribble.runtime.net.session.SocketChannelEndpoint;
 
-import demo.fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2;
-import demo.fase17.travel2.TravelAgent2.TravelAgent2.channels.A.EndSocket;
-import demo.fase17.travel2.TravelAgent2.TravelAgent2.channels.A.TravelAgent2_A_1;
-import demo.fase17.travel2.TravelAgent2.TravelAgent2.channels.A.TravelAgent2_A_2_Cases;
-import demo.fase17.travel2.TravelAgent2.TravelAgent2.roles.A;
+import fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2;
+import fase17.travel2.TravelAgent2.TravelAgent2.channels.A.EndSocket;
+import fase17.travel2.TravelAgent2.TravelAgent2.channels.A.TravelAgent2_A_1;
+import fase17.travel2.TravelAgent2.TravelAgent2.channels.A.TravelAgent2_A_2_Cases;
+import fase17.travel2.TravelAgent2.TravelAgent2.roles.A;
 
 public class Travel2A
 {

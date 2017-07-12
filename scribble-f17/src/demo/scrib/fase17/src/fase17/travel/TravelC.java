@@ -11,26 +11,26 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package demo.fase17.travel;
+package fase17.travel;
 
-import static demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent.A;
-import static demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent.C;
-import static demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent.S;
-import static demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent.accpt;
-import static demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent.confirm;
-import static demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent.payment;
-import static demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent.query;
-import static demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent.quote;
+import static fase17.travel.TravelAgent.TravelAgent.TravelAgent.A;
+import static fase17.travel.TravelAgent.TravelAgent.TravelAgent.C;
+import static fase17.travel.TravelAgent.TravelAgent.TravelAgent.S;
+import static fase17.travel.TravelAgent.TravelAgent.TravelAgent.accpt;
+import static fase17.travel.TravelAgent.TravelAgent.TravelAgent.confirm;
+import static fase17.travel.TravelAgent.TravelAgent.TravelAgent.payment;
+import static fase17.travel.TravelAgent.TravelAgent.TravelAgent.query;
+import static fase17.travel.TravelAgent.TravelAgent.TravelAgent.quote;
 
 import org.scribble.runtime.net.Buf;
 import org.scribble.runtime.net.ObjectStreamFormatter;
 import org.scribble.runtime.net.session.ExplicitEndpoint;
 import org.scribble.runtime.net.session.SocketChannelEndpoint;
 
-import demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent;
-import demo.fase17.travel.TravelAgent.TravelAgent.channels.C.TravelAgent_C_1;
-import demo.fase17.travel.TravelAgent.TravelAgent.channels.C.TravelAgent_C_2;
-import demo.fase17.travel.TravelAgent.TravelAgent.roles.C;
+import fase17.travel.TravelAgent.TravelAgent.TravelAgent;
+import fase17.travel.TravelAgent.TravelAgent.channels.C.TravelAgent_C_1;
+import fase17.travel.TravelAgent.TravelAgent.channels.C.TravelAgent_C_2;
+import fase17.travel.TravelAgent.TravelAgent.roles.C;
 
 public class TravelC
 {

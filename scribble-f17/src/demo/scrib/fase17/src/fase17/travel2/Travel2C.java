@@ -11,26 +11,26 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package demo.fase17.travel2;
+package fase17.travel2;
 
-import static demo.fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.A;
-import static demo.fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.C;
-import static demo.fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.S;
-import static demo.fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.accpt;
-import static demo.fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.confirm;
-import static demo.fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.port;
-import static demo.fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.query;
-import static demo.fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.quote;
+import static fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.A;
+import static fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.C;
+import static fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.S;
+import static fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.accpt;
+import static fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.confirm;
+import static fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.port;
+import static fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.query;
+import static fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2.quote;
 
 import org.scribble.runtime.net.Buf;
 import org.scribble.runtime.net.ObjectStreamFormatter;
 import org.scribble.runtime.net.session.ExplicitEndpoint;
 import org.scribble.runtime.net.session.SocketChannelEndpoint;
 
-import demo.fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2;
-import demo.fase17.travel2.TravelAgent2.TravelAgent2.channels.C.TravelAgent2_C_1;
-import demo.fase17.travel2.TravelAgent2.TravelAgent2.channels.C.TravelAgent2_C_2;
-import demo.fase17.travel2.TravelAgent2.TravelAgent2.roles.C;
+import fase17.travel2.TravelAgent2.TravelAgent2.TravelAgent2;
+import fase17.travel2.TravelAgent2.TravelAgent2.channels.C.TravelAgent2_C_1;
+import fase17.travel2.TravelAgent2.TravelAgent2.channels.C.TravelAgent2_C_2;
+import fase17.travel2.TravelAgent2.TravelAgent2.roles.C;
 
 public class Travel2C
 {

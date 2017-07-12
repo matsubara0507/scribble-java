@@ -1,8 +1,8 @@
-//$ bin/scribblec.sh scribble-f17/src/test/scrib/demo/fase17/travel2/TravelAgent2.scr -ip scribble-f17/src/test/scrib/ -d scribble-f17/src/test/scrib -nocorrelation
-//$ javadoc -cp scribble-core/target/classes:scribble-runtime/target/classes:scribble-f17/src/test/scrib -subpackages demo.fase17.travel2.TravelAgent2.TravelAgent2 -d test/doc/fase17/travel2
+//$ bin/scribblec.sh scribble-f17/src/demo/scrib/fase17/src/fase17/travel2/TravelAgent2.scr -ip scribble-f17/src/demo/scrib/fase17/src -d scribble-f17/src/demo/scrib/fase17/src -nocorrelation -api TravelAgent2 C
+//$ javadoc -cp scribble-core/target/classes:scribble-runtime/target/classes:scribble-f17/src/demo/scrib/fase17/src -subpackages fase17.travel2.TravelAgent2.TravelAgent2 -d scribble-f17/src/demo/scrib/fase17/travel2
 
 
-module demo.fase17.travel2.TravelAgent2;
+module fase17.travel2.TravelAgent2;
 
 type <java> "java.lang.Integer" from "rt.jar" as Int;
 type <java> "java.lang.String" from "rt.jar" as String;

@@ -11,14 +11,14 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package demo.fase17.travel;
+package fase17.travel;
 
-import static demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent.A;
-import static demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent.C;
-import static demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent.accpt;
-import static demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent.query;
-import static demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent.quote;
-import static demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent.reject;
+import static fase17.travel.TravelAgent.TravelAgent.TravelAgent.A;
+import static fase17.travel.TravelAgent.TravelAgent.TravelAgent.C;
+import static fase17.travel.TravelAgent.TravelAgent.TravelAgent.accpt;
+import static fase17.travel.TravelAgent.TravelAgent.TravelAgent.query;
+import static fase17.travel.TravelAgent.TravelAgent.TravelAgent.quote;
+import static fase17.travel.TravelAgent.TravelAgent.TravelAgent.reject;
 
 import java.io.IOException;
 
@@ -29,11 +29,11 @@ import org.scribble.runtime.net.scribsock.ScribServerSocket;
 import org.scribble.runtime.net.scribsock.SocketChannelServer;
 import org.scribble.runtime.net.session.ExplicitEndpoint;
 
-import demo.fase17.travel.TravelAgent.TravelAgent.TravelAgent;
-import demo.fase17.travel.TravelAgent.TravelAgent.channels.A.EndSocket;
-import demo.fase17.travel.TravelAgent.TravelAgent.channels.A.TravelAgent_A_1;
-import demo.fase17.travel.TravelAgent.TravelAgent.channels.A.TravelAgent_A_2_Cases;
-import demo.fase17.travel.TravelAgent.TravelAgent.roles.A;
+import fase17.travel.TravelAgent.TravelAgent.TravelAgent;
+import fase17.travel.TravelAgent.TravelAgent.channels.A.TravelAgent_A_1;
+import fase17.travel.TravelAgent.TravelAgent.channels.A.TravelAgent_A_2_Cases;
+import fase17.travel.TravelAgent.TravelAgent.channels.A.EndSocket;
+import fase17.travel.TravelAgent.TravelAgent.roles.A;
 
 public class TravelA
 {
