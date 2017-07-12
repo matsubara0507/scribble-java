@@ -1,3 +1,4 @@
+// N.B. Needs full Scribble (does not fir f17 "core" syntax)
 //$ bin/scribblec-f17.sh scribble-f17/src/test/scrib/f17/paper/AppD.scr -project InfoAuth Client
 
 
