@@ -61,6 +61,7 @@ public class F17CommandLine extends CommandLine
 		{
 			throw new CommandLineException("No main module has been specified\r\n");
 		}
+
 		this.f17Args = p.getF17Args();
 	}
 
@@ -101,16 +102,16 @@ public class F17CommandLine extends CommandLine
 	}
 
 	@Override
-	public void tryOutputTasks(Job job) throws ScribbleException, CommandLineException, ScribParserException
+	protected void doValidationTasks(Job job) throws ScribbleException, ScribParserException
 	{
-		if (this.args.containsKey(CLArgFlag.PROJECT))  // HACK
-			// modules/f17/src/test/scrib/demo/fase17/AppD.scr in [default] mode bug --- projection/EFSM not properly formed if this if is commented ????
-		{
-
-		}
-
 		if (this.f17Args.containsKey(F17CLArgFlag.F17))
 		{
+			if (this.args.containsKey(CLArgFlag.PROJECT))  // HACK
+				// modules/f17/src/test/scrib/demo/fase17/AppD.scr in [default] mode bug --- projection/EFSM not properly formed if this if is commented ????
+			{
+
+			}
+
 			GProtocolName simpname = new GProtocolName(this.f17Args.get(F17CLArgFlag.F17)[0]);
 			if (simpname.toString().equals("[F17AllTest]"))  // HACK: F17AllTest
 			{
@@ -121,21 +122,14 @@ public class F17CommandLine extends CommandLine
 				parseAndCheckWF(job, simpname);  // Includes base passes
 			}
 		}
+		else
+		{
+			super.doValidationTasks(job);
+		}
 	}
 
 	
 	// Refactor into F17Job?
-	
-	private static void parseAndCheckWF(Job job) throws ScribbleException, ScribParserException
-	{
-		f17PreContextBuilding(job);
-
-		Module main = job.getContext().getMainModule();
-		for (GProtocolDecl gpd : main.getGlobalProtocolDecls())
-		{
-			parseAndCheckWF(job, main, gpd);
-		}
-	}
 
 	private static void parseAndCheckWF(Job job, GProtocolName simpname) throws ScribbleException, ScribParserException
 	{
@@ -155,6 +149,17 @@ public class F17CommandLine extends CommandLine
 		GProtocolDecl gpd = (GProtocolDecl) main.getProtocolDecl(simpname);
 		
 		parseAndCheckWF(job, main, gpd);
+	}
+	
+	private static void parseAndCheckWF(Job job) throws ScribbleException, ScribParserException
+	{
+		f17PreContextBuilding(job);
+
+		Module main = job.getContext().getMainModule();
+		for (GProtocolDecl gpd : main.getGlobalProtocolDecls())
+		{
+			parseAndCheckWF(job, main, gpd);
+		}
 	}
 	
 	private static void f17PreContextBuilding(Job job) throws ScribbleException
@@ -222,7 +227,7 @@ public class F17CommandLine extends CommandLine
 		job.runUnfoldingPass();
 		job.runWellFormednessPasses();*/
 		((F17Job) job).runF17ProjectionPasses();  // projections not built on demand; cf. models
-		
+
 		//return gt;
 	}
 

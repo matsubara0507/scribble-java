@@ -1,4 +1,4 @@
-//$ bin/scribblec.sh scribble-f17/src/test/scrib/f17/paper/fase17/AppD.scr -f17 InfoAuth
+//$ bin/scribblec-f17.sh scribble-f17/src/test/scrib/f17/paper/AppD.scr -project InfoAuth Client
 
 
 module demo.fase17.AppD;

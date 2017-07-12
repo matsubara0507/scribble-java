@@ -104,7 +104,7 @@ public class CommandLine
 		{
 			try
 			{
-				tryRun();
+				runBody();
 			}
 			catch (ScribbleException e)  // Wouldn't need to do this if not Runnable (so maybe change)
 			{
@@ -134,35 +134,24 @@ public class CommandLine
 		}
 	}
 
-	protected void tryRun() throws ScribParserException, ScribbleException, CommandLineException
+	protected void runBody() throws ScribParserException, ScribbleException, CommandLineException
 	{
 		MainContext mc = newMainContext();
 		Job job = mc.newJob();
 		ScribbleException fail = null;
 		try
 		{
-			/*// Scribble extensions (custom Job passes)
-			if (this.args.containsKey(ArgFlag.F17))
-			{
-				GProtocolName simpname = new GProtocolName(this.args.get(ArgFlag.F17)[0]);
-				F17Main.parseAndCheckWF(job, simpname);  // Includes base passes
-			}
-
-			// Base Scribble
-			else*/
-			{
-				job.checkWellFormedness();
-			}
+			doValidationTasks(job);
 		}
 		catch (ScribbleException x)
 		{
 			fail = x;
 		}
 
-		// Attempt certain "output tasks" even if above failed, in case can still do useful output (hacky)
+		// Attempt certain "output tasks" even if above failed, in case can still do some useful output (hacky)
 		try
 		{
-			tryOutputTasks(job);
+			doAttemptableOutputTasks(job);
 		}
 		catch (ScribbleException x)
 		{
@@ -177,11 +166,27 @@ public class CommandLine
 			throw fail;
 		}
 
-		// "Non-attemptable" output tasks (a failure stops the whole tool -- cannot "attempt" and carry on)
+		// "Non-attemptable" output tasks: should not attempt these if any previous failure
 		doNonAttemptableOutputTasks(job);
 	}
 
-	protected void tryOutputTasks(Job job) throws CommandLineException, ScribbleException, ScribParserException  // Latter in case needed by subclasses
+	protected void doValidationTasks(Job job) throws ScribbleException, ScribParserException  // Latter in case needed by subclasses
+	{
+		/*// Scribble extensions (custom Job passes)
+		if (this.args.containsKey(ArgFlag.F17))
+		{
+			GProtocolName simpname = new GProtocolName(this.args.get(ArgFlag.F17)[0]);
+			F17Main.parseAndCheckWF(job, simpname);  // Includes base passes
+		}
+
+		// Base Scribble
+		else*/
+		{
+			job.checkWellFormedness();
+		}
+	}
+
+	protected void doAttemptableOutputTasks(Job job) throws CommandLineException, ScribbleException
 	{
 		// Following must be ordered appropriately -- ?
 		if (this.args.containsKey(CLArgFlag.PROJECT))
