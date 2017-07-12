@@ -1,11 +1,11 @@
 //Raymond@HZHL3 ~/code/eclipse/scribble/github.com/rhu1-f17/scribble-java
-//$ bin/scribblec-f17.sh -ip scribble-f17/src/test/scrib/ -d scribble-f17/src/test/scrib/ scribble-f17/src/test/scrib/tmp/Test.scr 
+//$ bin/scribblec-f17.sh -ip scribble-f17/src/test/scrib/ -d scribble-f17/src/test/scrib/ scribble-f17/src/test/scrib/f17/tmp/F17Test.scr 
 
 
 //http://sandbox.kidstrythisathome.com/erdos/
 
 
-module Test;
+module f17.tmp.F17Test;
 
 
 type <java> "java.lang.Integer" from "rt.jar" as Int;

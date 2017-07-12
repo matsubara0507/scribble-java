@@ -1,4 +1,4 @@
-module demo.fase17.Sec3;
+module fase17.paper.Sec3;
 
 
 explicit global protocol Travel(role C, role A, role S)

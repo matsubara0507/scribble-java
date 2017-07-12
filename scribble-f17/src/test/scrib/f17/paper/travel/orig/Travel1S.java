@@ -1,4 +1,4 @@
-package f17.travel.orig;
+package f17.paper.travel.orig;
 
 import static demo.fase17.travel.orig.Travel1.Travel.Travel.C;
 import static demo.fase17.travel.orig.Travel1.Travel.Travel.S;

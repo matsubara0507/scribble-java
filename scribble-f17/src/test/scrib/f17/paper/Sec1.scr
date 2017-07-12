@@ -1,4 +1,4 @@
-//$ bin/scribblec.sh modules/f17/src/test/scrib/demo/fase17/Sec1.scr -f17 P1 -fair
+//$ bin/scribblec.sh scribble-f17/src/test/scrib/f17/paper/Sec1.scr -f17 P1 -fair
 
 
 module demo.fase17.Sec1;

@@ -1,4 +1,4 @@
-module f17.AppA2;
+module f17.paper.AppA2;
 
 
 global protocol InconChoiceSubj(role A, role B, role C)

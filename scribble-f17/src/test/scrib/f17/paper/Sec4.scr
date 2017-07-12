@@ -1,4 +1,4 @@
-module f17.Sec4;
+module f17.paper.Sec4;
 
 type <java> "java.lang.String" from "rt.jar" as Str;
 type <java> "java.lang.Integer" from "rt.jar" as Int;
