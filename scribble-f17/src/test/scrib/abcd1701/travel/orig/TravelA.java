@@ -1,27 +1,27 @@
-package demo.fase17.abcd1701.travel.orig;
+package abcd1701.travel.orig;
 
-import static demo.fase17.abcd1701.travel.orig.Travel.Travel.Travel.A;
-import static demo.fase17.abcd1701.travel.orig.Travel.Travel.Travel.C;
-import static demo.fase17.abcd1701.travel.orig.Travel.Travel.Travel.quote;
+import static abcd1701.travel.orig.Travel.Travel.Travel.A;
+import static abcd1701.travel.orig.Travel.Travel.Travel.C;
+import static abcd1701.travel.orig.Travel.Travel.Travel.quote;
 
 import java.io.IOException;
 
 import org.scribble.main.ScribbleRuntimeException;
-import org.scribble.net.Buf;
-import org.scribble.net.ObjectStreamFormatter;
-import org.scribble.net.scribsock.ScribServerSocket;
-import org.scribble.net.scribsock.SocketChannelServer;
-import org.scribble.net.session.MPSTEndpoint;
+import org.scribble.runtime.net.Buf;
+import org.scribble.runtime.net.ObjectStreamFormatter;
+import org.scribble.runtime.net.scribsock.ScribServerSocket;
+import org.scribble.runtime.net.scribsock.SocketChannelServer;
+import org.scribble.runtime.net.session.MPSTEndpoint;
 
-import demo.fase17.abcd1701.travel.orig.Travel.Travel.Travel;
-import demo.fase17.abcd1701.travel.orig.Travel.Travel.channels.A.EndSocket;
-import demo.fase17.abcd1701.travel.orig.Travel.Travel.channels.A.Travel_A_1;
-import demo.fase17.abcd1701.travel.orig.Travel.Travel.channels.A.Travel_A_1_Handler;
-import demo.fase17.abcd1701.travel.orig.Travel.Travel.channels.A.Travel_A_2;
-import demo.fase17.abcd1701.travel.orig.Travel.Travel.ops.accpt;
-import demo.fase17.abcd1701.travel.orig.Travel.Travel.ops.query;
-import demo.fase17.abcd1701.travel.orig.Travel.Travel.ops.reject;
-import demo.fase17.abcd1701.travel.orig.Travel.Travel.roles.A;
+import abcd1701.travel.orig.Travel.Travel.Travel;
+import abcd1701.travel.orig.Travel.Travel.channels.A.EndSocket;
+import abcd1701.travel.orig.Travel.Travel.channels.A.Travel_A_1;
+import abcd1701.travel.orig.Travel.Travel.channels.A.Travel_A_1_Handler;
+import abcd1701.travel.orig.Travel.Travel.channels.A.Travel_A_2;
+import abcd1701.travel.orig.Travel.Travel.ops.accpt;
+import abcd1701.travel.orig.Travel.Travel.ops.query;
+import abcd1701.travel.orig.Travel.Travel.ops.reject;
+import abcd1701.travel.orig.Travel.Travel.roles.A;
 
 public class TravelA
 {

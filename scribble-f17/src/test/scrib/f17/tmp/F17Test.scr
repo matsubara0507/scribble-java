@@ -17,6 +17,8 @@ type <java> "java.lang.String" from "rt.jar" as Str;
 global protocol Proto1(role A, role B)
 {
 	1(p:Int) from A to B; @"open=C"
-	2(p) from B to A;
+	2() from B to A;
+	//3(p) from B to C;  // FIXME
+	//connect B to C;  @"port=q"  // FIXME
 }
 //*/

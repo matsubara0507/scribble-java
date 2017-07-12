@@ -1,23 +1,23 @@
-package demo.fase17.abcd1701.travel.exconn;
+package abcd1701.travel.exconn;
 
-import static demo.fase17.abcd1701.travel.exconn.Travel1.Travel.Travel.C;
-import static demo.fase17.abcd1701.travel.exconn.Travel1.Travel.Travel.S;
-import static demo.fase17.abcd1701.travel.exconn.Travel1.Travel.Travel.confirm;
-import static demo.fase17.abcd1701.travel.exconn.Travel1.Travel.Travel.pay;
+import static abcd1701.travel.exconn.Travel1.Travel.Travel.C;
+import static abcd1701.travel.exconn.Travel1.Travel.Travel.S;
+import static abcd1701.travel.exconn.Travel1.Travel.Travel.confirm;
+import static abcd1701.travel.exconn.Travel1.Travel.Travel.pay;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 import org.scribble.main.ScribbleRuntimeException;
-import org.scribble.net.Buf;
-import org.scribble.net.ObjectStreamFormatter;
-import org.scribble.net.scribsock.ScribServerSocket;
-import org.scribble.net.scribsock.SocketChannelServer;
-import org.scribble.net.session.ExplicitEndpoint;
+import org.scribble.runtime.net.Buf;
+import org.scribble.runtime.net.ObjectStreamFormatter;
+import org.scribble.runtime.net.scribsock.ScribServerSocket;
+import org.scribble.runtime.net.scribsock.SocketChannelServer;
+import org.scribble.runtime.net.session.ExplicitEndpoint;
 
-import demo.fase17.abcd1701.travel.exconn.Travel1.Travel.Travel;
-import demo.fase17.abcd1701.travel.exconn.Travel1.Travel.channels.S.Travel_S_1;
-import demo.fase17.abcd1701.travel.exconn.Travel1.Travel.roles.S;
+import abcd1701.travel.exconn.Travel1.Travel.Travel;
+import abcd1701.travel.exconn.Travel1.Travel.channels.S.Travel_S_1;
+import abcd1701.travel.exconn.Travel1.Travel.roles.S;
 
 public class Travel1S
 {

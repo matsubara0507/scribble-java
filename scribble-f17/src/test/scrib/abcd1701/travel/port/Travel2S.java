@@ -1,22 +1,22 @@
-package demo.fase17.abcd1701.travel.port;
+package abcd1701.travel.port;
 
-import static demo.fase17.abcd1701.travel.port.Travel2.Travel.Travel.A;
-import static demo.fase17.abcd1701.travel.port.Travel2.Travel.Travel.C;
-import static demo.fase17.abcd1701.travel.port.Travel2.Travel.Travel.S;
-import static demo.fase17.abcd1701.travel.port.Travel2.Travel.Travel.confirm;
-import static demo.fase17.abcd1701.travel.port.Travel2.Travel.Travel.pay;
-import static demo.fase17.abcd1701.travel.port.Travel2.Travel.Travel.port;
+import static abcd1701.travel.port.Travel2.Travel.Travel.A;
+import static abcd1701.travel.port.Travel2.Travel.Travel.C;
+import static abcd1701.travel.port.Travel2.Travel.Travel.S;
+import static abcd1701.travel.port.Travel2.Travel.Travel.confirm;
+import static abcd1701.travel.port.Travel2.Travel.Travel.pay;
+import static abcd1701.travel.port.Travel2.Travel.Travel.port;
 
-import org.scribble.net.Buf;
-import org.scribble.net.ObjectStreamFormatter;
-import org.scribble.net.scribsock.ScribServerSocket;
-import org.scribble.net.scribsock.SocketChannelServer;
-import org.scribble.net.session.ExplicitEndpoint;
+import org.scribble.runtime.net.Buf;
+import org.scribble.runtime.net.ObjectStreamFormatter;
+import org.scribble.runtime.net.scribsock.ScribServerSocket;
+import org.scribble.runtime.net.scribsock.SocketChannelServer;
+import org.scribble.runtime.net.session.ExplicitEndpoint;
 
-import demo.fase17.abcd1701.travel.port.Travel2.Travel.Travel;
-import demo.fase17.abcd1701.travel.port.Travel2.Travel.channels.S.Travel_S_1;
-import demo.fase17.abcd1701.travel.port.Travel2.Travel.channels.S.Travel_S_2;
-import demo.fase17.abcd1701.travel.port.Travel2.Travel.roles.S;
+import abcd1701.travel.port.Travel2.Travel.Travel;
+import abcd1701.travel.port.Travel2.Travel.channels.S.Travel_S_1;
+import abcd1701.travel.port.Travel2.Travel.channels.S.Travel_S_2;
+import abcd1701.travel.port.Travel2.Travel.roles.S;
 
 public class Travel2S
 {

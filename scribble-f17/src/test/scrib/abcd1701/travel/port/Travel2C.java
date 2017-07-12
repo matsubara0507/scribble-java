@@ -1,30 +1,30 @@
-package demo.fase17.abcd1701.travel.port;
+package abcd1701.travel.port;
 
-import static demo.fase17.abcd1701.travel.port.Travel2.Travel.Travel.A;
-import static demo.fase17.abcd1701.travel.port.Travel2.Travel.Travel.C;
-import static demo.fase17.abcd1701.travel.port.Travel2.Travel.Travel.S;
-import static demo.fase17.abcd1701.travel.port.Travel2.Travel.Travel.accpt;
-import static demo.fase17.abcd1701.travel.port.Travel2.Travel.Travel.confirm;
-import static demo.fase17.abcd1701.travel.port.Travel2.Travel.Travel.pay;
-import static demo.fase17.abcd1701.travel.port.Travel2.Travel.Travel.query;
-import static demo.fase17.abcd1701.travel.port.Travel2.Travel.Travel.quote;
-import static demo.fase17.abcd1701.travel.port.Travel2.Travel.Travel.reject;
+import static abcd1701.travel.port.Travel2.Travel.Travel.A;
+import static abcd1701.travel.port.Travel2.Travel.Travel.C;
+import static abcd1701.travel.port.Travel2.Travel.Travel.S;
+import static abcd1701.travel.port.Travel2.Travel.Travel.accpt;
+import static abcd1701.travel.port.Travel2.Travel.Travel.ack;
+import static abcd1701.travel.port.Travel2.Travel.Travel.confirm;
+import static abcd1701.travel.port.Travel2.Travel.Travel.pay;
+import static abcd1701.travel.port.Travel2.Travel.Travel.port;
+import static abcd1701.travel.port.Travel2.Travel.Travel.query;
+import static abcd1701.travel.port.Travel2.Travel.Travel.quote;
+import static abcd1701.travel.port.Travel2.Travel.Travel.reject;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.scribble.net.Buf;
-import org.scribble.net.ObjectStreamFormatter;
-import org.scribble.net.session.ExplicitEndpoint;
-import org.scribble.net.session.SocketChannelEndpoint;
+import org.scribble.runtime.net.Buf;
+import org.scribble.runtime.net.ObjectStreamFormatter;
+import org.scribble.runtime.net.session.ExplicitEndpoint;
+import org.scribble.runtime.net.session.SocketChannelEndpoint;
 
-import demo.fase17.abcd1701.travel.port.Travel2.Travel.Travel;
-import demo.fase17.abcd1701.travel.port.Travel2.Travel.channels.C.Travel_C_1;
-import demo.fase17.abcd1701.travel.port.Travel2.Travel.channels.C.Travel_C_2;
-import demo.fase17.abcd1701.travel.port.Travel2.Travel.roles.C;
-
-import static demo.fase17.abcd1701.travel.port.Travel2.Travel.Travel.*;
+import abcd1701.travel.port.Travel2.Travel.Travel;
+import abcd1701.travel.port.Travel2.Travel.channels.C.Travel_C_1;
+import abcd1701.travel.port.Travel2.Travel.channels.C.Travel_C_2;
+import abcd1701.travel.port.Travel2.Travel.roles.C;
 
 public class Travel2C
 {

@@ -1,32 +1,32 @@
 package f17.paper.travel.port;
 
-import static demo.fase17.travel.port.Travel2.Travel.Travel.A;
-import static demo.fase17.travel.port.Travel2.Travel.Travel.C;
-import static demo.fase17.travel.port.Travel2.Travel.Travel.S;
-import static demo.fase17.travel.port.Travel2.Travel.Travel.ack;
-import static demo.fase17.travel.port.Travel2.Travel.Travel.port;
-import static demo.fase17.travel.port.Travel2.Travel.Travel.quote;
+import static f17.paper.travel.port.Travel2.Travel.Travel.A;
+import static f17.paper.travel.port.Travel2.Travel.Travel.C;
+import static f17.paper.travel.port.Travel2.Travel.Travel.S;
+import static f17.paper.travel.port.Travel2.Travel.Travel.ack;
+import static f17.paper.travel.port.Travel2.Travel.Travel.port;
+import static f17.paper.travel.port.Travel2.Travel.Travel.quote;
 
 import java.io.IOException;
 
 import org.scribble.main.ScribbleRuntimeException;
-import org.scribble.net.Buf;
-import org.scribble.net.ObjectStreamFormatter;
-import org.scribble.net.scribsock.ScribServerSocket;
-import org.scribble.net.scribsock.SocketChannelServer;
-import org.scribble.net.session.ExplicitEndpoint;
-import org.scribble.net.session.SocketChannelEndpoint;
+import org.scribble.runtime.net.Buf;
+import org.scribble.runtime.net.ObjectStreamFormatter;
+import org.scribble.runtime.net.scribsock.ScribServerSocket;
+import org.scribble.runtime.net.scribsock.SocketChannelServer;
+import org.scribble.runtime.net.session.ExplicitEndpoint;
+import org.scribble.runtime.net.session.SocketChannelEndpoint;
 
-import demo.fase17.travel.port.Travel2.Travel.Travel;
-import demo.fase17.travel.port.Travel2.Travel.channels.A.EndSocket;
-import demo.fase17.travel.port.Travel2.Travel.channels.A.Travel_A_1;
-import demo.fase17.travel.port.Travel2.Travel.channels.A.Travel_A_2_Handler;
-import demo.fase17.travel.port.Travel2.Travel.channels.A.Travel_A_3;
-import demo.fase17.travel.port.Travel2.Travel.channels.A.Travel_A_4;
-import demo.fase17.travel.port.Travel2.Travel.ops.accpt;
-import demo.fase17.travel.port.Travel2.Travel.ops.query;
-import demo.fase17.travel.port.Travel2.Travel.ops.reject;
-import demo.fase17.travel.port.Travel2.Travel.roles.A;
+import f17.paper.travel.port.Travel2.Travel.Travel;
+import f17.paper.travel.port.Travel2.Travel.channels.A.EndSocket;
+import f17.paper.travel.port.Travel2.Travel.channels.A.Travel_A_1;
+import f17.paper.travel.port.Travel2.Travel.channels.A.Travel_A_2_Handler;
+import f17.paper.travel.port.Travel2.Travel.channels.A.Travel_A_3;
+import f17.paper.travel.port.Travel2.Travel.channels.A.Travel_A_4;
+import f17.paper.travel.port.Travel2.Travel.ops.accpt;
+import f17.paper.travel.port.Travel2.Travel.ops.query;
+import f17.paper.travel.port.Travel2.Travel.ops.reject;
+import f17.paper.travel.port.Travel2.Travel.roles.A;
 
 public class Travel2A
 {

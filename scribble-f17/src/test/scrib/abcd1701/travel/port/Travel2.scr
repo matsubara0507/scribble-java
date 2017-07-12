@@ -1,7 +1,7 @@
-//$ bin/scribblec.sh modules/f17/src/test/scrib/demo/fase17/abcd1701/travel/port/Travel2.scr -f17 Travel
-//$ bin/scribblec.sh modules/f17/src/test/scrib/demo/fase17/abcd1701/travel/port/Travel2.scr -f17 Travel -api Travel C -d modules/f17/src/test/scrib
+//$ bin/scribblec-f17.sh scribble-f17/src/test/scrib/abcd1701/travel/port/Travel2.scr -f17 Travel
+//$ bin/scribblec-f17.sh scribble-f17/src/test/scrib/abcd1701/travel/port/Travel2.scr -d scribble-f17/src/test/scrib -f17 Travel -api Travel C
 
-module demo.fase17.abcd1701.travel.port.Travel2;
+module abcd1701.travel.port.Travel2;
 
 type <java> "java.lang.String" from "rt.jar" as Str;
 type <java> "java.lang.Integer" from "rt.jar" as Int;

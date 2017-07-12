@@ -1,27 +1,27 @@
-package demo.fase17.abcd1701.travel.orig;
+package abcd1701.travel.orig;
 
-import static demo.fase17.abcd1701.travel.orig.Travel.Travel.Travel.C;
-import static demo.fase17.abcd1701.travel.orig.Travel.Travel.Travel.S;
-import static demo.fase17.abcd1701.travel.orig.Travel.Travel.Travel.confirm;
+import static abcd1701.travel.orig.Travel.Travel.Travel.C;
+import static abcd1701.travel.orig.Travel.Travel.Travel.S;
+import static abcd1701.travel.orig.Travel.Travel.Travel.confirm;
 
 import java.io.IOException;
 
 import org.scribble.main.ScribbleRuntimeException;
-import org.scribble.net.Buf;
-import org.scribble.net.ObjectStreamFormatter;
-import org.scribble.net.scribsock.ScribServerSocket;
-import org.scribble.net.scribsock.SocketChannelServer;
-import org.scribble.net.session.MPSTEndpoint;
+import org.scribble.runtime.net.Buf;
+import org.scribble.runtime.net.ObjectStreamFormatter;
+import org.scribble.runtime.net.scribsock.ScribServerSocket;
+import org.scribble.runtime.net.scribsock.SocketChannelServer;
+import org.scribble.runtime.net.session.MPSTEndpoint;
 
-import demo.fase17.abcd1701.travel.orig.Travel.Travel.Travel;
-import demo.fase17.abcd1701.travel.orig.Travel.Travel.channels.S.EndSocket;
-import demo.fase17.abcd1701.travel.orig.Travel.Travel.channels.S.Travel_S_1;
-import demo.fase17.abcd1701.travel.orig.Travel.Travel.channels.S.Travel_S_1_Handler;
-import demo.fase17.abcd1701.travel.orig.Travel.Travel.channels.S.Travel_S_2;
-import demo.fase17.abcd1701.travel.orig.Travel.Travel.ops._1;
-import demo.fase17.abcd1701.travel.orig.Travel.Travel.ops.pay;
-import demo.fase17.abcd1701.travel.orig.Travel.Travel.ops.reject;
-import demo.fase17.abcd1701.travel.orig.Travel.Travel.roles.S;
+import abcd1701.travel.orig.Travel.Travel.Travel;
+import abcd1701.travel.orig.Travel.Travel.channels.S.EndSocket;
+import abcd1701.travel.orig.Travel.Travel.channels.S.Travel_S_1;
+import abcd1701.travel.orig.Travel.Travel.channels.S.Travel_S_1_Handler;
+import abcd1701.travel.orig.Travel.Travel.channels.S.Travel_S_2;
+import abcd1701.travel.orig.Travel.Travel.ops._1;
+import abcd1701.travel.orig.Travel.Travel.ops.pay;
+import abcd1701.travel.orig.Travel.Travel.ops.reject;
+import abcd1701.travel.orig.Travel.Travel.roles.S;
 
 public class TravelS
 {
