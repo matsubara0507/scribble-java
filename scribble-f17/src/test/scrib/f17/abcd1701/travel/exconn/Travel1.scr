@@ -1,0 +1,35 @@
+//$ bin/scribblec-f17.sh scribble-f17/src/test/scrib/f17/abcd1701/travel/exconn/Travel1.scr -f17 Travel
+//$ bin/scribblec-f17.sh scribble-f17/src/test/scrib/f17/abcd1701/travel/exconn/Travel1.scr -d scribble-f17/src/test/scrib -f17 Travel -api Travel C
+
+module f17.abcd1701.travel.exconn.Travel1;
+
+type <java> "java.lang.String" from "rt.jar" as Str;
+type <java> "java.lang.Integer" from "rt.jar" as Int;
+
+
+explicit global protocol Travel(role C, role A, role S)
+{
+	connect C to A;
+	do Nego(C, A, S);
+}
+
+aux global protocol Nego(role C, role A, role S)
+{
+	choice at C
+	{
+		query(Str) from C to A;
+		quote(Int) from A to C;
+		do Nego(C, A, S);
+	}
+	or
+	{
+		connect C to S;
+		pay(Str) from C to S;
+		confirm(Int) from S to C;
+		accpt(Int) from C to A;
+	}
+	or
+	{
+		reject() from C to A;
+	}
+}

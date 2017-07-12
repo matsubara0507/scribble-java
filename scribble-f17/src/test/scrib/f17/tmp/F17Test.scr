@@ -12,6 +12,8 @@ type <java> "java.lang.Integer" from "rt.jar" as Int;
 type <java> "java.lang.String" from "rt.jar" as Str;
 
 
+// FIXME: try f17 AllTest
+
 
 //*
 explicit global protocol Proto1(role A, role B, role C)

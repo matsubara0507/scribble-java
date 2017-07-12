@@ -1,4 +1,4 @@
-module demo.fase17.intro.FirstR;
+module fase17.intro.FirstR;
 
 
 explicit global protocol P2(role A, role B, role C)

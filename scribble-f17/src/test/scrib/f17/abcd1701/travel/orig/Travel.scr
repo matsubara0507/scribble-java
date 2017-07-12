@@ -1,0 +1,31 @@
+//$ bin/scribblec-f17.sh scribble-f17/src/test/scrib/f17.abcd1701/travel/orig/Travel.scr -f17 Travel
+//$ bin/scribblec-f17.sh scribble-f17/src/test/scrib/f17.abcd1701/travel/orig/Travel.scr -d scribble-f17/src/test/scrib -f17 Travel -api Travel C 
+
+module f17.abcd1701.travel.orig.Travel;
+
+type <java> "java.lang.String" from "rt.jar" as Str;
+type <java> "java.lang.Integer" from "rt.jar" as Int;
+
+
+global protocol Travel(role C, role A, role S)
+{
+	choice at C
+	{
+		query(Str) from C to A;
+		quote(Int) from A to C;
+		1() from C to S;           // For mergability (and progress)
+		do Travel(C, A, S);
+	}
+	or
+	{
+		//2() from C to A;           // (For directed choice)
+		pay(Str) from C to S;
+		confirm(Int) from S to C;
+		accpt(Int) from C to A;
+	}
+	or
+	{
+		reject() from C to A;
+		reject() from C to S;
+	}
+}
