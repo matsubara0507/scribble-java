@@ -173,7 +173,7 @@ public class CommandLine
 	protected void doValidationTasks(Job job) throws ScribbleException, ScribParserException  // Latter in case needed by subclasses
 	{
 		/*// Scribble extensions (custom Job passes)
-		if (this.args.containsKey(ArgFlag.F17))
+		if (this.args.containsKey(F17CLArgFlag.F17))
 		{
 			GProtocolName simpname = new GProtocolName(this.args.get(ArgFlag.F17)[0]);
 			F17Main.parseAndCheckWF(job, simpname);  // Includes base passes
