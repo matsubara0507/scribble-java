@@ -1,4 +1,4 @@
-//$ bin/scribblec-f17.sh scribble-f17/src/test/scrib/f17/abcd1701/valid/MyMod2.scr -ufsmpng Proto1 A test.png
+//$ bin/scribblec-f17.sh scribble-f17/src/test/scrib/f17/abcd1701/valid/MyMod2.scr -ufsmpng Proto1 C test.png
 //$ bin/scribblec-f17.sh scribble-f17/src/test/scrib/f17/abcd1701/valid/MyMod2.scr -umodelpng Proto1 test.png
 
 module f17.abcd1701.valid.MyMod2;
