@@ -62,7 +62,24 @@
 					</execution>
 				</executions>
 			</plugin>
+			
+			<!-- FIXME: following excludes don't work unless this module is specified as a child in parent pom -->	
+			<plugin>
+				<groupId>com.mycila</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>**/*.scr</exclude>
+						<exclude>**/*.java</exclude>
+						<exclude>**/*.policy</exclude>
+						<exclude>**/*.xml</exclude>
+						<exclude>**/*.html</exclude>
+						<exclude>**/stylesheet.css</exclude>
+						<exclude>**/script.js</exclude>
+						<exclude>**/package-list</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
-
 </project>
