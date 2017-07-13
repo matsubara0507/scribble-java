@@ -36,6 +36,14 @@ public class F17AllTest extends ScribAllTest
 	}
 
 	@Override
+	protected void runTest(String dir) throws CommandLineException, ScribbleException
+	{
+		new F17CommandLine(this.example, CLArgParser.JUNIT_FLAG, CLArgParser.IMPORT_PATH_FLAG, dir,
+						F17CLArgParser.F17_FLAG, "[F17AllTest]")  // HACK (cf. F17Main)
+				.run();
+	}
+
+	@Override
 	@Test
 	public void tests() throws IOException, InterruptedException, ExecutionException
 	{
@@ -48,7 +56,7 @@ public class F17AllTest extends ScribAllTest
 				dir = dir.substring(1).replace("/", "\\");
 			}
 			
-			String[] SKIP =  // HACK
+			String[] SKIP =  // Hacked for f17
 				{
 					// f17 doesn't check choice subjects
 					"scribble-test/target/test-classes/bad/wfchoice/enabling/twoparty/Test01b.scr",
@@ -57,10 +65,10 @@ public class F17AllTest extends ScribAllTest
 					// The original choice subject problem is gone, but we get a role-progress error instead (without fairness)
 					//"scribble-test/target/test-classes/bad/wfchoice/enabling/fourparty/Test01.scr"
 				};
-			String foo = this.example.replace("\\", "/");
+			String tmp = this.example.replace("\\", "/");
 			for (String skip : SKIP)
 			{
-				if (foo.endsWith(skip))
+				if (tmp.endsWith(skip))
 				{
 					F17AllTest.NUM_SKIPPED++;
 					System.out.println("[f17] Manually skipping: " + this.example + " (" + F17AllTest.NUM_SKIPPED + " skipped.)");
@@ -68,17 +76,16 @@ public class F17AllTest extends ScribAllTest
 				}
 			}
 			
-			//new CommandLine(this.example, CommandLineArgParser.JUNIT_FLAG, CommandLineArgParser.IMPORT_PATH_FLAG, dir).run();
-			new F17CommandLine(this.example, CLArgParser.JUNIT_FLAG, CLArgParser.IMPORT_PATH_FLAG, dir, 
-						F17CLArgParser.F17_FLAG, "[F17AllTest]")  // HACK (cf. F17Main)
-					.run();
+			runTest(dir);
 			Assert.assertFalse("Expecting exception", this.isBadTest);
 		}
-		catch (F17SyntaxException e)  // HACK
+
+		catch (F17SyntaxException e)  // Hacked for f17
 		{
 			F17AllTest.NUM_SKIPPED++;
 			System.out.println("[f17] Skipping: " + this.example + "  (" + F17AllTest.NUM_SKIPPED + " skipped)");
 		}
+
 		catch (ScribbleException e)
 		{
 			Assert.assertTrue("Unexpected exception '\n" + ClassLoader.getSystemResource(getTestRootDir()).getFile() + "\n" + e.getMessage() + "'", this.isBadTest);
