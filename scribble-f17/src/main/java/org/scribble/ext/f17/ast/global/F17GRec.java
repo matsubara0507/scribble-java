@@ -7,6 +7,7 @@ import org.scribble.ext.f17.main.F17Exception;
 import org.scribble.sesstype.name.RecVar;
 import org.scribble.sesstype.name.Role;
 
+// FIXME: redo equals/hashCode -- factor out with super properly
 public class F17GRec extends F17Rec<F17GType> implements F17GType
 {
 	public F17GRec(RecVar recvar, F17GType body)

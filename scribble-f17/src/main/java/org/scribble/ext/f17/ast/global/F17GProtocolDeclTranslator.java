@@ -132,7 +132,7 @@ public class F17GProtocolDeclTranslator
 					}
 					F17GChoice tmp = (F17GChoice) p;
 					//tmp.cases.entrySet().forEach((e) -> cases.put(e.getKey(), e.getValue()));
-					for (Entry<F17GAction, F17GType> e : tmp.cases.entrySet())
+					for (Entry<F17GAction, F17GType> e : tmp.cases.entrySet())  // FIXME: redundant? due to checkChoiceGuard above?
 					{
 						F17GAction k = e.getKey();
 						if (k.isMessageAction())

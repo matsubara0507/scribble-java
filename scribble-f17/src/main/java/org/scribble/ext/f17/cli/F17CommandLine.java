@@ -173,6 +173,7 @@ public class F17CommandLine extends CommandLine
 	}
 
 	// Pre: f17PreContextBuilding
+	// FIXME: refactor to take just Job and simple global name
 	private static void parseAndCheckWF(Job job, Module main, GProtocolDecl gpd) throws ScribbleException, ScribParserException
 	{
 		F17GType gt = new F17GProtocolDeclTranslator().translate(job, ((ModuleDel) main.del()).getModuleContext(), gpd);
@@ -181,7 +182,7 @@ public class F17CommandLine extends CommandLine
 
 		job.debugPrintln
 		//System.out.println
-			("[f17] Translated:\n  " + gt);
+			("\n[f17] Translated:\n  " + gt);
 
 		Map<Role, F17LType> P0 = new HashMap<>();
 		F17Projector p = new F17Projector();
@@ -192,7 +193,7 @@ public class F17CommandLine extends CommandLine
 
 			job.debugPrintln
 			//System.out.println
-				("[f17] Projected onto " + r + ":\n  " + lt);
+				("\n[f17] Projected onto " + r + ":\n  " + lt);
 		}
 
 		F17EGraphBuilder builder = new F17EGraphBuilder(job.ef);
@@ -204,7 +205,7 @@ public class F17CommandLine extends CommandLine
 
 			job.debugPrintln
 			//System.out.println
-					("[f17] Built endpoint graph for " + r + ":\n" + g.toDot());
+					("\n[f17] Built endpoint graph for " + r + ":\n" + g.toDot());
 		}
 		
 		validate(job, gpd.isExplicitModifier(), E0);
@@ -219,7 +220,7 @@ public class F17CommandLine extends CommandLine
 
 				job.debugPrintln
 				//System.out.println
-						("[f17] Unfair transform for " + r + ":\n" + u.toDot());
+						("\n[f17] Unfair transform for " + r + ":\n" + u.toDot());
 			}
 			
 			validate(job, gpd.isExplicitModifier(), U0, true);
@@ -239,7 +240,7 @@ public class F17CommandLine extends CommandLine
 
 		job.debugPrintln
 		//System.out.println
-				("[f17] Built model:\n" + m.toDot());
+				("\n[f17] Built model:\n" + m.toDot());
 		
 		if (unfair.length == 0)
 		{
@@ -248,7 +249,7 @@ public class F17CommandLine extends CommandLine
 			{
 				job.debugPrintln
 				//System.out.println
-						("[f17] Protocol safe.");
+						("\n[f17] Protocol safe.");
 			}
 			else
 			{
@@ -261,7 +262,7 @@ public class F17CommandLine extends CommandLine
 		{
 			job.debugPrintln
 			//System.out.println
-					("[f17] " + ((unfair.length == 0) ? "Fair protocol" : "Protocol") + " satisfies progress.");
+					("\n[f17] " + ((unfair.length == 0) ? "Fair protocol" : "Protocol") + " satisfies progress.");
 		}
 		else
 		{
