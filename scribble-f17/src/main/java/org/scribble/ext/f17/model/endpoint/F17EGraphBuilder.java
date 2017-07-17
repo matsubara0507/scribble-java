@@ -50,21 +50,21 @@ public class F17EGraphBuilder
 			{
 				Entry<F17LAction, F17LType> e = lc.cases.entrySet().iterator().next();
 				F17LAction a = e.getKey();
-				F17LType L = e.getValue();
-				if (L instanceof F17LEnd)
+				F17LType cont = e.getValue();
+				if (cont instanceof F17LEnd)
 				{
 					this.util.addEdge(s1, toEAction(a), s2);
 				}
-				else if (L instanceof F17RecVar)
+				else if (cont instanceof F17RecVar)
 				{
-					this.util.addEdge(s1, toEAction(a), f.get(((F17RecVar) L).var));
+					this.util.addEdge(s1, toEAction(a), f.get(((F17RecVar) cont).var));
 				}
 				else
 				{
 					//EState s = this.util.newState(Collections.emptySet());
 					EState s = this.util.ef.newEState(Collections.emptySet());
 					this.util.addEdge(s1, toEAction(a), s);
-					build(L, s, s2, f);
+					build(cont, s, s2, f);
 				}
 			}
 			else // lc.cases.size() > 1
@@ -73,7 +73,7 @@ public class F17EGraphBuilder
 				{
 					Map<F17LAction, F17LType> tmp = new HashMap<>();
 					tmp.put(e.getKey(), e.getValue());
-					build(new F17LChoice(tmp), s1, s2, f);
+					build(new F17LChoice(tmp), s1, s2, f);  // FIXME: factor this case out with the above
 				}
 			}
 		}
