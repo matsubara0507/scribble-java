@@ -5,6 +5,7 @@ import java.util.Collections;
 import org.scribble.model.MState;
 import org.scribble.model.endpoint.EState;
 
+@Deprecated
 public class F17EState extends EState
 {
 	public F17EState()

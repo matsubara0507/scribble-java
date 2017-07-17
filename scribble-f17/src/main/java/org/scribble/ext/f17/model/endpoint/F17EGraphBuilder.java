@@ -17,6 +17,7 @@ import org.scribble.ext.f17.ast.local.action.F17LDisconnect;
 import org.scribble.ext.f17.ast.local.action.F17LReceive;
 import org.scribble.ext.f17.ast.local.action.F17LSend;
 import org.scribble.model.endpoint.EGraph;
+import org.scribble.model.endpoint.EGraphBuilderUtil;
 import org.scribble.model.endpoint.EModelFactory;
 import org.scribble.model.endpoint.EState;
 import org.scribble.model.endpoint.actions.EAction;
@@ -24,11 +25,13 @@ import org.scribble.sesstype.name.RecVar;
 
 public class F17EGraphBuilder
 {
-	private final F17EGraphBuilderUtil util;// = new F17EGraphBuilderUtil();
+	//private final F17EGraphBuilderUtil util;// = new F17EGraphBuilderUtil();
+	private final EGraphBuilderUtil util;
 	
 	public F17EGraphBuilder(EModelFactory ef)
 	{
-		this.util = new F17EGraphBuilderUtil(ef);
+		//this.util = new F17EGraphBuilderUtil(ef);
+		this.util = new EGraphBuilderUtil(ef);
 	}
 	
 	public EGraph build(F17LType lt)

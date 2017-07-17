@@ -4,6 +4,7 @@ import org.scribble.model.endpoint.EGraphBuilderUtil;
 import org.scribble.model.endpoint.EModelFactory;
 
 // FIXME: deprecate?
+@Deprecated
 public class F17EGraphBuilderUtil extends EGraphBuilderUtil
 {
 	public F17EGraphBuilderUtil(EModelFactory ef)
