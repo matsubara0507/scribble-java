@@ -39,7 +39,7 @@ public class F17AllTest extends ScribAllTest
 	protected void runTest(String dir) throws CommandLineException, ScribbleException
 	{
 		new F17CommandLine(this.example, CLArgParser.JUNIT_FLAG, CLArgParser.IMPORT_PATH_FLAG, dir,
-						F17CLArgParser.F17_FLAG, "[F17AllTest]")  // HACK (cf. F17Main)
+						F17CLArgParser.F17_FLAG, "[F17AllTest]")  // HACK: for F17CommandLine -- cf. F17Main
 				.run();
 	}
 
@@ -56,7 +56,7 @@ public class F17AllTest extends ScribAllTest
 				dir = dir.substring(1).replace("/", "\\");
 			}
 			
-			String[] SKIP =  // Hacked for f17
+			String[] SKIP =  // Hack: for f17
 				{
 					// f17 doesn't check choice subjects
 					"scribble-test/target/test-classes/bad/wfchoice/enabling/twoparty/Test01b.scr",
@@ -80,7 +80,7 @@ public class F17AllTest extends ScribAllTest
 			Assert.assertFalse("Expecting exception", this.isBadTest);
 		}
 
-		catch (F17SyntaxException e)  // Hacked for f17
+		catch (F17SyntaxException e)  // Hack: for f17
 		{
 			F17AllTest.NUM_SKIPPED++;
 			System.out.println("[f17] Skipping: " + this.example + "  (" + F17AllTest.NUM_SKIPPED + " skipped)");

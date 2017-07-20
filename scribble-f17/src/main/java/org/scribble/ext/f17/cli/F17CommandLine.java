@@ -112,6 +112,8 @@ public class F17CommandLine extends CommandLine
 
 			}
 
+			f17PreContextBuilding(job);
+
 			GProtocolName simpname = new GProtocolName(this.f17Args.get(F17CLArgFlag.F17)[0]);
 			if (simpname.toString().equals("[F17AllTest]"))  // HACK: F17AllTest
 			{
@@ -123,6 +125,7 @@ public class F17CommandLine extends CommandLine
 			}
 			
 			// FIXME? f17 FSM building only used for f17 validation -- output tasks, e.g., -api, will still use default Scribble FSMs
+			// -- but the FSMs should be the same?
 		}
 		else
 		{
@@ -133,10 +136,10 @@ public class F17CommandLine extends CommandLine
 	
 	// Refactor into F17Job?
 
+
+	// Pre: f17PreContextBuilding(job)
 	private static void parseAndCheckWF(Job job, GProtocolName simpname) throws ScribbleException, ScribParserException
 	{
-		f17PreContextBuilding(job);
-		
 		Module main = job.getContext().getMainModule();
 		
 		/*if (simpname.toString().equals("[F17AllTest]")) // HACK: F17AllTest
@@ -153,10 +156,9 @@ public class F17CommandLine extends CommandLine
 		parseAndCheckWF(job, main, gpd);
 	}
 	
+	// Pre: f17PreContextBuilding(job)
 	private static void parseAndCheckWF(Job job) throws ScribbleException, ScribParserException
 	{
-		f17PreContextBuilding(job);
-
 		Module main = job.getContext().getMainModule();
 		for (GProtocolDecl gpd : main.getGlobalProtocolDecls())
 		{
