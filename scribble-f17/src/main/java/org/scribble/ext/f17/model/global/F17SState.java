@@ -90,7 +90,7 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 	{
 		return this.P.entrySet().stream().anyMatch((e) -> 
 			e.getValue().getActions().stream().anyMatch((a) ->
-				(a.isConnect() || a.isAccept()) && isConnected(e.getKey(), a.peer) 
+				(a.isConnect() || a.isAccept()) && isConnected(e.getKey(), a.peer)   // FIXMEL isConnected is direction sensitive
 
 						// FIXME: check for pending port, if so then port is used -- need to extend an AnnotEConnect type with ScribAnnot (cf. AnnotPayloadType)
 
@@ -191,7 +191,7 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 	{
 		return this.P.entrySet().stream().anyMatch((e) -> 
 			e.getValue().getActions().stream().anyMatch((a) ->
-				(a.isSend() || a.isReceive()) && !isConnected(e.getKey(), a.peer)
+				(a.isSend() || a.isReceive()) && !isConnected(e.getKey(), a.peer)  // FIXME: isConnected is direction sensitive
 		));
 	}
 
@@ -208,6 +208,7 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 		));
 	}
 
+	// FIXME: iterate on P, not Q
 	public boolean isReceptionError()
 	{
 		return this.Q.entrySet().stream().anyMatch((e1) ->
@@ -217,7 +218,7 @@ public class F17SState extends MPrettyState<Void, SAction, F17SState, Global>
 						return hasMessage(e1.getKey(), e2.getKey())
 								&& ((s = this.P.get(e1.getKey())).getStateKind() == EStateKind.UNARY_INPUT
 										|| s.getStateKind() == EStateKind.POLY_INPUT)
-								&& (s.getActions().iterator().next().peer.equals(e2.getKey()))  // E.g. A->B.B->C.A->C
+								&& (s.getActions().iterator().next().peer.equals(e2.getKey()))  // E.g., A->B.B->C.A->C
 								&& !s.getActions().contains(e2.getValue().toDual(e2.getKey()));
 					}
 				));

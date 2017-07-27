@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 // Wait-for errors?
 public class F17SafetyErrors
 {
+	// FIXME: fields no longer needed, all stored in the errors map
 	public final Set<F17SState> connection;
 	public final Set<F17SState> disconnect;
 	public final Set<F17SState> unconnected;
